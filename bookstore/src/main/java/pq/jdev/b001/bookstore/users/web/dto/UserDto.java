@@ -41,7 +41,7 @@ public class UserDto {
 	
 	private Date birthday;
 	
-	private int sex;
+	private String sex;
 	
 	private final int power = 1;
 	
@@ -120,11 +120,11 @@ public class UserDto {
 		this.address = address;
 	}
 
-	public int getSex() {
+	public String getSex() {
 		return sex;
 	}
 
-	public void setSex(int sex) {
+	public void setSex(String sex) {
 		this.sex = sex;
 	}
 

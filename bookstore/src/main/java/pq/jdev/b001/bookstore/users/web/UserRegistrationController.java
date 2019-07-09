@@ -26,6 +26,11 @@ public class UserRegistrationController {
 	public UserDto userRegistrationDto() {
 		return new UserDto();
 	}
+	
+	@ModelAttribute("singleSelectAllValues")
+    public String[] getSingleSelectAllValues() {
+        return new String[] {"Male", "Female"};
+    }
 
 	@GetMapping
 	public String showRegistrationForm(Model model) {

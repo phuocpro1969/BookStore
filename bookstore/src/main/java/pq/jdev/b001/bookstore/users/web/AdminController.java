@@ -3,6 +3,7 @@ package pq.jdev.b001.bookstore.users.web;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,8 +26,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import pq.jdev.b001.bookstore.users.model.Person;
+import pq.jdev.b001.bookstore.users.model.Role;
 import pq.jdev.b001.bookstore.users.repository.UserRepository;
 import pq.jdev.b001.bookstore.users.service.UserService;
+import pq.jdev.b001.bookstore.users.web.dto.AdminUpdateInfoUserDto;
 import pq.jdev.b001.bookstore.users.web.dto.UserUpdateInfoDto;
 
 @Controller
@@ -58,6 +61,35 @@ public class AdminController {
 		return newList;
 	}
 	
+	@ModelAttribute("singleSelectAllValues")
+    public String[] getSingleSelectAllValues() {
+        return new String[] {"Male", "Female"};
+    }
+	
+	@ModelAttribute("allRoles")
+	public List<String> allRoles(Principal principal) {
+		ArrayList<String> kq = new ArrayList<>();
+		String username = principal.getName();
+		Person per = userRepository.findByUsername(username);
+		Set<Role> roles = per.getRoles();
+		String key = null;
+		for (Role role : roles) {
+			key = role.getName();
+		}
+	    List<Role> list = userService.findAllRole();
+	    for (Role r : list) { 
+	    	String ss = r.getName();
+			if(!ss.equals(key)){
+				kq.add(ss.substring(5));
+			} else
+			{
+				kq.add(ss.substring(5));
+				break;
+			}
+	    }
+	    return kq;
+	}
+	
 	@GetMapping
 	public String showUpdateInfoForm(Model model, Principal principal) {
 	model.addAttribute("list", getList(principal));
@@ -72,14 +104,14 @@ public class AdminController {
 		for (Person p : list)
 			if (p.getId() == id)
 			{
-				UserUpdateInfoDto uuid = userService.updateInfo(p);
+				AdminUpdateInfoUserDto uuid = userService.updateUserInfo(p);
 				model.addAttribute("person", uuid);
 			}
 		return "adminUpdateUser";
 	}
 
 	@PostMapping(value = "/edit-user-{id}")
-	public String updateUserAccount(@PathVariable long id, Model model, Principal principal, @ModelAttribute("person") @Valid UserUpdateInfoDto userDto,
+	public String updateUserAccount(@PathVariable long id, Model model, Principal principal, @ModelAttribute("person") @Valid AdminUpdateInfoUserDto userDto,
 			BindingResult result) throws Exception {
 		
 	    if (result.hasErrors()) {

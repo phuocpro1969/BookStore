@@ -42,14 +42,14 @@ public class UserUpdateInfoDto {
 	
 	private Date birthday;
 	
-	private int sex;
-	
 	private int power;
 	
 	private Timestamp update_date;
 	
 	private Set<Role> roles;
 	
+	private String sex;
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -114,11 +114,11 @@ public class UserUpdateInfoDto {
 		this.address = address;
 	}
 
-	public int getSex() {
+	public String getSex() {
 		return sex;
 	}
 
-	public void setSex(int sex) {
+	public void setSex(String sex) {
 		this.sex = sex;
 	}
 

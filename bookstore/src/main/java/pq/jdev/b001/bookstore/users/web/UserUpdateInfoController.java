@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,6 +28,7 @@ import pq.jdev.b001.bookstore.users.service.UserService;
 import pq.jdev.b001.bookstore.users.web.dto.UserUpdateInfoDto;
 
 @Controller
+@PreAuthorize("hasRole('EMPLOYEE')")
 @RequestMapping("/accountUser")
 public class UserUpdateInfoController {
 	@Autowired
@@ -37,6 +39,11 @@ public class UserUpdateInfoController {
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+	
+	@ModelAttribute("singleSelectAllValues")
+    public String[] getSingleSelectAllValues() {
+        return new String[] {"Male", "Female"};
+    }
 
 	@ModelAttribute("person")
 	public UserUpdateInfoDto updateInfoDto(Principal principal) {
@@ -46,7 +53,7 @@ public class UserUpdateInfoController {
 	}
 	
 	//update info
-	
+	@PreAuthorize("hasRole('EMPLOYEE')")
 	@GetMapping
 	public String showUpdateInfoForm(Model model) {
 		return "/accountUser";
@@ -65,7 +72,7 @@ public class UserUpdateInfoController {
 	}
 	
 	//update pass
-	
+	@PreAuthorize("hasRole('EMPLOYEE')")
 	@RequestMapping(value = "/changePassword", method = RequestMethod.GET)
 	public String showChangePassForm(Model model) {
 		return "/changePassword";
@@ -86,6 +93,7 @@ public class UserUpdateInfoController {
 	}
 	
 	// delete user
+	@PreAuthorize("hasRole('EMPLOYEE')")
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
 	public String delete(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();

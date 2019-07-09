@@ -72,9 +72,12 @@
 							id="address" class="form-control" th:field="*{address}" />
 					</div>
 					<div class="form-group">
-						<label>Sex</label>
-						<input type="radio" name="sex" value=0 checked />Male 
-						<input type="radio" name="sex" value=1 />Female
+						<ul>
+  							<li th:each="radioValue: ${singleSelectAllValues}">
+    							<input type="radio" th:field="*{sex}" th:value="${radioValue}" />
+   								<label th:for="${#ids.prev('sex')}" th:text="${radioValue}"></label>
+  							</li>
+						</ul>
 					</div>
 					<div class="form-group">
 						<label>BirthDay</label>

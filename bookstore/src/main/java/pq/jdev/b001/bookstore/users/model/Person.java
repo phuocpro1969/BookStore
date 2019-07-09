@@ -33,7 +33,7 @@ public class Person implements Serializable{
     private String phone;
     private String Address;
     private String email;
-    private int sex;
+    private String sex;
     private int power;
     private String username;
     private String password;
@@ -140,11 +140,11 @@ public class Person implements Serializable{
         this.password = password;
     }
 
-	public int getSex() {
+	public String getSex() {
 		return sex;
 	}
 
-	public void setSex(int sex) {
+	public void setSex(String sex) {
 		this.sex = sex;
 	}
 

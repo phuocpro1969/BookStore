@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class LoginController {
-
+	
 	@GetMapping({"/"})
 	public String root() {
 		return "index";
@@ -24,7 +24,6 @@ public class LoginController {
 	@PreAuthorize("hasRole('EMPLOYEE')")
 	@GetMapping("/user")
 	public String userPage(ModelMap model) {
-		model.addAttribute("user", getPrincipal());
 		return "user";
 	}
 	

@@ -1,12 +1,20 @@
 package pq.jdev.b001.bookstore.users.web.dto;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
-public class AdminDto {
+import pq.jdev.b001.bookstore.users.constraint.FieldMatch;
 
+@FieldMatch.List({
+    @FieldMatch(first = "password", second = "confirmPassword", message = "The password fields must match"),
+})
+public class AdminUpdateInfoUserDto {
+	
+	private long id;
+	
 	@NotEmpty
 	private String firstName;
 
@@ -23,18 +31,23 @@ public class AdminDto {
 	@NotEmpty
 	private String password;
 
+	@NotEmpty
+	private String confirmPassword;
+
 	private String phone;
 	
 	private String address;
 	
 	private Date birthday;
 	
-	private String sex;
-	
 	private int power;
+	
+	private Timestamp update_date;
 	
 	private String dropdownSelectedValue;
 	
+	private String sex;
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -73,6 +86,14 @@ public class AdminDto {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getPhone() {
@@ -115,6 +136,25 @@ public class AdminDto {
 		this.power = power;
 	}
 
+	public Timestamp getUpdate_date() {
+		return update_date;
+	}
+
+	public void setUpdate_date() {
+		java.util.Date date= new java.util.Date();
+		long time = date.getTime();
+		Timestamp ts = new Timestamp(time);
+		this.update_date = ts;
+	}
+
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
+	}
+
 	public String getDropdownSelectedValue() {
 		return dropdownSelectedValue;
 	}
@@ -122,4 +162,5 @@ public class AdminDto {
 	public void setDropdownSelectedValue(String dropdownSelectedValue) {
 		this.dropdownSelectedValue = dropdownSelectedValue;
 	}
+	
 }

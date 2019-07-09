@@ -48,6 +48,11 @@ public class AdminUpdateInfoController {
 		return userService.updateInfo(p);
 	}
 	
+	@ModelAttribute("singleSelectAllValues")
+    public String[] getSingleSelectAllValues() {
+        return new String[] {"Male", "Female"};
+    }
+	
 	//update info
 	
 	@GetMapping
@@ -69,6 +74,7 @@ public class AdminUpdateInfoController {
 	
 	//update pass
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping(value = "/changePassAdmin", method = RequestMethod.GET)
 	public String showChangePassForm(Model model) {
 		return "/changePassAdmin";
@@ -89,6 +95,7 @@ public class AdminUpdateInfoController {
 	}
 	
 	// delete user
+	@PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
 	public String delete(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();

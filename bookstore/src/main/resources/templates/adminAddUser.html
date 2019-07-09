@@ -55,6 +55,7 @@
 							th:each="error: ${#fields.errors('firstName')}"
 							th:text="${error}">Validation error</p>
 					</div>
+					
 					<div class="form-group"
 						th:classappend="${#fields.hasErrors('lastName')}? 'has-error':''">
 						<label for="lastName" class="control-label">Last name</label> <input
@@ -63,19 +64,27 @@
 							th:each="error : ${#fields.errors('lastName')}"
 							th:text="${error}">Validation error</p>
 					</div>
+					
 					<div class="form-group">
 						<label for="phone" class="control-label">Phone</label> <input
 							id="phone" class="form-control" th:field="*{phone}" />
 					</div>
+					
 					<div class="form-group">
 						<label for="address" class="control-label">Address</label> <input
 							id="address" class="form-control" th:field="*{address}" />
 					</div>
+					
 					<div class="form-group">
-						<label>Sex</label>
-						<input type="radio" name="sex" value=0 checked />Male 
-						<input type="radio" name="sex" value=1 />Female
+						<label>Sex:</label>
+						<ul>
+  							<li th:each="radioValue: ${singleSelectAllValues}">
+    							<input type="radio" th:field="*{sex}" th:value="${radioValue}" />
+   								<label th:for="${#ids.prev('sex')}" th:text="${radioValue}"></label>
+  							</li>
+						</ul>
 					</div>
+					
 					<div class="form-group">
 						<label>BirthDay</label>
                     	<input type="date" name="birthday" id="birthday" value="1945-01-01">
@@ -90,13 +99,14 @@
 							error</p>
 					</div>
 					
-					<div class="form-group" name="power">
-						<label>Power</label>
-						<select id="power" name="power" th:field="*{power}">
-							<option selected value=1> Employee </option>
-							<option value=2> Admin </option>
-						</select>
-					</div>
+					<div class="form-group">
+						<label> power: </label>
+						<select th:field="*{dropdownSelectedValue}">
+    						<option th:each="dropdownValue: ${allRoles}"
+    								th:value="${dropdownValue}"
+    								th:text="${dropdownValue}"></option>
+    					</select>
+					</div>			
 					
 					<div class="form-group"
 						th:classappend="${#fields.hasErrors('userName')}? 'has-error':''">
@@ -106,6 +116,7 @@
 							th:each="error: ${#fields.errors('userName')}"
 							th:text="${error}">Validation error</p>
 					</div>
+					
 					<div class="form-group"
 						th:classappend="${#fields.hasErrors('password')}? 'has-error':''">
 						<label for="password" class="control-label">Password</label> <input
@@ -115,6 +126,7 @@
 							th:each="error : ${#fields.errors('password')}"
 							th:text="${error}">Validation error</p>
 					</div>
+					
 					<div class="form-group">
 						<button type="submit" class="btn btn-success">Register</button>
 					</div>

@@ -59,7 +59,7 @@ public class DataNewService implements ApplicationListener<ContextRefreshedEvent
 				}
 	            admin.setPhone("0981415287");
 	            admin.setPower(2);
-	            admin.setSex(0);
+	            admin.setSex("Male");
 	            admin.setUsername("admin");
 	            admin.setPassword(passwordEncoder.encode("admin"));
 	            

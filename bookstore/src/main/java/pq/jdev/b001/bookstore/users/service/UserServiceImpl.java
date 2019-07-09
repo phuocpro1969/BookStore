@@ -18,6 +18,7 @@ import pq.jdev.b001.bookstore.users.model.Role;
 import pq.jdev.b001.bookstore.users.repository.RoleRepository;
 import pq.jdev.b001.bookstore.users.repository.UserRepository;
 import pq.jdev.b001.bookstore.users.web.dto.AdminDto;
+import pq.jdev.b001.bookstore.users.web.dto.AdminUpdateInfoUserDto;
 import pq.jdev.b001.bookstore.users.web.dto.UserDto;
 import pq.jdev.b001.bookstore.users.web.dto.UserUpdateInfoDto;
 
@@ -63,29 +64,28 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Person save(AdminDto userDto) {
-		Person person = new Person();
-		person.setFirstname(userDto.getFirstName());
-		person.setLastname(userDto.getLastName());
-		person.setPhone(userDto.getPhone());
-		person.setAddress(userDto.getAddress());
-		person.setSex(userDto.getSex());
-		person.setBirthday(userDto.getBirthday());
-		person.setEmail(userDto.getEmail());
-		person.setUsername(userDto.getUserName());
-		person.setPassword(passwordEncoder.encode(userDto.getPassword()));
-		person.setPower(userDto.getPower());
-		HashSet<Role> roles = new HashSet<>();
-        roles.add(roleRepository.findById((long)userDto.getPower()));
-        person.setRoles(roles);
-        return userRepository.save(person);
-	}
-
-	@Override
 	public void updatePassword(String updatedPassword, Long id) {
 		userRepository.updatePassword(updatedPassword, id);
 	}
 
+	@Override
+	public AdminUpdateInfoUserDto updateUserInfo(Person p) {
+		AdminUpdateInfoUserDto auiu = new AdminUpdateInfoUserDto();
+		auiu.setId(p.getId());
+		auiu.setFirstName(p.getFirstname());
+		auiu.setLastName(p.getLastname());
+		auiu.setAddress(p.getAddress());
+		auiu.setBirthday(p.getBirthday());
+		auiu.setEmail(p.getEmail());
+		auiu.setPhone(p.getPhone());
+		auiu.setUserName(p.getUsername());
+		auiu.setPassword(p.getPassword());
+		auiu.setConfirmPassword(p.getPassword());
+		auiu.setSex(p.getSex());
+		auiu.setPower(p.getPower());
+		return auiu;
+	}
+	
 	@Override
 	public UserUpdateInfoDto updateInfo(Person p) {
 		UserUpdateInfoDto us = new UserUpdateInfoDto();
@@ -143,6 +143,61 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
+	public Person save(AdminDto userDto) {
+		Person person = new Person();
+		person.setFirstname(userDto.getFirstName());
+		person.setLastname(userDto.getLastName());
+		person.setPhone(userDto.getPhone());
+		person.setAddress(userDto.getAddress());
+		person.setSex(userDto.getSex());
+		person.setBirthday(userDto.getBirthday());
+		person.setEmail(userDto.getEmail());
+		person.setUsername(userDto.getUserName());
+		person.setPassword(passwordEncoder.encode(userDto.getPassword()));
+		String key = "ROLE_"+userDto.getDropdownSelectedValue();
+		switch (key) {
+		case "ROLE_EMPLOYEE":
+			person.setPower(1);
+			break;
+		case "ROlE_ADMIN":
+			person.setPower(2);
+			break;
+		}
+		HashSet<Role> roles = new HashSet<>();
+        roles.add(roleRepository.findByName(key));
+        person.setRoles(roles);
+        return userRepository.save(person);
+	}
+	
+	@Override
+	public Person save(AdminUpdateInfoUserDto userDto) {
+		Person person = findById(userDto.getId());
+		person.setFirstname(userDto.getFirstName());
+		person.setLastname(userDto.getLastName());
+		person.setPhone(userDto.getPhone());
+		person.setAddress(userDto.getAddress());
+		person.setSex(userDto.getSex());
+		person.setBirthday(userDto.getBirthday());
+		person.setEmail(userDto.getEmail());
+		person.setUsername(userDto.getUserName());
+		person.setPassword(userDto.getPassword());
+		String key = "ROLE_"+userDto.getDropdownSelectedValue();
+		switch (key) {
+		case "ROLE_EMPLOYEE":
+			person.setPower(1);
+			break;
+		case "ROlE_ADMIN":
+			person.setPower(2);
+			break;
+		}
+		person.setUpdate_date(userDto.getUpdate_date());
+		HashSet<Role> roles = new HashSet<>();
+		roles.add(roleRepository.findByName(key));
+        person.setRoles(roles);
+        return userRepository.save(person);
+	}
+	
+	@Override
 	public void delete(Long id) {
 		userRepository.deleteByIdP(id);
 	}
@@ -156,5 +211,11 @@ public class UserServiceImpl implements UserService {
 	public List<Person> findAll() {
 		return userRepository.findAll();
 	}
+
+	@Override
+	public List<Role> findAllRole() {
+		return roleRepository.findAll();
+	}
+
 
 }

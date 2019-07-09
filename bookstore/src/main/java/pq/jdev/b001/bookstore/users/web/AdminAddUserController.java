@@ -1,5 +1,10 @@
 package pq.jdev.b001.bookstore.users.web;
 
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import pq.jdev.b001.bookstore.users.model.Person;
+import pq.jdev.b001.bookstore.users.model.Role;
+import pq.jdev.b001.bookstore.users.repository.UserRepository;
 import pq.jdev.b001.bookstore.users.service.UserService;
 import pq.jdev.b001.bookstore.users.web.dto.AdminDto;
 
@@ -24,12 +31,45 @@ public class AdminAddUserController {
 	@Autowired
 	private UserService userService;
 
+	@Autowired
+	private UserRepository userRepository;
+	
 	@ModelAttribute("person")
 	public AdminDto adminDto() {
 		return new AdminDto();
 	}
 
+	@ModelAttribute("singleSelectAllValues")
+    public String[] getSingleSelectAllValues() {
+        return new String[] {"Male", "Female"};
+    }
+	
+	@ModelAttribute("allRoles")
+	public List<String> allRoles(Principal principal) {
+		ArrayList<String> kq = new ArrayList<>();
+		String username = principal.getName();
+		Person per = userRepository.findByUsername(username);
+		Set<Role> roles = per.getRoles();
+		String key = null;
+		for (Role role : roles) {
+			key = role.getName();
+		}
+	    List<Role> list = userService.findAllRole();
+	    for (Role r : list) { 
+	    	String ss = r.getName();
+			if(!ss.equals(key)){
+				kq.add(ss.substring(5));
+			} else
+			{
+				kq.add(ss.substring(5));
+				break;
+			}
+	    }
+	    return kq;
+	}
+	
 	@GetMapping
+	@PreAuthorize("hasRole('ADMIN')")
 	public String showRegistrationForm(Model model) {
 		return "adminAddUser";
 	}
