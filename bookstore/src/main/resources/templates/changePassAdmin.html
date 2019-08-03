@@ -14,21 +14,25 @@
 </head>
 <body>
 
-		<div th:if="${param.success}">
-			<script type="text/javascript">
-				window.location.href = "/accountAdmin";
-			</script>
-		</div>
-		<nav th:replace="indexheader :: ${header}"></nav>
-		<div id="templatemo_container">
-			<div class="container">
-				<div class="regis">
+	<div th:if="${param.success}">
+		<script type="text/javascript">
+			window.location.href = "/accountAdmin";
+		</script>
+	</div>
+
+	<nav th:replace="indexheader :: ${header}"></nav>
+
+	<div id="templatemo_container">
+		<div class="container">
+			<div class="regis">
+				<div class="text-center">
 					<h1 class="text-center" style="margin: 0px 0px 0px 250px;">Change
 						Password</h1>
-					</br> </br>
+					<br> <br>
 					<div class="text-center">
 						<form th:action="@{/accountAdmin/changePassAdmin}"
-							th:object="${person}" method="post" style=" margin: 0px 0px 0px 25px">
+							th:object="${person}" method="post"
+							style="margin: 0px 0px 0px 25px">
 
 							<input type="hidden" id="userName" name="userName"
 								th:value="${person.userName}">
@@ -55,9 +59,9 @@
 								<div class="input-group">
 									<span class="input-group-addon"> <i
 										class="glyphicon glyphicon-lock"></i>Confirm Password
-									</span> <input style="width: 540px;" id="confirmPassword" class="form-control"
-										placeholder="Confirm password" type="password"
-										th:field="*{confirmPassword}" />
+									</span> <input style="width: 540px;" id="confirmPassword"
+										class="form-control" placeholder="Confirm password"
+										type="password" th:field="*{confirmPassword}" />
 								</div>
 								<p class="error-message"
 									th:each="error: ${#fields.errors('confirmPassword')}"
@@ -68,15 +72,17 @@
 									style="width: 135px; margin: 0px 0px 0px 275px;">Reset
 									password</button>
 							</div>
+							<br>
+							<br>
 						</form>
-
 					</div>
 				</div>
 			</div>
 		</div>
-
+	</div>
 
 	<footer th:replace="indexheader :: ${footer}"></footer>
+
 	<script type="text/javascript"
 		th:src="@{/webjars/jquery/3.2.1/jquery.min.js/}"></script>
 	<script type="text/javascript"

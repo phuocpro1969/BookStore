@@ -9,22 +9,17 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.PagedListHolder;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import pq.jdev.b001.bookstore.publisher.models.Publishers;
-import pq.jdev.b001.bookstore.publishers.repository.PublisherRepository;
 import pq.jdev.b001.bookstore.publishers.service.PublisherService;
-import pq.jdev.b001.bookstore.publishers.service.PublisherServiceImpl;
 
 @Controller
 public class PublisherController {
@@ -53,8 +48,9 @@ public class PublisherController {
 	private PublisherService publisherService;
 
 	@GetMapping("publishersList")
-	public String viewPublishersList(Model model) {
-
+	public String viewPublishersList(Model model, ModelMap map) {
+		map.addAttribute("header", "header_admin");
+		map.addAttribute("footer", "footer_admin");
 		List<Publishers> publishers = new ArrayList<Publishers>();
 		publishers = publisherService.findall();
 		model.addAttribute("publishers", publishers);

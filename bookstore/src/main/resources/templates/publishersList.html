@@ -32,7 +32,7 @@
 
 <body>
 
-	<nav th:replace="indexheader :: header"></nav>
+	<nav th:replace="indexheader :: ${header}"></nav>
 	<div id="templatemo_container">
 		<div id="templatemo_content">
 
@@ -83,7 +83,7 @@
 			</div>
 			<!-- end of content left -->
 
-<!-- 			<div class="row">
+			<!-- 			<div class="row">
 				<a th:href="@{/employee/create}" class="btn btn-success pull-left">
 					<span class="glyphicon glyphicon-plus"></span> Add new employee
 				</a>
@@ -96,62 +96,62 @@
 					<button type="submit" class="btn btn-primary">Search</button>
 				</form>
 			</div> -->
-			
-			<form th:action="@{/publishersList}" th:object="${category}"
-				method="get">
-				<p class="my-5">
-					<a href="" class="btn"><i> Add Publisher</i></a>
-				</p>
-				<div>
-					<table class="content-table" align="center">
-						<thead>
-							<tr>
-								<th>ID</th>
-								<th>PUBLISHINGHOUSE</th>
-								<th>CREATEDNAME</th>
-								<th>CREATEDDATE</th>
-								<th>UPLOADNAME</th>
-								<th>UPDATEDATE</th>
-								<th>Edit</th>
-								<th>Delete</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="publisher:${publishers}">
-								<td th:utext="${publisher.id}">ID</td>
-								<td th:utext="${publisher.publisher}">Publisher</td>
-								<td th:utext="${publisher.createName}">CreateName</td>
-								<td th:utext="${publisher.createDate}">CrateDate</td>
-								<td th:utext="${publisher.updateName}">UploadName</td>
-								<td th:utext="${publisher.updateDate}">UploadDate</td>
-								<td><a
-									th:href="@{/publisher/{id}/edit(id=${publisher.id})}"
-									class="btn btn-primary"><i class="fas fa-user-edit ml-2"></i></a></td>
-								<td><a onclick="myFunction()" class="btn btn-primary"><i
-										class="fas fa-user-times ml-2"></i></a></td>
-								<p id="demo"></p>
+			<div id="templatemo_content_right">
+				<form th:action="@{/publishersList}" th:object="${category}"
+					method="get">
+					<p class="my-5">
+						<a href="" class="btn"><i> Add Publisher</i></a>
+					</p>
+					<div>
+						<table class="content-table" align="center">
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>PUBLISHINGHOUSE</th>
+									<th>CREATEDNAME</th>
+									<th>CREATEDDATE</th>
+									<th>UPLOADNAME</th>
+									<th>UPDATEDATE</th>
+									<th>Edit</th>
+									<th>Delete</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="publisher:${publishers}">
+									<td th:utext="${publisher.id}">ID</td>
+									<td th:utext="${publisher.publisher}">Publisher</td>
+									<td th:utext="${publisher.createName}">CreateName</td>
+									<td th:utext="${publisher.createDate}">CrateDate</td>
+									<td th:utext="${publisher.updateName}">UploadName</td>
+									<td th:utext="${publisher.updateDate}">UploadDate</td>
+									<td><a
+										th:href="@{/publisher/{id}/edit(id=${publisher.id})}"
+										class="btn btn-primary"><i class="fas fa-user-edit ml-2"></i></a></td>
+									<td><a onclick="myFunction()" class="btn btn-primary"><i
+											class="fas fa-user-times ml-2"></i></a></td>
+									<p id="demo"></p>
 
-								<script>
-									function myFunction() {
-										var txt;
-										if (confirm("ban co chac muon xoa !")) {
-											th:href="@{/publisher/{id}/delete(id=${publisher.id})}"
-										} else {
-											return "publishersList";
+									<script>
+										function myFunction() {
+											var txt;
+											if (confirm("ban co chac muon xoa !")) {
+												th: href = "@{/publisher/{id}/delete(id=${publisher.id})}"
+											} else {
+												return "publishersList";
+											}
+											document.getElementById("demo").innerHTML = txt;
 										}
-										document.getElementById("demo").innerHTML = txt;
-									}
-								</script>
-						</tbody>
-					</table>
-				</div>
-			</form>
-
+									</script>
+							</tbody>
+						</table>
+					</div>
+				</form>
+			</div>
 			<!-- end of content right -->
 			<div class="cleaner_with_height">&nbsp;</div>
 		</div>
 		<!-- end of content -->
 	</div>
-	<footer th:replace="indexheader :: footer"></footer>
+	<footer th:replace="indexheader :: ${footer}"></footer>
 </body>
 </html>
