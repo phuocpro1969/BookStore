@@ -146,10 +146,9 @@ public class AdminController {
 		if (result.hasErrors()) {
 			map.addAttribute("header", "header_admin");
 			map.addAttribute("footer", "footer_admin");
-			url = "/listUser/edit-user-" + String.valueOf(id) + "/changePassword";
-			return url;
+			return "/adminChangePassword";
 		}
-
+		
 		String updatedPassword = passwordEncoder.encode(userDto.getPassword());
 		userService.updatePassword(updatedPassword, userDto.getId());
 		userService.loadUserByUsername(userDto.getUserName());
