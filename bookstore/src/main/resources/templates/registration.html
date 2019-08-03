@@ -5,10 +5,21 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<link th:href="@{css/templatemo_style.css}" rel="stylesheet"
+<link rel="stylesheet" type="text/css"
+th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+
+<link th:href="@{/css/templatemo_style.css}" rel="stylesheet"
 	type="text/css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<style>
+body{
+background: #4b4743;
+}
 
+form{
+	margin: 0px 0px 0px -100px;
+}
+</style>
 <title>Registration</title>
 </head>
 <body>
@@ -23,7 +34,7 @@
 					</script>				
 				</div>
 
-				<h1>Registration</h1>
+				<h1 style="font-weight:bold">Registration</h1>
 				<form th:action="@{/registration}" th:object="${person}" method="post">
 
 					<p class="error-message" th:if="${#fields.hasGlobalErrors()}"
@@ -74,7 +85,7 @@
 					
 					<div class="form-group">
 						<label>BirthDay</label>
-                    	<input type="date" name="birthday" id="birthday" value="1945-01-01">
+                    	<input class="form-control" type="date" name="birthday" id="birthday" value="1945-01-01">
 					</div>
 					<br>
 					
@@ -133,9 +144,9 @@
 					<br>
 					
 					<div class="form-group">
-					<div id="gg">
+					<div id="gg" style="margin: 0px 0px 0px -77px";>
 						<button type="submit" class="btn btn-success">Register</button>
-						<span>Already registered? <a href="/" th:href="@{/login}">Login
+						<span>Already registered? <a href="/" th:href="@{/login}" style="font-size:17px";>Login
 								here</a></span>
 					</div>
 					</div>

@@ -5,6 +5,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+<link rel="stylesheet" type="text/css"
+	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+
 <link th:href="@{css/templatemo_style.css}" rel="stylesheet"
 	type="text/css" />
 <script
@@ -37,20 +40,21 @@ a.back {
 					<div class="alert alert-info">You've successfully Update!</div>
 				</div>
 
-				<h1 class="text-center">My Account</h1>
+				<h1 class="text-center" style="margin: 0px 0px 0px 260px; font-weight: bold;">My Account</h1>
+				</br>
 
 				<div>
 					<span> <a class="cp"
 						th:href="@{/accountUser/changePassword}">Change Password</a> <a
 						class="da" th:href="@{'/accountUser/delete/'+${person.id}}">Delete
 							Account</a> <a class="back" th:href="@{/user}">Back</a>
-					</span> <br> <br>
+					</span> <br>
 				</div>
 
 				<div class="container">
-					<div class="regis">
+					<div class="regis"  >
 						<form th:action="@{/accountUser}" th:object="${person}"
-							method="post">
+							method="post"  style="margin: 0px 150px 0px 45px";>
 
 							<div class="form-group">
 								<p class="error-message" th:if="${#fields.hasGlobalErrors()}"
@@ -58,13 +62,13 @@ a.back {
 									th:text="${error}">Validation error</p>
 							</div>
 							<div class="form-group">
-								<label>UserName:</label> <input type="text"
+								<label>UserName:</label> <input class="form-control" type="text"
 									th:value="${person.userName}" disabled>
 							</div>
 							<br>
 
 							<div class="form-group">
-								<label>Email:</label> <input type="text"
+								<label>Email:</label> <input class="form-control" type="text"
 									th:value="${person.email}" disabled>
 							</div>
 							<br>
@@ -114,14 +118,14 @@ a.back {
 							</div>
 
 							<div class="form-group">
-								<label>BirthDay:</label> <input type="date" name="birthday"
+								<label>BirthDay:</label> <input class="form-control" type="date" name="birthday"
 									id="birthday" th:field="*{birthday}" value="${person.birthday}">
 							</div>
 
 							<br> <br>
 							<div class="form-group">
 								<div id="gg">
-									<button type="submit" class="btn btn-success">Update</button>
+									<button type="submit" class="btn btn-success" style="margin: 0px 0px 0px 180px;">Update</button>
 								</div>
 							</div>
 							<br>

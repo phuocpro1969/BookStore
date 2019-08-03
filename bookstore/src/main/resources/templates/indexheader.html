@@ -13,8 +13,7 @@
 
 <body>
 
-	<nav th:fragment="header_login"
-		class="navbar navbar-inverse navbar-fixed-top">
+	<nav th:fragment="header_login">
 	<div id="templatemo_container">
 		<div id="templatemo_menu">
 			<ul>
@@ -26,8 +25,8 @@
 				<li><a href="#">Contact</a></li>
 			</ul>
 			<div class="login">
-				<a th:href="@{/registration}">Registration</a>
-				<a th:href="@{/login}">Login</a>
+				<a th:href="@{/registration}">Registration</a> <a
+					th:href="@{/login}">Login</a>
 			</div>
 		</div>
 		<!-- end of menu -->
@@ -54,8 +53,7 @@
 	</div>
 	</nav>
 
-	<nav th:fragment="header_user"
-		class="navbar navbar-inverse navbar-fixed-top">
+	<nav th:fragment="header_user">
 	<div id="templatemo_container">
 		<div id="templatemo_menu">
 			<ul>
@@ -93,8 +91,7 @@
 	</div>
 	</nav>
 
-	<nav th:fragment="header_admin"
-		class="navbar navbar-inverse navbar-fixed-top">
+	<nav th:fragment="header_admin">
 	<div id="templatemo_container">
 		<div id="templatemo_menu">
 			<ul>
@@ -132,7 +129,7 @@
 		</div>
 	</div>
 	</nav>
-	
+
 	<!-- footer -->
 	<footer th:fragment="footer_login">
 	<div id="templatemo_footer">
@@ -153,14 +150,14 @@
 		2019 <a href="#"><strong>JDEV</strong></a>
 	</div>
 	</footer>
-	
+
 	<footer th:fragment="footer_admin">
 	<div id="templatemo_footer">
-			<a th:href="@{/}">Home</a>  | <a href="index.html">Search</a> | <a
-				th:href="@{/bookview}">Books</a> | <a href="#">New Releases</a> | <a
-				href="#">FAQs</a> | <a href="#">Contact Us</a><br /> Copyright ©
-			2019 <a href="#"><strong>JDEV</strong></a>
-		</div>
+		<a th:href="@{/}">Home</a> | <a href="index.html">Search</a> | <a
+			th:href="@{/bookview}">Books</a> | <a href="#">New Releases</a> | <a
+			href="#">FAQs</a> | <a href="#">Contact Us</a><br /> Copyright ©
+		2019 <a href="#"><strong>JDEV</strong></a>
+	</div>
 	</footer>
 </body>
 </html>

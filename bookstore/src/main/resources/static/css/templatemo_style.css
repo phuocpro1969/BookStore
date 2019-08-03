@@ -372,6 +372,8 @@ img {
 	color: red;
 }
 
+
+
 .search .container_right{
 	text-align : center;
 	width: 740px;
@@ -420,15 +422,24 @@ th {
 	font-family: Verdana, Arial, san-serif;
 	font-size: 30px;
 	color: red;
+	width: 440px;
 }
 
 .container .regis .form-group {
 	font-size: 20px;
  	padding: 0px 0px 0px 100px;
  	color: red;
+
 }
 
-.container .regis .form-group #gg {
+
+
+.container .regis .form-group input{
+	
+}
+
+.container .regis .form-group
+ #gg {
 	font-family: Verdana, Arial, san-serif;
 	font-size: 20px;
 	padding: 0px 0px 0px 100px;
@@ -460,7 +471,7 @@ th {
 .container h1{
 	color: red;
 	text-align: center;
-	width: 920px;
+	width: 448px;
 	background: #1C1C1C;
 }
 

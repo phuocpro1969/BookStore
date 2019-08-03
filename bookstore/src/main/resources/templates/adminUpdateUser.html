@@ -5,8 +5,14 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+<link rel="stylesheet" type="text/css"
+	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+
 <link th:href="@{/css/templatemo_style.css}" rel="stylesheet"
 	type="text/css" />
+
+
+
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <style>
@@ -39,7 +45,8 @@ a.back {
 					</script>
 				</div>
 
-				<h1 class="text-center">Admin Update User Account</h1>
+				<h1  style="margin: 0px 0px 0px 260px;" class="text-center">Admin Update User Account</h1>
+</br>
 
 				<div>
 					<span> <a class="cp"
@@ -47,7 +54,7 @@ a.back {
 							Password</a> <a class="da"
 						th:href="@{'/listUser/delete-user-'+${person.id}}">Delete
 							Account</a> <a class="back" th:href="@{/listUser}">Back</a>
-					</span> <br> <br>
+					</span> <br>
 				</div>
 
 				<div class="container">
@@ -55,19 +62,19 @@ a.back {
 						<form th:action="@{'/listUser/edit-user-'+${person.id}}"
 							th:object="${person}" method="post">
 
-							<div class="form-group">
+							<div class="form-group" style="margin: 0px 125px 0px -70px;">
 								<p class="error-message" th:if="${#fields.hasGlobalErrors()}"
 									th:each="error : ${#fields.errors('global')}"
 									th:text="${error}">Validation error</p>
 
 								<div class="form-group">
-									<label>UserName:</label> <input type="text"
+									<label>UserName:</label> <input class="form-control" type="text"
 										th:value="${person.userName}" disabled>
 								</div>
 								<br>
 
 								<div class="form-group">
-									<label>Email:</label> <input type="text"
+									<label>Email:</label> <input class="form-control" type="text"
 										th:value="${person.email}" disabled>
 								</div>
 								<br>
@@ -119,7 +126,7 @@ a.back {
 								</div>
 
 								<div class="form-group">
-									<label> power: </label> <select
+									<label> power: </label> <select class="form-control"
 										th:field="*{dropdownSelectedValue}">
 										<option th:each="dropdownValue: ${allRoles}"
 											th:value="${dropdownValue}" th:text="${dropdownValue}"></option>
@@ -128,7 +135,7 @@ a.back {
 								<br>
 
 								<div class="form-group">
-									<label>BirthDay</label> <input type="date" name="birthday"
+									<label>BirthDay</label> <input class="form-control" type="date" name="birthday"
 										id="birthday" th:field="*{birthday}"
 										value="${person.birthday}">
 								</div>
@@ -144,7 +151,7 @@ a.back {
 									value="${person.email}" th:field="*{email}">
 								<div class="form-group">
 									<div id="gg">
-										<button type="submit" class="btn btn-success">Update</button>
+										<button type="submit" class="btn btn-success" style=" margin: 0px 0px 0px 190px;">Update</button>
 									</div>
 								</div>
 							</div>
