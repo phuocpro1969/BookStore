@@ -1,7 +1,5 @@
 package pq.jdev.b001.bookstore.users.config;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,8 +10,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import pq.jdev.b001.bookstore.users.service.UserService;
@@ -29,9 +25,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     CustomSuccessHandler successHandler;
     
-    @Autowired
-    private DataSource dataSource;
-    
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -42,17 +35,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-            .antMatchers("/**","/registration**", "/forgot-password**", "/reset-password**").permitAll()
+            .antMatchers("/**","/registration**", "/forgot-password**", "/reset-password**","/publishersList**").permitAll()
             .antMatchers("/js/**", "/css/**", "/img/**", "/webjars/**","/user**").permitAll()
             .antMatchers("/accountUser").access("hasRole('EMPLOYEE')")
+            .antMatchers( "/bookview", "/bookview/books**", "/bookview/success", "/bookview/error").permitAll()
             .antMatchers("/user**").access("hasRole('EMPLOYEE') and hasRole('ADMIN')")
             .antMatchers("/admin**", "/accountAdmin").access("hasRole('ADMIN')")
+            .antMatchers("/bookview/createform", "/bookview/editform", "/bookview/information").hasAnyRole("EMPLOYEE", "ADMIN")
             .anyRequest().authenticated()
             .and()
             .formLogin()
             .loginPage("/login").successHandler(successHandler).permitAll()
-            .and()
-            .rememberMe().rememberMeParameter("remember-me").tokenRepository(tokenRepository())
             .and().logout().invalidateHttpSession(true)
 			.clearAuthentication(true)
 			.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
@@ -60,13 +53,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .exceptionHandling()
             .accessDeniedPage("/403");
-    }
-    
-    @Bean
-    public PersistentTokenRepository tokenRepository() {
-      JdbcTokenRepositoryImpl jdbcTokenRepositoryImpl=new JdbcTokenRepositoryImpl();
-      jdbcTokenRepositoryImpl.setDataSource(dataSource);
-      return jdbcTokenRepositoryImpl;
     }
     
     @Bean

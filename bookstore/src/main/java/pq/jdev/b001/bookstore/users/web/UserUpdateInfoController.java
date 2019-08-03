@@ -13,7 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import pq.jdev.b001.bookstore.users.model.Person;
-import pq.jdev.b001.bookstore.users.repository.UserRepository;
 import pq.jdev.b001.bookstore.users.service.UserService;
 import pq.jdev.b001.bookstore.users.web.dto.UserUpdateInfoDto;
 
@@ -33,9 +32,6 @@ import pq.jdev.b001.bookstore.users.web.dto.UserUpdateInfoDto;
 public class UserUpdateInfoController {
 	@Autowired
 	private UserService userService;
-	
-	@Autowired
-	private UserRepository userRepository;
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -48,14 +44,16 @@ public class UserUpdateInfoController {
 	@ModelAttribute("person")
 	public UserUpdateInfoDto updateInfoDto(Principal principal) {
 		String username = principal.getName(); 
-		Person p = userRepository.findByUsername(username);
+		Person p = userService.findByUsername(username);
 		return userService.updateInfo(p);
 	}
 	
 	//update info
 	@PreAuthorize("hasRole('EMPLOYEE')")
 	@GetMapping
-	public String showUpdateInfoForm(Model model) {
+	public String showUpdateInfoForm(ModelMap map) {
+		map.addAttribute("header", "header_user");
+		map.addAttribute("footer", "footer_user");
 		return "/accountUser";
 	}
 
@@ -74,7 +72,9 @@ public class UserUpdateInfoController {
 	//update pass
 	@PreAuthorize("hasRole('EMPLOYEE')")
 	@RequestMapping(value = "/changePassword", method = RequestMethod.GET)
-	public String showChangePassForm(Model model) {
+	public String showChangePassForm(ModelMap map) {
+		map.addAttribute("header", "header_user");
+		map.addAttribute("footer", "footer_user");
 		return "/changePassword";
 	}
 	
@@ -100,6 +100,7 @@ public class UserUpdateInfoController {
         if (auth != null){    
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
+        userService.deleteTokenByIdPerson(id);
 		userService.delete(id);
 		return "redirect:/";
 	}

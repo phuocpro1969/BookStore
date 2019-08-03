@@ -5,33 +5,16 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<link rel="stylesheet" type="text/css"
-	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+<link th:href="@{css/templatemo_style.css}" rel="stylesheet"
+	type="text/css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 <title>Registration</title>
 </head>
 <body>
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-					aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#" th:href="@{/}">Book Store</a>
-			</div>
-		</div>
-	</nav>
-
-	<br>
-	<br>
-
+	<nav th:replace="indexheader :: ${header}" ></nav>
 	<div class="container">
-		<div class="row">
+		<div class="regis">
 			<div class="col-md-6 col-md-offset-3">
 
 				<div th:if="${param.success}">
@@ -55,6 +38,8 @@
 							th:each="error: ${#fields.errors('firstName')}"
 							th:text="${error}">Validation error</p>
 					</div>
+					<br>
+					
 					<div class="form-group"
 						th:classappend="${#fields.hasErrors('lastName')}? 'has-error':''">
 						<label for="lastName" class="control-label">Last name</label> <input
@@ -63,14 +48,20 @@
 							th:each="error : ${#fields.errors('lastName')}"
 							th:text="${error}">Validation error</p>
 					</div>
+					<br>
+					
 					<div class="form-group">
 						<label for="phone" class="control-label">Phone</label> <input
 							id="phone" class="form-control" th:field="*{phone}" />
 					</div>
+					<br>
+					
 					<div class="form-group">
 						<label for="address" class="control-label">Address</label> <input
 							id="address" class="form-control" th:field="*{address}" />
 					</div>
+					<br>
+					
 					<div class="form-group">
 						<ul>
   							<li th:each="radioValue: ${singleSelectAllValues}">
@@ -79,10 +70,14 @@
   							</li>
 						</ul>
 					</div>
+					<br>
+					
 					<div class="form-group">
 						<label>BirthDay</label>
                     	<input type="date" name="birthday" id="birthday" value="1945-01-01">
 					</div>
+					<br>
+					
 					<div class="form-group"
 						th:classappend="${#fields.hasErrors('email')}? 'has-error':''">
 						<label for="email" class="control-label">E-mail</label> <input
@@ -91,6 +86,7 @@
 							th:each="error : ${#fields.errors('email')}" th:text="${error}">Validation
 							error</p>
 					</div>
+					<br>
 					
 					<div class="form-group"
 						th:classappend="${#fields.hasErrors('userName')}? 'has-error':''">
@@ -100,6 +96,8 @@
 							th:each="error: ${#fields.errors('userName')}"
 							th:text="${error}">Validation error</p>
 					</div>
+					<br>
+					
 					<div class="form-group"
 						th:classappend="${#fields.hasErrors('password')}? 'has-error':''">
 						<label for="password" class="control-label">Password</label> <input
@@ -109,6 +107,8 @@
 							th:each="error : ${#fields.errors('password')}"
 							th:text="${error}">Validation error</p>
 					</div>
+					<br>
+					
 					<div class="form-group"
 						th:classappend="${#fields.hasErrors('confirmPassword')}? 'has-error':''">
 						<label for="confirmPassword" class="control-label">Confirm
@@ -118,6 +118,7 @@
 							th:each="error : ${#fields.errors('confirmPassword')}"
 							th:text="${error}">Validation error</p>
 					</div>
+					<br>
 					
 					<div class="form-group"
 						th:classappend="${#fields.hasErrors('terms')}? 'has-error':''">
@@ -129,16 +130,23 @@
 							th:each="error : ${#fields.errors('terms')}" th:text="${error}">Validation
 							error</p>
 					</div>
+					<br>
+					
 					<div class="form-group">
+					<div id="gg">
 						<button type="submit" class="btn btn-success">Register</button>
 						<span>Already registered? <a href="/" th:href="@{/login}">Login
 								here</a></span>
 					</div>
+					</div>
+					<br>
 
 				</form>
 			</div>
 		</div>
+		<br>
 	</div>
+		<footer th:replace="indexheader :: ${footer}"></footer>
 
 	<script type="text/javascript"
 		th:src="@{/webjars/jquery/3.2.1/jquery.min.js/}"></script>

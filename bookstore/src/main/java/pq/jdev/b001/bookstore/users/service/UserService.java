@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import pq.jdev.b001.bookstore.users.model.PasswordResetToken;
 import pq.jdev.b001.bookstore.users.model.Person;
 import pq.jdev.b001.bookstore.users.model.Role;
 import pq.jdev.b001.bookstore.users.web.dto.AdminDto;
@@ -38,5 +39,13 @@ public interface UserService extends UserDetailsService {
 	void updatePassword(String password, Long personId);
 	
 	void delete(Long id);
+
+	PasswordResetToken findByToken(String token);
+
+	void deleteByToken(PasswordResetToken token);
+
+	void saveToken(PasswordResetToken token);
+	
+	void deleteTokenByIdPerson(long id);
 	
 }

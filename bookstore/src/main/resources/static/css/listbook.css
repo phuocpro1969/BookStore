@@ -1,0 +1,99 @@
+* {
+	font-family: Verdana; /* Change your font family */
+}
+
+.content-table {
+	border-collapse: collapse;
+	margin: 30px 0px 0px -40px;
+	background-color: #C6C9C4;
+	color: black;
+	align-content: center;
+	font-size: 13.5px;
+	overflow: hidden;
+}
+
+.content-table thead tr {
+	color: black;
+	text-align: left;
+	font-weight: bold;
+}
+
+.content-table th, .content-table td {
+	padding: 14px 15px;
+	border: 2px solid white;
+}
+
+.content-table tbody tr {
+	border: 2px solid white;
+}
+
+.content-table tbody tr:last-of-type {
+	border: 2px solid white;
+}
+
+.content-table tbody tr.active-row {
+	font-weight: bold;
+	color: #009879;
+}
+
+.searchbar::placeholder {
+	color: white;
+	font-family: "Segoe UI Light", "Segoe UI", "Segoe", Tahoma, Helvetica,
+		Arial, sans-serif;
+	font-size: 1em;
+	font-weight: bold;
+	/* transition: 0.2s; */
+}
+
+.searchbar:focus {
+	width: 400px;
+	font-family: "Segoe UI Light", "Segoe UI", "Segoe", Tahoma, Helvetica,
+		Arial, sans-serif;
+	font-size: 1em;
+	font-weight: bold;
+	transition: 0.3s;
+	/* Stops the input box from inheriting the styling from the inputs on the request form */
+	border-bottom: white solid 2px;
+	outline: none;
+}
+
+.btn-search {
+	cursor: pointer;
+	color: black;
+	text-decoration: none !important;
+	font-family: "Segoe UI Light", "Segoe UI", "Segoe", Tahoma, Helvetica,
+		Arial, sans-serif;
+	font-size: 1.5em;
+	padding-top: 5px;
+	margin-right: 40px;
+}
+
+.pagination {
+	display: flex;
+	
+
+}
+
+.form-group{
+	margin: 20px 0px 5px 100px;
+	height: 30px;
+	font-size: 13px bold;
+}
+
+.form-inline{
+	display: flex;
+	
+	
+}
+
+.form-inline .btn-primary{
+	height: 23px;
+	margin: 20px 0px 0px 0px;
+}
+
+.pagination li {
+	margin: 30px 10px 0px 0px;
+	font-size: 10pt;
+
+
+}

@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,11 +15,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import pq.jdev.b001.bookstore.books.model.Book;
 
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = "email"))
@@ -28,9 +32,12 @@ public class Person implements Serializable{
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+	@Column(columnDefinition = "VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin")
     private String firstname;
+	@Column(columnDefinition = "VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin")
     private String lastname;
     private String phone;
+    @Column(columnDefinition = "VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin")
     private String Address;
     private String email;
     private String sex;
@@ -38,6 +45,10 @@ public class Person implements Serializable{
     private String username;
     private String password;
     private Date birthday;
+    
+    @OneToMany(mappedBy = "person")
+    private Set<Book> books;
+    
 
     @CreationTimestamp
     private Timestamp create_date;

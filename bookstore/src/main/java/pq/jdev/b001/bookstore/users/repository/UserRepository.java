@@ -21,6 +21,10 @@ public interface UserRepository extends JpaRepository<Person, Long>, CrudReposit
     @Query("Delete FROM Person where id = :id")
     void deleteByIdP(@Param("id") Long id);
     
+	@Modifying
+    @Query("Delete from PasswordResetToken where personid = :id")
+    void deleteByIdPRT(@Param("id") Long id);
+    
     Person findByEmail(String email);
     Person findByUsername(String username);
     Person findById(long id);

@@ -13,8 +13,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import pq.jdev.b001.bookstore.users.model.PasswordResetToken;
 import pq.jdev.b001.bookstore.users.model.Person;
 import pq.jdev.b001.bookstore.users.model.Role;
+import pq.jdev.b001.bookstore.users.repository.PasswordResetTokenRepository;
 import pq.jdev.b001.bookstore.users.repository.RoleRepository;
 import pq.jdev.b001.bookstore.users.repository.UserRepository;
 import pq.jdev.b001.bookstore.users.web.dto.AdminDto;
@@ -31,6 +33,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private RoleRepository roleRepository;
+	
+	@Autowired
+	private PasswordResetTokenRepository tokenRepository;
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -217,5 +222,24 @@ public class UserServiceImpl implements UserService {
 		return roleRepository.findAll();
 	}
 
+	@Override
+	public PasswordResetToken findByToken(String token) {
+		return tokenRepository.findByToken(token);
+	}
 
+	@Override
+	public void deleteByToken(PasswordResetToken token) {
+		tokenRepository.delete(token);
+	}
+
+	@Override
+	public void saveToken(PasswordResetToken token) {
+		tokenRepository.save(token);
+	}
+
+	@Override
+	public void deleteTokenByIdPerson(long id) {
+		userRepository.deleteByIdPRT(id);
+		
+	}
 }
