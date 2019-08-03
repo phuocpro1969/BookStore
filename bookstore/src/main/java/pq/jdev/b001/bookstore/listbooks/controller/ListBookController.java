@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.PagedListHolder;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -26,6 +27,7 @@ public class ListBookController {
 	private ListBookService listBookService;
 
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/book")
 	public String index(Model model, HttpServletRequest request, RedirectAttributes redirect) {
 		request.getSession().setAttribute("booklist", null);
@@ -104,10 +106,13 @@ public class ListBookController {
 
 	@GetMapping("/book/search/{pageNumber}")
 	public String search(@RequestParam("s") String s, Model model, HttpServletRequest request,
-			@PathVariable int pageNumber) {
+			@PathVariable int pageNumber,ModelMap map) {
+		map.addAttribute("header", "header_admin");
+		map.addAttribute("footer", "footer_admin");
 		if (s.equals("")) {
 			return "redirect:/book";
 		}
+		
 		List<Book> list = listBookService.search(s);
 		if (list == null) {
 			return "redirect:/book";

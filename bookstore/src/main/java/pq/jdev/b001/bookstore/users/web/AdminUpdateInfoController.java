@@ -60,9 +60,11 @@ public class AdminUpdateInfoController {
 
 	@PostMapping
 	public String UpdateUserAccount(@ModelAttribute("person") @Valid UserUpdateInfoDto userDto,
-			BindingResult result) throws Exception {
+			BindingResult result, ModelMap map) throws Exception {
 
 	    if (result.hasErrors()) {
+	    	map.addAttribute("header", "header_admin");
+			map.addAttribute("footer", "footer_admin");
             return "accountAdmin";
 	    }
 		userService.save(userDto);
@@ -82,16 +84,18 @@ public class AdminUpdateInfoController {
 	
 	@RequestMapping(value = "/changePassAdmin", method = RequestMethod.POST)
 	public String UpdatePassUserAccount(@ModelAttribute("person") @Valid UserUpdateInfoDto userDto,
-			BindingResult result) {
+			BindingResult result, ModelMap map) {
 
 	    if (result.hasErrors()) {
-            return "/accountAdmin/changePassAdmin";
+	    	map.addAttribute("header", "header_admin");
+			map.addAttribute("footer", "footer_admin");
+            return "/changePassAdmin";
 	    }
 	    
 	    String updatedPassword = passwordEncoder.encode(userDto.getPassword());
 		userService.updatePassword(updatedPassword, userDto.getId());
 		userService.loadUserByUsername(userDto.getUserName());
-		return "redirect:/accountAdmin/changePassAdmin?success";
+		return "redirect:/changePassAdmin?success";
 	}
 	
 	// delete user

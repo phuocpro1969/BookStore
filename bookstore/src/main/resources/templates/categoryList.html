@@ -7,9 +7,9 @@
 <title>Book Store</title>
 <meta name="keywords" content="" />
 <meta name="description" content="" />
-<link th:href="@{css/templatemo_style.css}" rel="stylesheet"
+<link th:href="@{/css/templatemo_style.css}" rel="stylesheet"
 	type="text/css" />
-<link th:href="@{css/category.css}" rel="stylesheet" type="text/css" />
+<link th:href="@{/css/category.css}" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -64,55 +64,89 @@
 			</div>
 			<!-- end of content left -->
 			<div id="templatemo_content_right">
+			
+			<div th:if="${success}">
+				<span th:text="${success}"></span>
+			</div>
 				<div class="search">
 					<div class="container_right">
-							<input id="searchBar" class="searchbar" type="text"
-							placeholder="Category name...">
-							</input>
-							<button class="btn-search">Search</button>
-						</div>
-					</div>
-					<div class="container_right">
-						<form th:action="@{/categorylist}" th:object="${category}"
-							method="get">
-							<p class="my-5">
-								<a href="addition" class="btn"><i> Add Category</i></a>
-							</p>
-							<div>
-								<table class="content-table" align="center">
-									<thead>
-										<tr>
-											<th>CategoryID</th>
-											<th>Name</th>
-											<th>Createdate</th>
-											<th>Updatedate</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr th:each="category:${categories}">
-											<td th:text="${category.id}"></td>
-											<td th:text="${category.name}"></td>
-											<td th:text="${category.createdate}"></td>
-											<td th:text="${category.updatedate}"></td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-							<div class="center">
-								<div class="pagination">
-									<a href="#">&laquo;</a> <a href="#" class="active">1</a> <a
-										href="#">2</a> <a href="#">3</a> <a href="#">4</a> <a href="#">5</a>
-									<a href="#">6</a> <a href="#">&raquo;</a>
-								</div>
-							</div>
-						</form>
+						<input id="searchBar" class="searchbar" type="text"
+							placeholder="Category name..."> </input>
+						<button class="btn-search">Search</button>
 					</div>
 				</div>
+				<div class="container_right">
+					<p class="my-5">
+						<a th:href="@{/addition}" class="btn"><i> Add Category</i></a>
+					</p>
+					<th:block th:if="${#lists.isEmpty(categories.pageList)}">
+						<h3>No Category</h3>
+					</th:block>
+					
+					<th:block th:unless="${#lists.isEmpty(categories.pageList)}">
+					
+					<div>
+						<table class="content-table" align="center">
+							<thead>
+								<tr>
+									<th>CategoryID</th>
+									<th>Name</th>
+									<th>Createdate</th>
+									<th>Updatedate</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="category : ${categories.pageList}">
+									<td th:text="${category.id}"></td>
+									<td th:text="${category.name}"></td>
+									<td th:text="${category.createdate}"></td>
+									<td th:text="${category.updatedate}"></td>
+									<td> <a th:href="@{/categorylist/{id}/delete(id=${category.id})}" />Delete</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					
+					<div class="center">
+						<div class="pagination">
+								<li
+									th:class="${currentIndex == 1}? 'page-item disabled' : 'page-item'">
+									<a class="page-link" th:href="@{/categorylist}">First</a>
+								</li>
+								<li
+									th:class="${currentIndex == 1}? 'page-item disabled': 'page-item' ">
+									<a class="page-link" aria-label="Previous"
+									th:href="@{|${baseUrl}${currentIndex - 1}|}"
+									title='Go to previous page'><span aria-hidden="true">«</span>
+										<span class="sr-only"></span></a>
+								</li>
+								<li th:each="item : ${#numbers.sequence(beginIndex,endIndex)}"
+									th:class="${item == currentIndex ? 'page-item active' :'page-item' }">
+									<a class="page-link" th:href="@{|${baseUrl}${item}|}"> <span
+										th:text='${item}'>1</span>
+								</a>
+								</li>
+								<li
+									th:class="${currentIndex == totalPageCount}? 'page-item disabled': 'page-item'">
+									<a class="page-link" aria-label="Next"
+									th:href="@{|${baseUrl}${currentIndex + 1}|}"
+									title='Go to next page'><span aria-hidden="true">»</span>
+										<span class="sr-only"></span></a>
+								</li>
+								<li
+									th:class="${currentIndex == totalPageCount}? 'page-item disabled':'page-item'">
+									<a class="page-link" th:href="@{|${baseUrl}${totalPageCount}|}">Last</a>
+								</li>
+							</div>
+					</div>
+					</th:block>
+				</div>
 			</div>
-			<!-- end of content right -->
-			<div class="cleaner_with_height">&nbsp;</div>
 		</div>
-		<!-- end of content -->
+		<!-- end of content right -->
+		<div class="cleaner_with_height">&nbsp;</div>
+	</div>
+	<!-- end of content -->
 	</div>
 	<footer th:replace="indexheader :: ${footer}"></footer>
 </body>

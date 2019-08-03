@@ -111,10 +111,11 @@ public class AdminController {
 
 	@PostMapping(value = "/edit-user-{id}")
 	public String updateUserAccount(@PathVariable long id, Model model, Principal principal,
-			@ModelAttribute("person") @Valid AdminUpdateInfoUserDto userDto, BindingResult result) throws Exception {
+			@ModelAttribute("person") @Valid AdminUpdateInfoUserDto userDto, BindingResult result, ModelMap map) throws Exception {
 
 		if (result.hasErrors()) {
-			System.out.println(result.toString());
+			map.addAttribute("header", "header_admin");
+			map.addAttribute("footer", "footer_admin");
 			return "adminUpdateUser";
 		}
 		userService.save(userDto);
@@ -140,9 +141,11 @@ public class AdminController {
 
 	@RequestMapping(value = "/edit-user-{id}/changePassword", method = RequestMethod.POST)
 	public String UpdatePassUserAccount(@PathVariable long id,
-			@ModelAttribute("person") @Valid UserUpdateInfoDto userDto, BindingResult result) {
+			@ModelAttribute("person") @Valid UserUpdateInfoDto userDto, BindingResult result, ModelMap map) {
 		String url = "";
 		if (result.hasErrors()) {
+			map.addAttribute("header", "header_admin");
+			map.addAttribute("footer", "footer_admin");
 			url = "/listUser/edit-user-" + String.valueOf(id) + "/changePassword";
 			return url;
 		}

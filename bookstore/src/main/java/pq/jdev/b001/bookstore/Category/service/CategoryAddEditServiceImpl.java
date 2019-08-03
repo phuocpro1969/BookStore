@@ -30,6 +30,10 @@ public class CategoryAddEditServiceImpl implements CategoryAddEditService{
 	public List<Category> findByName(String name) {
 		return (List<Category>) categoryrepository.findByName(name);
 	}
+	@Override
+	public void delete(long id) {
+		categoryrepository.deleteById(id);
+	}
 
 
 

@@ -59,9 +59,11 @@ public class UserUpdateInfoController {
 
 	@PostMapping
 	public String UpdateUserAccount(@ModelAttribute("person") @Valid UserUpdateInfoDto userDto,
-			BindingResult result) throws Exception {
+			BindingResult result, ModelMap map) throws Exception {
 
 	    if (result.hasErrors()) {
+	    	map.addAttribute("header", "header_user");
+			map.addAttribute("footer", "footer_user");
             return "accountUser";
 	    }
 		userService.save(userDto);
@@ -80,16 +82,18 @@ public class UserUpdateInfoController {
 	
 	@RequestMapping(value = "/changePassword", method = RequestMethod.POST)
 	public String UpdatePassUserAccount(@ModelAttribute("person") @Valid UserUpdateInfoDto userDto,
-			BindingResult result) {
+			BindingResult result, ModelMap map) {
 
 	    if (result.hasErrors()) {
-            return "/accountUser/changePassword";
+	    	map.addAttribute("header", "header_user");
+			map.addAttribute("footer", "footer_user");
+            return "changePassword";
 	    }
 	    
 	    String updatedPassword = passwordEncoder.encode(userDto.getPassword());
 		userService.updatePassword(updatedPassword, userDto.getId());
 		userService.loadUserByUsername(userDto.getUserName());
-		return "redirect:/accountUser/changePassword?success";
+		return "redirect:/changePassword?success";
 	}
 	
 	// delete user

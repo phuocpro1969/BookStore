@@ -48,9 +48,11 @@ public class PasswordFogotController {
 
 	@PostMapping
 	public String processForgotPasswordForm(@ModelAttribute("forgotPasswordForm") @Valid PasswordForgotDto form,
-			BindingResult result, HttpServletRequest request) {
+			BindingResult result, HttpServletRequest request, ModelMap map) {
 
 		if (result.hasErrors()) {
+			map.addAttribute("header", "header_login");
+			map.addAttribute("footer", "footer_login");
 			return "forgot-password";
 		}
 

@@ -43,7 +43,7 @@ public class UserRegistrationController {
 
 	@PostMapping
 	public String registerUserAccount(@ModelAttribute("person") @Valid UserDto userDto,
-			BindingResult result) throws Exception {
+			BindingResult result, ModelMap map) throws Exception {
 		
 		Person existingUserName = userService.findByUsername(userDto.getUserName());
 		Person existingEmail = userService.findByEmail(userDto.getEmail());
@@ -52,6 +52,8 @@ public class UserRegistrationController {
 		}
 
 		if (result.hasErrors()) {
+			map.addAttribute("header", "header_login");
+			map.addAttribute("footer", "footer_login");
 			return "registration";
 		}
 

@@ -106,7 +106,7 @@
   text-align: center;
 }
 
-.pagination a {
+.pagination li {
   color: white;
   float: left;
   padding: 8px 16px;
@@ -114,9 +114,9 @@
   transition: background-color .3s;
 }
 
-.pagination a.active {
+.pagination li.active {
   background-color: #4CAF50;
   color: white;
 }
 
-.pagination a:hover:not(.active) {background-color: #ddd;}
+.pagination li:hover:not(.active) {background-color: #ddd;}

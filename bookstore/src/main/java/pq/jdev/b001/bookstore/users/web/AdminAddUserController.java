@@ -74,7 +74,7 @@ public class AdminAddUserController {
 
 	@PostMapping
 	public String registerUserAccount(@ModelAttribute("person") @Valid AdminDto userDto,
-			BindingResult result) {
+			BindingResult result, ModelMap map) {
 		
 		Person existingUserName = userService.findByUsername(userDto.getUserName());
 		Person existingEmail = userService.findByEmail(userDto.getEmail());
@@ -83,6 +83,8 @@ public class AdminAddUserController {
 		}
 
 		if (result.hasErrors()) {
+			map.addAttribute("header", "header_admin");
+			map.addAttribute("footer", "footer_admin");
 			return "adminAddUser";
 		}
 		
