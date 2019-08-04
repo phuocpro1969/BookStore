@@ -94,6 +94,7 @@
 
 .pagination {
 	display: flex;
+	justify-content:center;
 }
 
 .form-group {

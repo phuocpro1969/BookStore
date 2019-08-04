@@ -11,6 +11,9 @@
 
 <link th:href="@{/css/templatemo_style.css}" rel="stylesheet"
 	type="text/css" />
+	
+<link th:href="@{/css/listbook.css}" rel="stylesheet" type="text/css" />
+
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <script
@@ -90,44 +93,101 @@ tr {
 						</div>
 					</form>
 				</div>
-				
-				<th:block th:if="${list.empty}">
+
+				<th:block th:if="${#lists.isEmpty(list.pageList)}">
 					<td>No User Available</td>
 				</th:block>
-				
-				<th:block th:unless="${list.empty}">
-				<table class="table">
-					<thead>
-						<tr>
-							<th>ID</th>
-							<th>USERNAME</th>
-							<th>FIRSTNAME</th>
-							<th>LASTNAME</th>
-							<th>POWER</th>
-							<th>UPDATE</th>
-							<th>DELETE</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="user : ${list}">
-							<td><span th:text="${user.id}" th:title="${user.id}">ID</span></td>
-							<td><span th:text="${user.username}"
-								th:title="${user.username}">USERNAME</span></td>
-							<td><span th:text="${user.firstname}"
-								th:title="${user.firstname}">FIRSTNAME</span></td>
-							<td><span th:text="${user.lastname}"
-								th:title="${user.lastname}">LASTNAME</span></td>
-							<td><span th:text="${user.power}" th:title="${user.power}">POWER</span></td>
-							<td><a th:href="@{'/listUser/edit-user-'+${user.id}}">UPDATE</a></td>
-							<td><a th:href="@{'/listUser/delete-user-'+${user.id}}">DELETE</a></td>
-						</tr>
-					</tbody>
-				</table>
+
+				<!-- <th:block th:unless="${#lists.isEmpty(list.pageList)}">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>USERNAME</th>
+								<th>FIRSTNAME</th>
+								<th>LASTNAME</th>
+								<th>POWER</th>
+								<th>UPDATE</th>
+								<th>DELETE</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="user : ${list.pageList}">
+								<td><span th:text="${user.id}" th:title="${user.id}">ID</span></td>
+								<td><span th:text="${user.username}"
+									th:title="${user.username}">USERNAME</span></td>
+								<td><span th:text="${user.firstname}"
+									th:title="${user.firstname}">FIRSTNAME</span></td>
+								<td><span th:text="${user.lastname}"
+									th:title="${user.lastname}">LASTNAME</span></td>
+								<td><span th:text="${user.power}" th:title="${user.power}">POWER</span></td>
+								<td><a th:href="@{'/listUser/edit-user-'+${user.id}}">UPDATE</a></td>
+								<td><a th:href="@{'/listUser/delete-user-'+${user.id}}">DELETE</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</th:block> -->
+
+				<th:block th:unless="${#lists.isEmpty(list.pageList)}">
+					<table class="table" align="center">
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>USERNAME</th>
+								<th>FIRSTNAME</th>
+								<th>LASTNAME</th>
+								<th>POWER</th>
+								<th>UPDATE</th>
+								<th>DELETE</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="user : ${list.pageList}">
+								<td><span th:text="${user.id}" th:title="${user.id}">ID</span></td>
+								<td><span th:text="${user.username}"
+									th:title="${user.username}">USERNAME</span></td>
+								<td><span th:text="${user.firstname}"
+									th:title="${user.firstname}">FIRSTNAME</span></td>
+								<td><span th:text="${user.lastname}"
+									th:title="${user.lastname}">LASTNAME</span></td>
+								<td><span th:text="${user.power}" th:title="${user.power}">POWER</span></td>
+								<td><a th:href="@{'/listUser/edit-user-'+${user.id}}">UPDATE</a></td>
+								<td><a th:href="@{'/listUser/delete-user-'+${user.id}}">DELETE</a></td>
+							</tr>
+						</tbody>
+					</table>
+					<ul class="pagination">
+						<li
+							th:class="${currentIndex == 1}? 'page-item disabled' : 'page-item'">
+							<a class="page-link" th:href="@{/listUser}">First</a>
+						</li>
+						<li
+							th:class="${currentIndex == 1}? 'page-item disabled': 'page-item' ">
+							<a class="page-link" aria-label="Previous"
+							th:href="@{|${baseUrl}${currentIndex - 1}|}"
+							title='Go to previous page'><span aria-hidden="true">«</span>
+								<span class="sr-only"></span></a>
+						</li>
+						<li th:each="item : ${#numbers.sequence(beginIndex, endIndex)}"
+							th:class="${item == currentIndex ? 'page-item active' :'page-item' }">
+							<a class="page-link" th:href="@{|${baseUrl}${item}|}"> <span
+								th:text='${item}'>1</span>
+						</a>
+						</li>
+						<li
+							th:class="${currentIndex == totalPageCount}? 'page-item disabled': 'page-item'">
+							<a class="page-link" aria-label="Next"
+							th:href="@{|${baseUrl}${currentIndex + 1}|}"
+							title='Go to next page'><span aria-hidden="true">»</span> <span
+								class="sr-only"></span></a>
+						</li>
+						<li
+							th:class="${currentIndex == totalPageCount}? 'page-item disabled':'page-item'">
+							<a class="page-link" th:href="@{|${baseUrl}${totalPageCount}|}">Last</a>
+						</li>
+					</ul>
 				</th:block>
-				
-				
-				
-				<br></br>
+
 			</div>
 			<div class="cleaner_with_height"></div>
 		</div>

@@ -5,8 +5,6 @@ import java.sql.Date;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
-import pq.jdev.b001.bookstore.users.constraint.ValidPassword;
-
 public class AdminDto {
 
 	@NotEmpty

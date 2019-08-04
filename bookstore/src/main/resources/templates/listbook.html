@@ -92,10 +92,11 @@
 					</form>
 				</div>
 				<th:block th:if="${#lists.isEmpty(books.pageList)}">
-					<h3>No book</h3>
+					<br><br><br><br>
+					<h1>No book</h1>
 				</th:block>
 
-				<th:block th:unless="${#lists.isEmpty(books2)}">
+				<th:block th:unless="${#lists.isEmpty(list2)}">
 					<table class="content-table" align="center">
 						<thead>
 							<tr>

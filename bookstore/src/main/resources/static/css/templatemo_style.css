@@ -221,6 +221,7 @@ img {
 #templatemo_content #templatemo_content_right {
 	float: right;
 	width: 740px;
+	height:505px;
 	padding: 0px 0px 0px 0px;
 	background-color: #171716;
 }
