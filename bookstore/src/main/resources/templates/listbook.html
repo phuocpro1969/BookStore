@@ -1,32 +1,28 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-
-
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Book Store</title>
 <meta name="keywords" content="" />
 <meta name="description" content="" />
 <link th:href="@{/css/templatemo_style.css}" rel="stylesheet"
 	type="text/css" />
-	
-	<link th:href="@{/css/listbook.css}" rel="stylesheet"
-	type="text/css" />
-	
-	
-	
+
+<link th:href="@{/css/listbook.css}" rel="stylesheet" type="text/css" />
+
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script
-    src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"
-    th:src="@{/webjars/jquery/1.12.4/jquery.min.js}"></script>
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"
+	th:src="@{/webjars/jquery/1.12.4/jquery.min.js}"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script
-    src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-    th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script></head>
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+</head>
 <body>
 
-
 	<nav th:replace="indexheader :: ${header}"></nav>
+
 	<div id="templatemo_container">
 		<div id="templatemo_content">
 
@@ -76,146 +72,129 @@
 			</div>
 			<!-- end of content left -->
 			<div id="templatemo_content_right">
-				<div class="">
-					<div th:if="${success}"
-						class="row alert alert-success alert-dismissible">
-						<span th:text="${success}"></span>
-					</div>
-					<div class="searchbar">
-						<a th:href="@{/book/create}" class="btn btn-success pull-left" style="font-size: 14pt;">
-							<span class="glyphicon glyphicon-plus" ></span> Add new book
-						</a>
-						<form class="form-inline pull-right" action="#"
-							th:action="@{/book/search/1}" method="GET">
-							<div class="form-group">
-								<input type="text" class="form-control" name="s"
-									placeholder="Type book name..." />
-							</div>
-							<button type="submit" class="btn btn-primary">Search</button>
-						</form>
-					</div>
-					<th:block th:if="${#lists.isEmpty(books.pageList)}">
-						<h3>No book</h3>
-					</th:block>
-
-					<th:block th:unless="${#lists.isEmpty(books2)}">
-						<nav class="row justify-content-center wow fadeIn"
-							data-wow-delay="0.2s">
-							<div class="">
-								<table class="content-table" align="center">
-									<thead>
-										<tr>
-											<th>Id</th>
-											<th>Title</th>
-											<th>Price</th>
-											<th>Domain</th>
-											<th>Picture</th>
-											<th>Uploaded_Date</th>
-											<th>Author</th>
-											<th>Edit</th>
-											<th>Delete</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr th:each="contact,iterStat : ${books2}">
-											<td th:text="${iterStat.count}"></td>
-											<td th:text="${contact.title}"></td>
-											<td th:text="${contact.price}"></td>
-											<td th:text="${contact.domain}"></td>
-											<td th:text="${contact.picture}"></td>
-											<td th:text="${contact.uploadedDate}"></td>
-											<td th:text="${contact.authors}"></td>
-											<td><a th:href="@{/book/{id}/edit(id=${contact.id})}"><span
-													class="glyphicon glyphicon-pencil"></span>Edit</a></td>
-											<td><a th:href="@{/book/{id}/delete(id=${contact.id})}"><span
-													class="glyphicon glyphicon-trash"></span>Delete</a></td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</nav>
-					</th:block>
-
-					<th:block th:unless="${#lists.isEmpty(books.pageList)}">
-						
-							<div class="">
-								<table class="content-table" align="center">
-									<thead>
-										<tr>
-											<th>Id</th>
-											<th>Title</th>
-											<th>Price</th>
-											<th>Domain</th>
-											<th>Picture</th>
-											<th>Uploaded_Date</th>
-											<th>Author</th>
-											<th>Edit</th>
-											<th>Delete</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr th:each="contact,iterStat : ${books.pageList}">
-											<td th:text="${iterStat.count}"></td>
-											<td th:text="${contact.title}"></td>
-											<td th:text="${contact.price}"></td>
-											<td th:text="${contact.domain}"></td>
-											<td th:text="${contact.picture}"></td>
-											<td th:text="${contact.uploadedDate}"></td>
-											<td th:text="${contact.authors}"></td>
-											<td><a th:href="@{/book/{id}/edit(id=${contact.id})}"><span
-													class="glyphicon glyphicon-pencil"></span>Edit</a></td>
-											<td><a th:href="@{/book/{id}/delete(id=${contact.id})}"><span
-													class="glyphicon glyphicon-trash"></span>Delete</a></td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-							<ul class="pagination">
-								<li
-									th:class="${currentIndex == 1}? 'page-item disabled' : 'page-item'">
-									<a class="page-link" th:href="@{/book}">First</a>
-								</li>
-								<li
-									th:class="${currentIndex == 1}? 'page-item disabled': 'page-item' ">
-									<a class="page-link" aria-label="Previous"
-									th:href="@{|${baseUrl}${currentIndex - 1}|}"
-									title='Go to previous page'><span aria-hidden="true">«</span>
-										<span class="sr-only"></span></a>
-								</li>
-								<li th:each="item : ${#numbers.sequence(beginIndex,endIndex)}"
-									th:class="${item == currentIndex ? 'page-item active' :'page-item' }">
-									<a class="page-link" th:href="@{|${baseUrl}${item}|}"> <span
-										th:text='${item}'>1</span>
-								</a>
-								</li>
-								<li
-									th:class="${currentIndex == totalPageCount}? 'page-item disabled': 'page-item'">
-									<a class="page-link" aria-label="Next"
-									th:href="@{|${baseUrl}${currentIndex + 1}|}"
-									title='Go to next page'><span aria-hidden="true">»</span>
-										<span class="sr-only"></span></a>
-								</li>
-								<li
-									th:class="${currentIndex == totalPageCount}? 'page-item disabled':'page-item'">
-									<a class="page-link" th:href="@{|${baseUrl}${totalPageCount}|}">Last</a>
-								</li>
-							</ul>
-				
-
-
-					</th:block>
+				<h1>List Book</h1>
+				<div th:if="${success}"
+					class="row alert alert-success alert-dismissible">
+					<span th:text="${success}"></span>
 				</div>
+				<div class="gom">
+					<a th:href="@{/book/create}"
+						style="font-size: 14pt; margin: 30px 0px 10px 20px; float: left">Add
+						New Book</a>
+					<form class="searchbar" th:action="@{/book/search/1}" method="get">
+						<div class="form-group">
+							<input
+								style="margin: -10px 10px 0px 50px; padding: 10px 100px 10px 0px;"
+								type="text" class="form-control" name="s"
+								placeholder="Type book name..." />
+							<button type="submit" class="btn btn-primary">Search</button>
+						</div>
+					</form>
+				</div>
+				<th:block th:if="${#lists.isEmpty(books.pageList)}">
+					<h3>No book</h3>
+				</th:block>
+
+				<th:block th:unless="${#lists.isEmpty(books2)}">
+					<table class="content-table" align="center">
+						<thead>
+							<tr>
+								<th>Id</th>
+								<th>Title</th>
+								<th>Price</th>
+								<th>Domain</th>
+								<th>Picture</th>
+								<th>Uploaded_Date</th>
+								<th>Author</th>
+								<th>Edit</th>
+								<th>Delete</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="contact,iterStat : ${books2}">
+								<td><span th:text="${iterStat.count}" th:title="${iterStat.count}"> </span></td>
+								<td><span th:text="${contact.title}" th:title="${contact.title}"> </span></td>
+								<td><span th:text="${contact.price}" th:title="${contact.price}"> </span></td>
+								<td><span th:text="${contact.domain}" th:title="${contact.domain}"> </span></td>
+								<td><span th:text="${contact.picture}"> </span></td>
+								<td><span th:text="${contact.uploadedDate}" th:title="${contact.uploadedDate}" > </span></td>
+								<td><span th:text="${contact.authors}" th:title="${contact.authors}"> </span></td>
+								<td><a th:href="@{/book/{id}/edit(id=${contact.id})}"><span
+										class="glyphicon glyphicon-pencil"></span>Edit</a></td>
+								<td><a th:href="@{/book/{id}/delete(id=${contact.id})}"><span
+										class="glyphicon glyphicon-trash"></span>Delete</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</th:block>
+
+				<th:block th:unless="${#lists.isEmpty(books.pageList)}">
+					<table class="content-table" align="center">
+						<thead>
+							<tr>
+								<th>Id</th>
+								<th>Title</th>
+								<th>Price</th>
+								<th>Domain</th>
+								<th>Picture</th>
+								<th>Uploaded_Date</th>
+								<th>Author</th>
+								<th>Edit</th>
+								<th>Delete</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="contact,iterStat : ${books.pageList}">
+								<td><span th:text="${iterStat.count}" th:title="${iterStat.count}"></span></td>
+								<td><span th:text="${contact.title}" th:title="${contact.title}"></span></td>
+								<td><span th:text="${contact.price}" th:title="${contact.price}"></span></td>
+								<td><span th:text="${contact.domain}" th:title="${contact.domain}"></span></td>
+								<td><span th:text="${contact.picture}"></span></td>
+								<td><span th:text="${contact.uploadedDate}" th:title="${contact.uploadedDate}"></span></td>
+								<td><span th:text="${contact.authors}" th:title="${contact.authors}"></span></td>
+								<td><a th:href="@{/book/{id}/edit(id=${contact.id})}"><span
+										class="glyphicon glyphicon-pencil"></span>Edit</a></td>
+								<td><a th:href="@{/book/{id}/delete(id=${contact.id})}"><span
+										class="glyphicon glyphicon-trash"></span>Delete</a></td>
+							</tr>
+						</tbody>
+					</table>
+					<ul class="pagination">
+						<li
+							th:class="${currentIndex == 1}? 'page-item disabled' : 'page-item'">
+							<a class="page-link" th:href="@{/book}">First</a>
+						</li>
+						<li
+							th:class="${currentIndex == 1}? 'page-item disabled': 'page-item' ">
+							<a class="page-link" aria-label="Previous"
+							th:href="@{|${baseUrl}${currentIndex - 1}|}"
+							title='Go to previous page'><span aria-hidden="true">«</span>
+								<span class="sr-only"></span></a>
+						</li>
+						<li th:each="item : ${#numbers.sequence(beginIndex,endIndex)}"
+							th:class="${item == currentIndex ? 'page-item active' :'page-item' }">
+							<a class="page-link" th:href="@{|${baseUrl}${item}|}"> <span
+								th:text='${item}'>1</span>
+						</a>
+						</li>
+						<li
+							th:class="${currentIndex == totalPageCount}? 'page-item disabled': 'page-item'">
+							<a class="page-link" aria-label="Next"
+							th:href="@{|${baseUrl}${currentIndex + 1}|}"
+							title='Go to next page'><span aria-hidden="true">»</span> <span
+								class="sr-only"></span></a>
+						</li>
+						<li
+							th:class="${currentIndex == totalPageCount}? 'page-item disabled':'page-item'">
+							<a class="page-link" th:href="@{|${baseUrl}${totalPageCount}|}">Last</a>
+						</li>
+					</ul>
+				</th:block>
+				<!-- /.container -->
 			</div>
-			<!-- /.container -->
-
-
-
 			<!-- end of content right -->
-			<div class="cleaner_with_height">&nbsp;</div>
-		</div>
-		<!-- end of content -->
-	</div>
-	<footer th:replace="indexheader :: ${footer}"></footer>
-
+			<div class="cleaner_with_height"></div>
+			<!-- end of content -->
+			<footer th:replace="indexheader :: ${footer}"></footer>
 </body>
 </html>

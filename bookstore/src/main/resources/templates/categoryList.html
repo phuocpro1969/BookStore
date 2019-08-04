@@ -36,7 +36,7 @@
 				<div class="templatemo_content_left_section">
 					<h1>Bestsellers</h1>
 					<ul>
-						<li><a href="#">Vestibulum ullamcorper</a></li>
+						<li><a th:href="@{/publishersList}">Publisher</a></li>
 						<li><a href="#">Maece nas metus</a></li>
 						<li><a href="#">In sed risus ac feli</a></li>
 						<li><a href="#">Praesent mattis varius</a></li>
@@ -64,10 +64,10 @@
 			</div>
 			<!-- end of content left -->
 			<div id="templatemo_content_right">
-			
-			<div th:if="${success}">
-				<span th:text="${success}"></span>
-			</div>
+
+				<div th:if="${success}">
+					<span th:text="${success}"></span>
+				</div>
 				<div class="search">
 					<div class="container_right">
 						<input id="searchBar" class="searchbar" type="text"
@@ -82,33 +82,34 @@
 					<th:block th:if="${#lists.isEmpty(categories.pageList)}">
 						<h3>No Category</h3>
 					</th:block>
-					
+
 					<th:block th:unless="${#lists.isEmpty(categories.pageList)}">
-					
-					<div>
-						<table class="content-table" align="center">
-							<thead>
-								<tr>
-									<th>CategoryID</th>
-									<th>Name</th>
-									<th>Createdate</th>
-									<th>Updatedate</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr th:each="category : ${categories.pageList}">
-									<td th:text="${category.id}"></td>
-									<td th:text="${category.name}"></td>
-									<td th:text="${category.createdate}"></td>
-									<td th:text="${category.updatedate}"></td>
-									<td> <a th:href="@{/categorylist/{id}/delete(id=${category.id})}" />Delete</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-					
-					<div class="center">
-						<div class="pagination">
+
+						<div>
+							<table class="content-table" align="center">
+								<thead>
+									<tr>
+										<th>CategoryID</th>
+										<th>Name</th>
+										<th>Createdate</th>
+										<th>Updatedate</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="category : ${categories.pageList}">
+										<td th:text="${category.id}"></td>
+										<td th:text="${category.name}"></td>
+										<td th:text="${category.createdate}"></td>
+										<td th:text="${category.updatedate}"></td>
+										<td><a
+											th:href="@{/categorylist/{id}/delete(id=${category.id})}" />Delete</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+						<div class="center">
+							<div class="pagination">
 								<li
 									th:class="${currentIndex == 1}? 'page-item disabled' : 'page-item'">
 									<a class="page-link" th:href="@{/categorylist}">First</a>
@@ -130,15 +131,15 @@
 									th:class="${currentIndex == totalPageCount}? 'page-item disabled': 'page-item'">
 									<a class="page-link" aria-label="Next"
 									th:href="@{|${baseUrl}${currentIndex + 1}|}"
-									title='Go to next page'><span aria-hidden="true">»</span>
-										<span class="sr-only"></span></a>
+									title='Go to next page'><span aria-hidden="true">»</span> <span
+										class="sr-only"></span></a>
 								</li>
 								<li
 									th:class="${currentIndex == totalPageCount}? 'page-item disabled':'page-item'">
 									<a class="page-link" th:href="@{|${baseUrl}${totalPageCount}|}">Last</a>
 								</li>
 							</div>
-					</div>
+						</div>
 					</th:block>
 				</div>
 			</div>

@@ -270,11 +270,12 @@ img {
 }
 
 #templatemo_content_right h1 {
+	text-align: center;
 	padding: 10px;
 	margin: 0 0 20px 0;
-	font-size: 15px;
+	font-size: 30px;
 	color: #cbc750;
-	background: url("../images/templatemo_h1_bg.jpg");
+	background: #171716;
 }
 
 #templatemo_content_right h2 {
@@ -385,12 +386,41 @@ th {
 	color : red;
 }
 
-.container .table {
+#templatemo_content_right .table {
 	height: 100px;
-  	width: 100%;
+  	width: 740px;
+  	color: black;
+  	
+  	border-collapse: collapse;
+  	overflow: hidden;
 }
 
-.container .table a{
+#templatemo_content_right .table thead tr th{
+	color: red;
+	text-align: center;
+	font-weight: bold;
+	background-color: #C6C9C4;
+	padding: 10px 10px 10px 15px;
+	border: 2px solid white;
+}
+
+#templatemo_content_right .table tbody tr td{
+	color: black;
+	max-width: 130px;
+	font-weight: bold;
+	padding: 10px 10px 10px 15px;
+	border: 2px solid white;
+}
+
+#templatemo_content_right .table tbody tr td span{
+	text-align: left;
+	display: block;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+}
+
+#templatemo_content_right .table a{
+	text-align:center;
 	color: #FD560F;
 }
 
@@ -488,4 +518,9 @@ th {
 	text-align: center;
 	width: 960px;
 	background: #1C1C1C;
+}
+
+#templatemo_content_right #gom .searchUser{
+	padding: 0px 10px 10px 0px;
+	float: right;
 }

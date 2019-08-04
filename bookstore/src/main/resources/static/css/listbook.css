@@ -3,24 +3,43 @@
 }
 
 .content-table {
+	height: 100px;
+	width: 700px;
+	margin: 0 auto;
+	color: black;
 	border-collapse: collapse;
-	margin: 30px 0px 0px -40px;
 	background-color: #C6C9C4;
 	color: black;
-	align-content: center;
 	font-size: 13.5px;
 	overflow: hidden;
 }
 
-.content-table thead tr {
-	color: black;
-	text-align: left;
-	font-weight: bold;
+.content-table a{
+	text-align:center;
+	color: #FD560F;
 }
 
-.content-table th, .content-table td {
-	padding: 14px 15px;
+.content-table thead tr th {
+	color: red;
+	text-align: center;
+	font-weight: bold;
+	padding: 10px 10px 10px 15px;
 	border: 2px solid white;
+}
+
+.content-table tbody tr td{
+	color: black;
+	max-width: 56px;
+	font-weight: bold;
+	padding: 10px 10px 10px 15px;
+	border: 2px solid white;
+}
+
+.content-table tbody tr td span{
+	text-align: left;
+	display: block;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
 }
 
 .content-table tbody tr {
@@ -34,6 +53,11 @@
 .content-table tbody tr.active-row {
 	font-weight: bold;
 	color: #009879;
+}
+
+.searchbar {
+	padding: 10px 10px 20px 0px;
+	float: right;
 }
 
 .searchbar::placeholder {
@@ -70,23 +94,19 @@
 
 .pagination {
 	display: flex;
-	
-
 }
 
-.form-group{
+.form-group {
 	margin: 20px 0px 5px 100px;
 	height: 30px;
 	font-size: 13px bold;
 }
 
-.form-inline{
+.form-inline {
 	display: flex;
-	
-	
 }
 
-.form-inline .btn-primary{
+.form-inline .btn-primary {
 	height: 23px;
 	margin: 20px 0px 0px 0px;
 }
@@ -94,6 +114,4 @@
 .pagination li {
 	margin: 30px 10px 0px 0px;
 	font-size: 10pt;
-
-
 }
