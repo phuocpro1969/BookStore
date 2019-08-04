@@ -90,7 +90,12 @@ tr {
 						</div>
 					</form>
 				</div>
-
+				
+				<th:block th:if="${list.empty}">
+					<td>No User Available</td>
+				</th:block>
+				
+				<th:block th:unless="${list.empty}">
 				<table class="table">
 					<thead>
 						<tr>
@@ -104,9 +109,6 @@ tr {
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:if="${list.empty}">
-							<td colspan="2">No User Available</td>
-						</tr>
 						<tr th:each="user : ${list}">
 							<td><span th:text="${user.id}" th:title="${user.id}">ID</span></td>
 							<td><span th:text="${user.username}"
@@ -121,8 +123,11 @@ tr {
 						</tr>
 					</tbody>
 				</table>
+				</th:block>
+				
+				
+				
 				<br></br>
-				<p>Phaan trang</p>
 			</div>
 			<div class="cleaner_with_height"></div>
 		</div>
