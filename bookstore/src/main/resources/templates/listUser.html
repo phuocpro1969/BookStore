@@ -11,7 +11,7 @@
 
 <link th:href="@{/css/templatemo_style.css}" rel="stylesheet"
 	type="text/css" />
-	
+
 <link th:href="@{/css/listbook.css}" rel="stylesheet" type="text/css" />
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -86,9 +86,9 @@ tr {
 					<form class="searchUser" th:action="@{/userList/search/1}"
 						method="get">
 						<div class="form-group">
-							<input type="text" class="form-control"
-								style="margin: 0px 10px 10px 50px; padding: 10px 100px 10px 0px;"
-								name="s" placeholder="Type name, id, username... " />
+							<input type="text" class="form-control" name="keyword"
+								style="margin: 0px 10px 10px 50px; padding: 10px 0px 10px 0px;"
+								placeholder="Type username, firstname lastname, id..." />
 							<button type="submit" class="btn btn-primary">Search</button>
 						</div>
 					</form>
@@ -97,36 +97,6 @@ tr {
 				<th:block th:if="${#lists.isEmpty(list.pageList)}">
 					<td>No User Available</td>
 				</th:block>
-
-				<!-- <th:block th:unless="${#lists.isEmpty(list.pageList)}">
-					<table class="table">
-						<thead>
-							<tr>
-								<th>ID</th>
-								<th>USERNAME</th>
-								<th>FIRSTNAME</th>
-								<th>LASTNAME</th>
-								<th>POWER</th>
-								<th>UPDATE</th>
-								<th>DELETE</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="user : ${list.pageList}">
-								<td><span th:text="${user.id}" th:title="${user.id}">ID</span></td>
-								<td><span th:text="${user.username}"
-									th:title="${user.username}">USERNAME</span></td>
-								<td><span th:text="${user.firstname}"
-									th:title="${user.firstname}">FIRSTNAME</span></td>
-								<td><span th:text="${user.lastname}"
-									th:title="${user.lastname}">LASTNAME</span></td>
-								<td><span th:text="${user.power}" th:title="${user.power}">POWER</span></td>
-								<td><a th:href="@{'/listUser/edit-user-'+${user.id}}">UPDATE</a></td>
-								<td><a th:href="@{'/listUser/delete-user-'+${user.id}}">DELETE</a></td>
-							</tr>
-						</tbody>
-					</table>
-				</th:block> -->
 
 				<th:block th:unless="${#lists.isEmpty(list.pageList)}">
 					<table class="table" align="center">
@@ -187,11 +157,11 @@ tr {
 						</li>
 					</ul>
 				</th:block>
-
 			</div>
 			<div class="cleaner_with_height"></div>
 		</div>
-		<!-- end of content right -->
-		<footer th:replace="indexheader :: ${footer}"></footer>
+	</div>
+	<!-- end of content right -->
+	<footer th:replace="indexheader :: ${footer}"></footer>
 </body>
 </html>

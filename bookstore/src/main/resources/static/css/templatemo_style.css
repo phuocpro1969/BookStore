@@ -522,6 +522,15 @@ th {
 }
 
 #templatemo_content_right #gom .searchUser{
+	margin: -20px 10px 10px 0px;
 	padding: 0px 10px 10px 0px;
 	float: right;
+}
+
+#templatemo_content_right #gom .searchUser .form-group input {
+	width: 280px;
+}
+
+#templatemo_content_right #gom .searchUser .form-group input::-webkit-input-placeholder { 
+	color: red;
 }
