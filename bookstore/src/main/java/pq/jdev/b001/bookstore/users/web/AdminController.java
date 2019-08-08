@@ -2,6 +2,7 @@ package pq.jdev.b001.bookstore.users.web;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -89,7 +91,7 @@ public class AdminController {
 	}
 
 	@GetMapping
-	public String showUpdateInfoForm() {
+	public String showUpdateInfoForm(Authentication authentication) {
 		return "redirect:/listUser/page/1";
 	}
 
@@ -154,7 +156,7 @@ public class AdminController {
 			return "adminUpdateUser";
 		}
 		userService.save(userDto);
-
+		
 		return "redirect:/listUser";
 	}
 

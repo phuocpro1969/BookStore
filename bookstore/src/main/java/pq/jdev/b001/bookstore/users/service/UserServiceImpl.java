@@ -89,6 +89,15 @@ public class UserServiceImpl implements UserService {
 		auiu.setConfirmPassword(p.getPassword());
 		auiu.setSex(p.getSex());
 		auiu.setPower(p.getPower());
+		
+		switch (p.getPower()) {
+		case 1:
+			auiu.setDropdownSelectedValue("EMPLOYEE");
+			break;
+		case 2:
+			auiu.setDropdownSelectedValue("ADMIN");;
+			break;
+		}
 		return auiu;
 	}
 	
@@ -184,7 +193,7 @@ public class UserServiceImpl implements UserService {
 		case "ROLE_EMPLOYEE":
 			person.setPower(1);
 			break;
-		case "ROlE_ADMIN":
+		case "ROLE_ADMIN":
 			person.setPower(2);
 			break;
 		}
@@ -211,7 +220,7 @@ public class UserServiceImpl implements UserService {
 		case "ROLE_EMPLOYEE":
 			person.setPower(1);
 			break;
-		case "ROlE_ADMIN":
+		case "ROLE_ADMIN":
 			person.setPower(2);
 			break;
 		}
