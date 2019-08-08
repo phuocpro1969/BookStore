@@ -55,7 +55,10 @@ public class PasswordFogotController {
 			map.addAttribute("footer", "footer_login");
 			return "forgot-password";
 		}
-
+		
+		map.addAttribute("header", "header_login");
+		map.addAttribute("footer", "footer_login");
+		
 		Person person = userService.findByEmail(form.getEmail());
 		if (person == null) {
 			result.rejectValue("email", null, "We could not find an account for that e-mail address.");
