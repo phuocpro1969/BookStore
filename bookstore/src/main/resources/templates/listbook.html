@@ -84,15 +84,22 @@
 					<form class="searchbar" th:action="@{/book/search/1}" method="get">
 						<div class="form-group">
 							<input
-								style="margin: -10px 10px 0px 50px; padding: 10px 100px 10px 0px;"
+								style="margin: 7px 2px 0px 40px; padding: 15px 100px 3px 15px; border-radius: 5px;"
 								type="text" class="form-control" name="s"
 								placeholder="Type book name..." />
-							<button type="submit" class="btn btn-primary">Search</button>
+							<button type="submit" class="btn btn-primary"
+								style="border-radius: 5px; height: 40px; width: 45px;">
+								<img th:src="@{/images/icon_search.png}"
+									style="width: 30px; height: 30px;">
+							</button>
 						</div>
 					</form>
 				</div>
 				<th:block th:if="${#lists.isEmpty(books.pageList)}">
-					<br><br><br><br>
+					<br>
+					<br>
+					<br>
+					<br>
 					<h1>No book</h1>
 				</th:block>
 
@@ -113,13 +120,22 @@
 						</thead>
 						<tbody>
 							<tr th:each="contact,iterStat : ${books2}">
-								<td><span th:text="${iterStat.count}" th:title="${iterStat.count}"> </span></td>
-								<td><span th:text="${contact.title}" th:title="${contact.title}"> </span></td>
-								<td><span th:text="${contact.price}" th:title="${contact.price}"> </span></td>
-								<td><span th:text="${contact.domain}" th:title="${contact.domain}"> </span></td>
+
+								<!--  <td><span th:text="${iterStat.count}" th:title="${iterStat.count}"> </span></td>  -->
+
+								<td><span th:text="${contact.id}" th:title="${contact.id}">
+								</span></td>
+								<td><span th:text="${contact.title}"
+									th:title="${contact.title}"> </span></td>
+								<td><span th:text="${contact.price}"
+									th:title="${contact.price}"> </span></td>
+								<td><span th:text="${contact.domain}"
+									th:title="${contact.domain}"> </span></td>
 								<td><span th:text="${contact.picture}"> </span></td>
-								<td><span th:text="${contact.uploadedDate}" th:title="${contact.uploadedDate}" > </span></td>
-								<td><span th:text="${contact.authors}" th:title="${contact.authors}"> </span></td>
+								<td><span th:text="${contact.uploadedDate}"
+									th:title="${contact.uploadedDate}"> </span></td>
+								<td><span th:text="${contact.authors}"
+									th:title="${contact.authors}"> </span></td>
 								<td><a th:href="@{/book/{id}/edit(id=${contact.id})}"><span
 										class="glyphicon glyphicon-pencil"></span>Edit</a></td>
 								<td><a th:href="@{/book/{id}/delete(id=${contact.id})}"><span
@@ -146,13 +162,23 @@
 						</thead>
 						<tbody>
 							<tr th:each="contact,iterStat : ${books.pageList}">
-								<td><span th:text="${iterStat.count}" th:title="${iterStat.count}"></span></td>
-								<td><span th:text="${contact.title}" th:title="${contact.title}"></span></td>
-								<td><span th:text="${contact.price}" th:title="${contact.price}"></span></td>
-								<td><span th:text="${contact.domain}" th:title="${contact.domain}"></span></td>
+
+								<!--  <td><span th:text="${iterStat.count}"
+									th:title="${iterStat.count}"></span></td>  -->
+
+								<td><span th:text="${contact.id}" th:title="${contact.id}">
+								</span></td>
+								<td><span th:text="${contact.title}"
+									th:title="${contact.title}"></span></td>
+								<td><span th:text="${contact.price}"
+									th:title="${contact.price}"></span></td>
+								<td><span th:text="${contact.domain}"
+									th:title="${contact.domain}"></span></td>
 								<td><span th:text="${contact.picture}"></span></td>
-								<td><span th:text="${contact.uploadedDate}" th:title="${contact.uploadedDate}"></span></td>
-								<td><span th:text="${contact.authors}" th:title="${contact.authors}"></span></td>
+								<td><span th:text="${contact.uploadedDate}"
+									th:title="${contact.uploadedDate}"></span></td>
+								<td><span th:text="${contact.authors}"
+									th:title="${contact.authors}"></span></td>
 								<td><a th:href="@{/book/{id}/edit(id=${contact.id})}"><span
 										class="glyphicon glyphicon-pencil"></span>Edit</a></td>
 								<td><a th:href="@{/book/{id}/delete(id=${contact.id})}"><span

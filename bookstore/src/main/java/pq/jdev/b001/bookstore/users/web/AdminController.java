@@ -60,19 +60,6 @@ public class AdminController {
 		return newList;
 	}
 
-	@ModelAttribute("list")
-	public List<Person> getList2(String username) {
-		Person per = userService.findByUsername(username);
-		List<Person> oldList = userService.findAll();
-		List<Person> newList = new ArrayList<Person>();
-		int key = per.getPower();
-		for (Person p : oldList)
-			if (p.getPower() <= key) {
-				newList.add(p);
-			}
-		return newList;
-	}
-
 	@ModelAttribute("singleSelectAllValues")
 	public String[] getSingleSelectAllValues() {
 		return new String[] { "Male", "Female" };
@@ -113,20 +100,12 @@ public class AdminController {
 		map.addAttribute("header", "header_admin");
 		map.addAttribute("footer", "footer_admin");
 
+
 		List<Person> list = (List<Person>) getList(principal);
 
-		if (pageNumber == 1) {
-			list = null;
-			list = (List<Person>) getList2(principal.getName());
-			System.out.println(list.size());
-			for (Person p : list) {
-				System.out.println(p.toString());
-			}
-		}
-		int pageSize = 8;
-
-		PagedListHolder<?> pages = new PagedListHolder<>(list);
-		pages.setPageSize(pageSize);
+		int pagesize = 8;
+		PagedListHolder<?> pages = new PagedListHolder<>(list) ;
+		pages.setPageSize(pagesize);
 
 		final int goToPage = pageNumber - 1;
 		if (goToPage <= pages.getPageCount() && goToPage >= 0) {
@@ -242,6 +221,7 @@ public class AdminController {
 		PagedListHolder<?> pages = (PagedListHolder<?>) request.getSession().getAttribute("listU");
 		int pagesize = 8;
 
+		// if (pages == null) {
 		pages = new PagedListHolder<>(list);
 		pages.setPageSize(pagesize);
 
