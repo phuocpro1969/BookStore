@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import pq.jdev.b001.bookstore.users.model.Person;
 import pq.jdev.b001.bookstore.users.service.UserService;
+import pq.jdev.b001.bookstore.users.web.dto.UserChangePassDto;
 import pq.jdev.b001.bookstore.users.web.dto.UserUpdateInfoDto;
 
 @Controller
@@ -42,6 +43,13 @@ public class AdminUpdateInfoController {
 		String username = principal.getName(); 
 		Person p = userService.findByUsername(username);
 		return userService.updateInfo(p);
+	}
+	
+	@ModelAttribute("person2")
+	public UserChangePassDto changePass(Principal principal) {
+		String username = principal.getName(); 
+		Person p = userService.findByUsername(username);
+		return userService.updateInfoP(p);
 	}
 	
 	@ModelAttribute("singleSelectAllValues")
@@ -83,7 +91,7 @@ public class AdminUpdateInfoController {
 	}
 	
 	@RequestMapping(value = "/changePassAdmin", method = RequestMethod.POST)
-	public String UpdatePassUserAccount(@ModelAttribute("person") @Valid UserUpdateInfoDto userDto,
+	public String UpdatePassUserAccount(@ModelAttribute("person2") @Valid UserChangePassDto userDto,
 			BindingResult result, ModelMap map) {
 
 	    if (result.hasErrors()) {
@@ -95,7 +103,7 @@ public class AdminUpdateInfoController {
 	    String updatedPassword = passwordEncoder.encode(userDto.getPassword());
 		userService.updatePassword(updatedPassword, userDto.getId());
 		userService.loadUserByUsername(userDto.getUserName());
-		return "redirect:/changePassAdmin?success";
+		return "redirect:/accountAdmin/changePassAdmin?success";
 	}
 	
 	// delete user

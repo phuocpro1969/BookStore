@@ -31,11 +31,11 @@
 					<br> <br>
 					<div class="text-center">
 						<form th:action="@{/accountAdmin/changePassAdmin}"
-							th:object="${person}" method="post"
+							th:object="${person2}" method="post"
 							style="margin: 0px 0px 0px 25px">
 
 							<input type="hidden" id="userName" name="userName"
-								th:value="${person.userName}">
+								th:value="${person2.userName}">
 
 							<p class="error-message" th:if="${#fields.hasGlobalErrors()}"
 								th:each="error : ${#fields.errors('global')}" th:text="${error}">Validation

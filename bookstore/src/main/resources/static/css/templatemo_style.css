@@ -375,6 +375,10 @@ img {
 	color: red;
 }
 
+.col-md-6{
+	position: unset;
+}
+
 
 
 .search .container_right{
@@ -533,4 +537,8 @@ th {
 
 #templatemo_content_right #gom .searchUser .form-group input::-webkit-input-placeholder { 
 	color: red;
+}
+
+.panel{
+	background-color: black;	
 }

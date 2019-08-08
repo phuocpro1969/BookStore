@@ -21,6 +21,7 @@ import pq.jdev.b001.bookstore.users.repository.RoleRepository;
 import pq.jdev.b001.bookstore.users.repository.UserRepository;
 import pq.jdev.b001.bookstore.users.web.dto.AdminDto;
 import pq.jdev.b001.bookstore.users.web.dto.AdminUpdateInfoUserDto;
+import pq.jdev.b001.bookstore.users.web.dto.UserChangePassDto;
 import pq.jdev.b001.bookstore.users.web.dto.UserDto;
 import pq.jdev.b001.bookstore.users.web.dto.UserUpdateInfoDto;
 
@@ -94,6 +95,25 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserUpdateInfoDto updateInfo(Person p) {
 		UserUpdateInfoDto us = new UserUpdateInfoDto();
+		us.setId(p.getId());
+		us.setFirstName(p.getFirstname());
+		us.setLastName(p.getLastname());
+		us.setAddress(p.getAddress());
+		us.setBirthday(p.getBirthday());
+		us.setEmail(p.getEmail());
+		us.setPhone(p.getPhone());
+		us.setUserName(p.getUsername());
+		us.setPassword(p.getPassword());
+		us.setConfirmPassword(p.getPassword());
+		us.setSex(p.getSex());
+		us.setPower(p.getPower());
+		us.setRoles(p.getRoles());
+		return us;
+	}
+	
+	@Override
+	public UserChangePassDto updateInfoP(Person p) {
+		UserChangePassDto us = new UserChangePassDto();
 		us.setId(p.getId());
 		us.setFirstName(p.getFirstname());
 		us.setLastName(p.getLastname());
@@ -242,4 +262,5 @@ public class UserServiceImpl implements UserService {
 		userRepository.deleteByIdPRT(id);
 		
 	}
+
 }

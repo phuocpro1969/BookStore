@@ -9,6 +9,7 @@ import pq.jdev.b001.bookstore.users.model.Person;
 import pq.jdev.b001.bookstore.users.model.Role;
 import pq.jdev.b001.bookstore.users.web.dto.AdminDto;
 import pq.jdev.b001.bookstore.users.web.dto.AdminUpdateInfoUserDto;
+import pq.jdev.b001.bookstore.users.web.dto.UserChangePassDto;
 import pq.jdev.b001.bookstore.users.web.dto.UserDto;
 import pq.jdev.b001.bookstore.users.web.dto.UserUpdateInfoDto;
 
@@ -47,5 +48,7 @@ public interface UserService extends UserDetailsService {
 	void saveToken(PasswordResetToken token);
 	
 	void deleteTokenByIdPerson(long id);
+
+	UserChangePassDto updateInfoP(Person p);
 	
 }

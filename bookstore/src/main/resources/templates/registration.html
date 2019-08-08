@@ -6,24 +6,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <link rel="stylesheet" type="text/css"
-th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
 
 <link th:href="@{/css/templatemo_style.css}" rel="stylesheet"
 	type="text/css" />
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <style>
-body{
-background: #4b4743;
+body {
+	background: #4b4743;
 }
 
-form{
+form {
 	margin: 0px 0px 0px -100px;
 }
 </style>
 <title>Registration</title>
 </head>
 <body>
-	<nav th:replace="indexheader :: ${header}" ></nav>
+	<nav th:replace="indexheader :: ${header}"></nav>
 	<div class="container">
 		<div class="regis">
 			<div class="col-md-6 col-md-offset-3">
@@ -31,11 +32,12 @@ form{
 				<div th:if="${param.success}">
 					<script type="text/javascript">
 						window.location.href = "/login";
-					</script>				
+					</script>
 				</div>
 
-				<h1 style="font-weight:bold">Registration</h1>
-				<form th:action="@{/registration}" th:object="${person}" method="post">
+				<h1 style="font-weight: bold">Registration</h1>
+				<form th:action="@{/registration}" th:object="${person}"
+					method="post">
 
 					<p class="error-message" th:if="${#fields.hasGlobalErrors()}"
 						th:each="error : ${#fields.errors('global')}" th:text="${error}">Validation
@@ -50,7 +52,7 @@ form{
 							th:text="${error}">Validation error</p>
 					</div>
 					<br>
-					
+
 					<div class="form-group"
 						th:classappend="${#fields.hasErrors('lastName')}? 'has-error':''">
 						<label for="lastName" class="control-label">Last name</label> <input
@@ -60,35 +62,34 @@ form{
 							th:text="${error}">Validation error</p>
 					</div>
 					<br>
-					
+
 					<div class="form-group">
 						<label for="phone" class="control-label">Phone</label> <input
 							id="phone" class="form-control" th:field="*{phone}" />
 					</div>
 					<br>
-					
+
 					<div class="form-group">
 						<label for="address" class="control-label">Address</label> <input
 							id="address" class="form-control" th:field="*{address}" />
 					</div>
 					<br>
-					
+
 					<div class="form-group">
 						<ul>
-  							<li th:each="radioValue: ${singleSelectAllValues}">
-    							<input type="radio" th:field="*{sex}" th:value="${radioValue}" />
-   								<label th:for="${#ids.prev('sex')}" th:text="${radioValue}"></label>
-  							</li>
+							<li th:each="radioValue: ${singleSelectAllValues}"><input
+								type="radio" th:field="*{sex}" th:value="${radioValue}" /> <label
+								th:for="${#ids.prev('sex')}" th:text="${radioValue}"></label></li>
 						</ul>
 					</div>
 					<br>
-					
+
 					<div class="form-group">
-						<label>BirthDay</label>
-                    	<input class="form-control" type="date" name="birthday" id="birthday" value="1945-01-01">
+						<label>BirthDay</label> <input class="form-control" type="date"
+							name="birthday" id="birthday" value="1945-01-01">
 					</div>
 					<br>
-					
+
 					<div class="form-group"
 						th:classappend="${#fields.hasErrors('email')}? 'has-error':''">
 						<label for="email" class="control-label">E-mail</label> <input
@@ -98,17 +99,17 @@ form{
 							error</p>
 					</div>
 					<br>
-					
+
 					<div class="form-group"
 						th:classappend="${#fields.hasErrors('userName')}? 'has-error':''">
 						<label for="userName" class="control-label">UserName</label> <input
 							id="userName" class="form-control" th:field="*{userName}" />
 						<p class="error-message"
-							th:each="error: ${#fields.errors('userName')}"
-							th:text="${error}">Validation error</p>
+							th:each="error: ${#fields.errors('userName')}" th:text="${error}">Validation
+							error</p>
 					</div>
 					<br>
-					
+
 					<div class="form-group"
 						th:classappend="${#fields.hasErrors('password')}? 'has-error':''">
 						<label for="password" class="control-label">Password</label> <input
@@ -119,7 +120,7 @@ form{
 							th:text="${error}">Validation error</p>
 					</div>
 					<br>
-					
+
 					<div class="form-group"
 						th:classappend="${#fields.hasErrors('confirmPassword')}? 'has-error':''">
 						<label for="confirmPassword" class="control-label">Confirm
@@ -130,7 +131,7 @@ form{
 							th:text="${error}">Validation error</p>
 					</div>
 					<br>
-					
+
 					<div class="form-group"
 						th:classappend="${#fields.hasErrors('terms')}? 'has-error':''">
 						<input id="terms" type="checkbox" th:field="*{terms}" /> <label
@@ -142,13 +143,13 @@ form{
 							error</p>
 					</div>
 					<br>
-					
+
 					<div class="form-group">
-					<div id="gg" style="margin: 0px 0px 0px -77px";>
-						<button type="submit" class="btn btn-success">Register</button>
-						<span>Already registered? <a href="/" th:href="@{/login}" style="font-size:17px";>Login
-								here</a></span>
-					</div>
+						<div id="gg" style="margin: 0px 0px 0px -77px";>
+							<button type="submit" class="btn btn-success">Register</button>
+							<span>Already registered? <a href="/" th:href="@{/login}"
+								style="font-size: 17px";>Login here</a></span>
+						</div>
 					</div>
 					<br>
 
@@ -157,7 +158,7 @@ form{
 		</div>
 		<br>
 	</div>
-		<footer th:replace="indexheader :: ${footer}"></footer>
+	<footer th:replace="indexheader :: ${footer}"></footer>
 
 	<script type="text/javascript"
 		th:src="@{/webjars/jquery/3.2.1/jquery.min.js/}"></script>

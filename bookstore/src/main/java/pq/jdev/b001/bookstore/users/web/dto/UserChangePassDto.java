@@ -8,12 +8,13 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 import pq.jdev.b001.bookstore.users.constraint.FieldMatch;
+import pq.jdev.b001.bookstore.users.constraint.ValidPassword;
 import pq.jdev.b001.bookstore.users.model.Role;
 
 @FieldMatch.List({
     @FieldMatch(first = "password", second = "confirmPassword", message = "The password fields must match"),
 })
-public class UserUpdateInfoDto {
+public class UserChangePassDto {
 	
 	private long id;
 	
@@ -31,9 +32,11 @@ public class UserUpdateInfoDto {
 	private String email;
 	
 	@NotEmpty
+	@ValidPassword
 	private String password;
 
 	@NotEmpty
+	@ValidPassword
 	private String confirmPassword;
 
 	private String phone;

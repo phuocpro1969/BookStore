@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import pq.jdev.b001.bookstore.users.model.Person;
 import pq.jdev.b001.bookstore.users.service.UserService;
+import pq.jdev.b001.bookstore.users.web.dto.UserChangePassDto;
 import pq.jdev.b001.bookstore.users.web.dto.UserUpdateInfoDto;
 
 @Controller
@@ -48,6 +49,13 @@ public class UserUpdateInfoController {
 		return userService.updateInfo(p);
 	}
 	
+	@ModelAttribute("person2")
+	public UserChangePassDto changePass(Principal principal) {
+		String username = principal.getName(); 
+		Person p = userService.findByUsername(username);
+		return userService.updateInfoP(p);
+	}
+	
 	//update info
 	@PreAuthorize("hasRole('EMPLOYEE')")
 	@GetMapping
@@ -62,6 +70,10 @@ public class UserUpdateInfoController {
 			BindingResult result, ModelMap map) throws Exception {
 
 	    if (result.hasErrors()) {
+	    	System.out.println(result.toString());
+	    	System.out.println(userDto.getPassword());
+	    	System.out.println(userDto.getConfirmPassword());
+	    	System.out.println(userDto.getConfirmPassword().equals(userDto.getPassword()));
 	    	map.addAttribute("header", "header_user");
 			map.addAttribute("footer", "footer_user");
             return "accountUser";
@@ -81,7 +93,7 @@ public class UserUpdateInfoController {
 	}
 	
 	@RequestMapping(value = "/changePassword", method = RequestMethod.POST)
-	public String UpdatePassUserAccount(@ModelAttribute("person") @Valid UserUpdateInfoDto userDto,
+	public String UpdatePassUserAccount(@ModelAttribute("person2") @Valid UserChangePassDto userDto,
 			BindingResult result, ModelMap map) {
 
 	    if (result.hasErrors()) {
@@ -93,7 +105,7 @@ public class UserUpdateInfoController {
 	    String updatedPassword = passwordEncoder.encode(userDto.getPassword());
 		userService.updatePassword(updatedPassword, userDto.getId());
 		userService.loadUserByUsername(userDto.getUserName());
-		return "redirect:/changePassword?success";
+		return "redirect:/accountUser/changePassword?success";
 	}
 	
 	// delete user
