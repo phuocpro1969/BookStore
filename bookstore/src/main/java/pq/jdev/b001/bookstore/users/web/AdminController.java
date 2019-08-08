@@ -98,10 +98,10 @@ public class AdminController {
 	public String showListUser(HttpServletRequest request, @PathVariable int pageNumber, Model model, ModelMap map, Principal principal) {
 		map.addAttribute("header", "header_admin");
 		map.addAttribute("footer", "footer_admin");
-		PagedListHolder<?> pages = (PagedListHolder<?>) request.getSession().getAttribute("listUser");
-		int pagesize = 8;
 		List<Person> list = (List<Person>)getList(principal);
 		model.addAttribute("list", list);
+		PagedListHolder<?> pages = (PagedListHolder<?>) request.getSession().getAttribute("listUsers");
+		int pagesize = 8;
 		if (pages == null) {
 			pages = new PagedListHolder<>(list);
 			pages.setPageSize(pagesize);
@@ -112,7 +112,7 @@ public class AdminController {
 			}
 		}
 		
-		request.getSession().setAttribute("listUser", pages);
+		request.getSession().setAttribute("listUsers", pages);
 		int current = pages.getPage() + 1;
 		int begin = Math.max(1, current - list.size());
 		int end = Math.min(begin + 5, pages.getPageCount());
@@ -215,7 +215,7 @@ public class AdminController {
 				list.add(a);
 		}
 		
-		PagedListHolder<?> pages = (PagedListHolder<?>) request.getSession().getAttribute("listUser");
+		PagedListHolder<?> pages = (PagedListHolder<?>) request.getSession().getAttribute("listU");
 		int pagesize = 8;
 		
 		//if (pages == null) {
@@ -227,12 +227,12 @@ public class AdminController {
 				pages.setPage(goToPage);
 			}
 		
-		request.getSession().setAttribute("listUser", pages);
+		request.getSession().setAttribute("listU", pages);
 		int current = pages.getPage() + 1;
 		int begin = Math.max(1, current - list.size());
 		int end = Math.min(begin + 5, pages.getPageCount());
 		int totalPageCount = pages.getPageCount();
-		String baseUrl = "/listUser/page/";
+		String baseUrl = "/listUser/search/";
 
 		model.addAttribute("beginIndex", begin);
 		model.addAttribute("endIndex", end);

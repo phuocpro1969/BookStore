@@ -44,7 +44,7 @@ a.back {
 		</div>
 		<div class="container">
 			<div class="regis">
-				<form th:action="@{/userList/adminAddUser}" th:object="${person}"
+				<form th:action="@{/listUser/adminAddUser}" th:object="${person}"
 					method="post" style="margin: 0px 140px 0px 45px;">
 
 					<p class="error-message" th:if="${#fields.hasGlobalErrors()}"

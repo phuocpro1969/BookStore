@@ -24,7 +24,7 @@ import pq.jdev.b001.bookstore.users.web.dto.AdminDto;
 
 @Controller
 @PreAuthorize("hasRole('ADMIN')")
-@RequestMapping("/userList/adminAddUser")
+@RequestMapping("/listUser/adminAddUser")
 public class AdminAddUserController {
 
 	@Autowired
@@ -89,6 +89,6 @@ public class AdminAddUserController {
 		}
 		
 		userService.save(userDto);
-		return "redirect:/userList/adminAddUser?success";
+		return "redirect:/listUser/adminAddUser?success";
 	}
 }

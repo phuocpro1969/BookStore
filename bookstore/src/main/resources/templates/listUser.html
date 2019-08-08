@@ -80,13 +80,13 @@ tr {
 			<div id="templatemo_content_right">
 				<h1>List User</h1>
 				<div id="gom">
-					<a th:href="@{/userList/adminAddUser}"
+					<a th:href="@{/listUser/adminAddUser}"
 						style="font-size: 14pt; margin: 10px 0px 10px 20px; float: left">Add
 						New User</a>
-					<form class="searchUser" th:action="@{/userList/search/1}"
+					<form class="searchUser" th:action="@{/listUser/search/1}"
 						method="get">
 						<div class="form-group">
-							<input type="text" class="form-control" name="keyword"
+							<input type="text" class="form-control" name="keyword" id="key"
 								style="margin: 0px 10px 10px 50px; padding: 10px 0px 10px 0px;"
 								placeholder="Type username, firstname lastname, id..." />
 							<button type="submit" class="btn btn-primary">Search</button>
@@ -95,7 +95,9 @@ tr {
 				</div>
 
 				<th:block th:if="${#lists.isEmpty(list.pageList)}">
-					<td>No User Available</td>
+					<div class="table">
+					<h1>No User Available</h1>
+					</div>
 				</th:block>
 
 				<th:block th:unless="${#lists.isEmpty(list.pageList)}">
@@ -129,7 +131,7 @@ tr {
 					<ul class="pagination">
 						<li
 							th:class="${currentIndex == 1}? 'page-item disabled' : 'page-item'">
-							<a class="page-link" th:href="@{/listUser}">First</a>
+							<a class="page-link" th:href="@{|${baseUrl}1|}">First</a>
 						</li>
 						<li
 							th:class="${currentIndex == 1}? 'page-item disabled': 'page-item' ">

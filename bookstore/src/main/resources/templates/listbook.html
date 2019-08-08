@@ -163,7 +163,7 @@
 					<ul class="pagination">
 						<li
 							th:class="${currentIndex == 1}? 'page-item disabled' : 'page-item'">
-							<a class="page-link" th:href="@{/book}">First</a>
+							<a class="page-link" th:href="@{|${baseUrl}1|}">First</a>
 						</li>
 						<li
 							th:class="${currentIndex == 1}? 'page-item disabled': 'page-item' ">
