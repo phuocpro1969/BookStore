@@ -5,6 +5,10 @@
 <title>Book Store</title>
 <meta name="keywords" content="" />
 <meta name="description" content="" />
+
+<link rel="stylesheet" type="text/css"
+	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+
 <link th:href="@{/css/templatemo_style.css}" rel="stylesheet"
 	type="text/css" />
 
@@ -82,13 +86,12 @@
 						style="font-size: 14pt; margin: 30px 0px 10px 20px; float: left">Add
 						New Book</a>
 					<form class="searchbar" th:action="@{/book/search/1}" method="get">
-						<div class="form-group">
-							<input
-								style="margin: 7px 2px 0px 40px; padding: 15px 100px 3px 15px; border-radius: 5px;"
-								type="text" class="form-control" name="s"
-								placeholder="Type book name..." />
+						<div class="form-group searchs">
+							<input type="text" class="form-control" name="s"
+								placeholder="Type book name..."
+								style="margin: -10px 0px -3px -65px; padding: 0px 42px 0px 20px;" />
 							<button type="submit" class="btn btn-primary"
-								style="border-radius: 5px; height: 40px; width: 45px;">
+								style="margin: -45px 0px 0px 77px; margin: -45px 10px 1px 130px;">
 								<img th:src="@{/images/icon_search.png}"
 									style="width: 30px; height: 30px;">
 							</button>
@@ -136,10 +139,8 @@
 									th:title="${contact.uploadedDate}"> </span></td>
 								<td><span th:text="${contact.authors}"
 									th:title="${contact.authors}"> </span></td>
-								<td><a th:href="@{/book/{id}/edit(id=${contact.id})}"><span
-										class="glyphicon glyphicon-pencil"></span>Edit</a></td>
-								<td><a th:href="@{/book/{id}/delete(id=${contact.id})}"><span
-										class="glyphicon glyphicon-trash"></span>Delete</a></td>
+								<td><a th:href="@{/book/{id}/edit(id=${contact.id})}"><span></span>Edit</a></td>
+								<td><a th:href="@{/book/{id}/delete(id=${contact.id})}"><span></span>Delete</a></td>
 							</tr>
 						</tbody>
 					</table>
@@ -179,10 +180,8 @@
 									th:title="${contact.uploadedDate}"></span></td>
 								<td><span th:text="${contact.authors}"
 									th:title="${contact.authors}"></span></td>
-								<td><a th:href="@{/book/{id}/edit(id=${contact.id})}"><span
-										class="glyphicon glyphicon-pencil"></span>Edit</a></td>
-								<td><a th:href="@{/book/{id}/delete(id=${contact.id})}"><span
-										class="glyphicon glyphicon-trash"></span>Delete</a></td>
+								<td><a th:href="@{/book/{id}/edit(id=${contact.id})}"><span></span>Edit</a></td>
+								<td><a th:href="@{/book/{id}/delete(id=${contact.id})}"><span></span>Delete</a></td>
 							</tr>
 						</tbody>
 					</table>

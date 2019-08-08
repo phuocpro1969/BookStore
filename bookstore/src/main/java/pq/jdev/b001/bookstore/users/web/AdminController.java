@@ -103,7 +103,7 @@ public class AdminController {
 
 		List<Person> list = (List<Person>) getList(principal);
 
-		int pagesize = 8;
+		int pagesize = 7;
 		PagedListHolder<?> pages = new PagedListHolder<>(list) ;
 		pages.setPageSize(pagesize);
 
@@ -219,7 +219,7 @@ public class AdminController {
 		}
 
 		PagedListHolder<?> pages = (PagedListHolder<?>) request.getSession().getAttribute("listU");
-		int pagesize = 8;
+		int pagesize = 7;
 
 		// if (pages == null) {
 		pages = new PagedListHolder<>(list);
