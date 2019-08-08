@@ -64,16 +64,29 @@
 			</div>
 			<!-- end of content left -->
 			<div id="templatemo_content_right">
+<<<<<<< HEAD
+			
+			<div th:if="${success}">
+				<span th:text="${success}"></span>
+			</div>
+			<div class="search">
+			<form th:action="@{/categorylist/search/1}" method="get">
+				
+=======
 
 				<div th:if="${success}">
 					<span th:text="${success}"></span>
 				</div>
 				<div class="search">
+>>>>>>> bb08b965ee6f7211cf18f3d6ddf1c7567b666a8c
 					<div class="container_right">
-						<input id="searchBar" class="searchbar" type="text"
+						<input id="searchBar" class="searchbar" type="text" name="s"
 							placeholder="Category name..."> </input>
-						<button class="btn-search">Search</button>
-					</div>
+					
+						<button class="btn-search" type="submit">Search</button>
+					
+				</div>
+				</form>
 				</div>
 				<div class="container_right">
 					<p class="my-5">

@@ -11,8 +11,20 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-
 import pq.jdev.b001.bookstore.books.model.Book;
+
+/*
+ * Category Class
+ * 
+ * Java 12
+ * 
+ * 17/08/2019
+ * 
+ * author @nphtu
+ * 
+ * */
+
+
 @Entity
 @Table(name="category")
 public class Category {
