@@ -30,7 +30,7 @@ import pq.jdev.b001.bookstore.books.model.Book;
 public class Category {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+	private long id;
 	private String name;
 	private Date createdate;
 	private Date updatedate;
@@ -39,7 +39,7 @@ public class Category {
 		
 	}
 	
-	public Category(int id, String name, Date createdate,Date updatedate) {
+	public Category(long id, String name, Date createdate,Date updatedate) {
 		this.id = id;
 		this.name = name;
 		this.createdate = createdate;
@@ -49,10 +49,10 @@ public class Category {
 	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "categories", targetEntity = pq.jdev.b001.bookstore.books.model.Book.class)
 	private Set<Book> books;
 	
-	public int getId() {
+	public long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	public String getName() {

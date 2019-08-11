@@ -35,7 +35,6 @@ import pq.jdev.b001.bookstore.users.web.dto.AdminUpdateInfoUserDto;
 import pq.jdev.b001.bookstore.users.web.dto.UserUpdateInfoDto;
 
 @Controller
-@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/listUser")
 public class AdminController {
 
@@ -89,7 +88,10 @@ public class AdminController {
 	}
 
 	@GetMapping
-	public String showUpdateInfoForm() {
+	public String showUpdateInfoForm(Principal principal) {
+		Role r = userService.findByIdRole(userService.findByUsername(principal.getName()).getPower());
+		if (r.getName().equals("ROLE_EMPLOYEE"))
+			return "redirect:/";
 		return "redirect:/listUser/page/1";
 	}
 
@@ -100,11 +102,10 @@ public class AdminController {
 		map.addAttribute("header", "header_admin");
 		map.addAttribute("footer", "footer_admin");
 
-
 		List<Person> list = (List<Person>) getList(principal);
 
 		int pagesize = 7;
-		PagedListHolder<?> pages = new PagedListHolder<>(list) ;
+		PagedListHolder<?> pages = new PagedListHolder<>(list);
 		pages.setPageSize(pagesize);
 
 		final int goToPage = pageNumber - 1;
@@ -154,7 +155,9 @@ public class AdminController {
 			return "adminUpdateUser";
 		}
 		userService.save(userDto);
-		
+
+		userService.autoLogin(principal.getName());
+
 		return "redirect:/listUser";
 	}
 
@@ -215,7 +218,7 @@ public class AdminController {
 		for (Person a : listUserGet) {
 			if (error(a.getFirstname(), kw) || error(a.getLastname(), kw) || error(a.getAddress(), kw))
 				if (!list.contains(a))
-				list.add(a);
+					list.add(a);
 		}
 
 		PagedListHolder<?> pages = (PagedListHolder<?>) request.getSession().getAttribute("listU");

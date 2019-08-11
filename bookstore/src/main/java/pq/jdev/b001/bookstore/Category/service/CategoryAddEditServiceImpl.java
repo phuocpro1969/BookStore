@@ -46,6 +46,7 @@ public class CategoryAddEditServiceImpl implements CategoryAddEditService{
 	public List<Category> findByName(String name) {
 		return categoryrepository.findByName(name);
 	}
+	
 
 
 }

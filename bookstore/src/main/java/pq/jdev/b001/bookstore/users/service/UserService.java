@@ -51,4 +51,7 @@ public interface UserService extends UserDetailsService {
 
 	UserChangePassDto updateInfoP(Person p);
 	
+	Role findByIdRole(long id);
+	
+	void autoLogin(String username);
 }

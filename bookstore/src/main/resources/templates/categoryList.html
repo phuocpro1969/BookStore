@@ -4,7 +4,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Book Store</title>
+<title>Category</title>
 <meta name="keywords" content="" />
 <meta name="description" content="" />
 <link th:href="@{/css/templatemo_style.css}" rel="stylesheet"
@@ -64,21 +64,19 @@
 			</div>
 			<!-- end of content left -->
 			<div id="templatemo_content_right">
-<<<<<<< HEAD
+
 			
 			<div th:if="${success}">
 				<span th:text="${success}"></span>
 			</div>
 			<div class="search">
 			<form th:action="@{/categorylist/search/1}" method="get">
-				
-=======
+
 
 				<div th:if="${success}">
 					<span th:text="${success}"></span>
 				</div>
 				<div class="search">
->>>>>>> bb08b965ee6f7211cf18f3d6ddf1c7567b666a8c
 					<div class="container_right">
 						<input id="searchBar" class="searchbar" type="text" name="s"
 							placeholder="Category name..."> </input>
@@ -115,7 +113,7 @@
 										<td th:text="${category.createdate}"></td>
 										<td th:text="${category.updatedate}"></td>
 										<td><a
-											th:href="@{/categorylist/{id}/delete(id=${category.id})}" />Delete</td>
+											th:href="@{/categorylist/delete/{id}(id=${category.id})}" />Delete</td>
 									</tr>
 								</tbody>
 							</table>
@@ -161,7 +159,7 @@
 		<div class="cleaner_with_height">&nbsp;</div>
 	</div>
 	<!-- end of content -->
-	</div>
+	
 	<footer th:replace="indexheader :: ${footer}"></footer>
 </body>
 

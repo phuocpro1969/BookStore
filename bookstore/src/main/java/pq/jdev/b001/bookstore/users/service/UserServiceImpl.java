@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,35 +30,35 @@ import pq.jdev.b001.bookstore.users.web.dto.UserUpdateInfoDto;
 @Service("userService")
 @Transactional
 public class UserServiceImpl implements UserService {
-	
+
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private RoleRepository roleRepository;
-	
+
 	@Autowired
 	private PasswordResetTokenRepository tokenRepository;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
-	
+
 	@Override
 	@Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Person person = userRepository.findByUsername(username);
 		if (person == null) {
-            throw new UsernameNotFoundException("Invalid username or password.");
-        }
-		
+			throw new UsernameNotFoundException("Invalid username or password.");
+		}
+
 		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 		Set<Role> roles = person.getRoles();
 		for (Role role : roles) {
 			grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
 		}
-		
-		return new org.springframework.security.core.userdetails.User(
-				person.getUsername(), person.getPassword(), grantedAuthorities);
+
+		return new org.springframework.security.core.userdetails.User(person.getUsername(), person.getPassword(),
+				grantedAuthorities);
 	}
 
 	@Override
@@ -89,18 +91,19 @@ public class UserServiceImpl implements UserService {
 		auiu.setConfirmPassword(p.getPassword());
 		auiu.setSex(p.getSex());
 		auiu.setPower(p.getPower());
-		
+
 		switch (p.getPower()) {
 		case 1:
 			auiu.setDropdownSelectedValue("EMPLOYEE");
 			break;
 		case 2:
-			auiu.setDropdownSelectedValue("ADMIN");;
+			auiu.setDropdownSelectedValue("ADMIN");
+			;
 			break;
 		}
 		return auiu;
 	}
-	
+
 	@Override
 	public UserUpdateInfoDto updateInfo(Person p) {
 		UserUpdateInfoDto us = new UserUpdateInfoDto();
@@ -119,7 +122,7 @@ public class UserServiceImpl implements UserService {
 		us.setRoles(p.getRoles());
 		return us;
 	}
-	
+
 	@Override
 	public UserChangePassDto updateInfoP(Person p) {
 		UserChangePassDto us = new UserChangePassDto();
@@ -138,7 +141,7 @@ public class UserServiceImpl implements UserService {
 		us.setRoles(p.getRoles());
 		return us;
 	}
-	
+
 	@Override
 	public Person save(UserUpdateInfoDto userDto) {
 		Person person = findById(userDto.getId());
@@ -153,10 +156,10 @@ public class UserServiceImpl implements UserService {
 		person.setPassword(userDto.getPassword());
 		person.setPower(userDto.getPower());
 		person.setUpdate_date(userDto.getUpdate_date());
-        person.setRoles(userDto.getRoles());
-        return userRepository.save(person);
+		person.setRoles(userDto.getRoles());
+		return userRepository.save(person);
 	}
-	
+
 	@Override
 	public Person save(UserDto userDto) {
 		Person person = new Person();
@@ -171,11 +174,11 @@ public class UserServiceImpl implements UserService {
 		person.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		person.setPower(userDto.getPower());
 		HashSet<Role> roles = new HashSet<>();
-        roles.add(roleRepository.findByName("ROLE_EMPLOYEE"));
-        person.setRoles(roles);
-        return userRepository.save(person);
+		roles.add(roleRepository.findByName("ROLE_EMPLOYEE"));
+		person.setRoles(roles);
+		return userRepository.save(person);
 	}
-	
+
 	@Override
 	public Person save(AdminDto userDto) {
 		Person person = new Person();
@@ -188,7 +191,7 @@ public class UserServiceImpl implements UserService {
 		person.setEmail(userDto.getEmail());
 		person.setUsername(userDto.getUserName());
 		person.setPassword(passwordEncoder.encode(userDto.getPassword()));
-		String key = "ROLE_"+userDto.getDropdownSelectedValue();
+		String key = "ROLE_" + userDto.getDropdownSelectedValue();
 		switch (key) {
 		case "ROLE_EMPLOYEE":
 			person.setPower(1);
@@ -198,11 +201,11 @@ public class UserServiceImpl implements UserService {
 			break;
 		}
 		HashSet<Role> roles = new HashSet<>();
-        roles.add(roleRepository.findByName(key));
-        person.setRoles(roles);
-        return userRepository.save(person);
+		roles.add(roleRepository.findByName(key));
+		person.setRoles(roles);
+		return userRepository.save(person);
 	}
-	
+
 	@Override
 	public Person save(AdminUpdateInfoUserDto userDto) {
 		Person person = findById(userDto.getId());
@@ -215,7 +218,7 @@ public class UserServiceImpl implements UserService {
 		person.setEmail(userDto.getEmail());
 		person.setUsername(userDto.getUserName());
 		person.setPassword(userDto.getPassword());
-		String key = "ROLE_"+userDto.getDropdownSelectedValue();
+		String key = "ROLE_" + userDto.getDropdownSelectedValue();
 		switch (key) {
 		case "ROLE_EMPLOYEE":
 			person.setPower(1);
@@ -227,10 +230,10 @@ public class UserServiceImpl implements UserService {
 		person.setUpdate_date(userDto.getUpdate_date());
 		HashSet<Role> roles = new HashSet<>();
 		roles.add(roleRepository.findByName(key));
-        person.setRoles(roles);
-        return userRepository.save(person);
+		person.setRoles(roles);
+		return userRepository.save(person);
 	}
-	
+
 	@Override
 	public void delete(Long id) {
 		userRepository.deleteByIdP(id);
@@ -269,7 +272,23 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void deleteTokenByIdPerson(long id) {
 		userRepository.deleteByIdPRT(id);
-		
+
+	}
+
+	@Override
+	public Role findByIdRole(long id) {
+		return roleRepository.findById(id);
+	}
+
+	@Override
+	public void autoLogin(String username) {
+		UserDetails userDetails = loadUserByUsername(username);
+		UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+				userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+
+		if (usernamePasswordAuthenticationToken.isAuthenticated()) {
+			SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+		}
 	}
 
 }
