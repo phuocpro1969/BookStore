@@ -47,6 +47,9 @@ public class AdminController {
 	// tao list
 	@ModelAttribute("list")
 	public List<Person> getList(Principal principal) {
+		if (principal == null) {
+			return null;
+		}
 		String username = principal.getName();
 		Person per = userService.findByUsername(username);
 		List<Person> oldList = userService.findAll();
@@ -66,6 +69,8 @@ public class AdminController {
 
 	@ModelAttribute("allRoles")
 	public List<String> allRoles(Principal principal) {
+		if (principal == null)
+			return null;
 		ArrayList<String> kq = new ArrayList<>();
 		String username = principal.getName();
 		Person per = userService.findByUsername(username);
@@ -99,6 +104,7 @@ public class AdminController {
 	@GetMapping("/page/{pageNumber}")
 	public String showListUser(HttpServletRequest request, @PathVariable int pageNumber, Model model, ModelMap map,
 			Principal principal) {
+		
 		map.addAttribute("header", "header_admin");
 		map.addAttribute("footer", "footer_admin");
 
@@ -133,6 +139,7 @@ public class AdminController {
 	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping(value = "/edit-user-{id}")
 	public String showUpdateInfoForm(Model model, ModelMap map, Principal principal, @PathVariable long id) {
+
 		map.addAttribute("header", "header_admin");
 		map.addAttribute("footer", "footer_admin");
 		List<Person> list = getList(principal);
@@ -166,6 +173,7 @@ public class AdminController {
 	@PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping(value = "/edit-user-{id}/changePassword", method = RequestMethod.GET)
 	public String showChangePassForm(@PathVariable long id, Model model, ModelMap map, Principal principal) {
+
 		map.addAttribute("header", "header_admin");
 		map.addAttribute("footer", "footer_admin");
 		List<Person> list = getList(principal);
@@ -179,7 +187,9 @@ public class AdminController {
 
 	@RequestMapping(value = "/edit-user-{id}/changePassword", method = RequestMethod.POST)
 	public String UpdatePassUserAccount(@PathVariable long id,
-			@ModelAttribute("person") @Valid UserUpdateInfoDto userDto, BindingResult result, ModelMap map) {
+			@ModelAttribute("person") @Valid UserUpdateInfoDto userDto, BindingResult result, ModelMap map, Principal principal) {
+		if (principal == null)
+			return "redirect:/";
 		String url = "";
 		if (result.hasErrors()) {
 			map.addAttribute("header", "header_admin");
@@ -199,6 +209,10 @@ public class AdminController {
 	@GetMapping("/search/{pageNumber}")
 	public String searchUser(HttpServletRequest request, @RequestParam("keyword") String kw,
 			@PathVariable("pageNumber") int pageNumber, Model model, ModelMap map, Principal principal) {
+		
+		if (principal == null)
+			return "redirect:/";
+		
 		map.addAttribute("header", "header_admin");
 		map.addAttribute("footer", "footer_admin");
 
@@ -255,6 +269,10 @@ public class AdminController {
 	@GetMapping(value = { "/delete-user-{id}" })
 	public String deleteUser(@PathVariable long id, Principal principal, HttpServletRequest request,
 			HttpServletResponse response) {
+		
+		if (principal == null)
+			return "redirect:/";
+		
 		int key_user_delete = userService.findById(id).getPower();
 		Person p = userService.findByUsername(principal.getName());
 		int key_admin = p.getPower();

@@ -11,8 +11,6 @@
 <link th:href="@{/css/templatemo_style.css}" rel="stylesheet"
 	type="text/css" />
 
-
-
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <style>
@@ -45,8 +43,9 @@ a.back {
 					</script>
 				</div>
 
-				<h1  style="margin: 0px 0px 0px 260px;" class="text-center">Admin Update User Account</h1>
-</br>
+				<h1 style="margin: 0px 0px 0px 260px;" class="text-center">Admin
+					Update User Account</h1>
+				</br>
 
 				<div>
 					<span> <a class="cp"
@@ -68,8 +67,8 @@ a.back {
 									th:text="${error}">Validation error</p>
 
 								<div class="form-group">
-									<label>UserName:</label> <input class="form-control" type="text"
-										th:value="${person.userName}" disabled>
+									<label>UserName:</label> <input class="form-control"
+										type="text" th:value="${person.userName}" disabled>
 								</div>
 								<br>
 
@@ -135,8 +134,8 @@ a.back {
 								<br>
 
 								<div class="form-group">
-									<label>BirthDay</label> <input class="form-control" type="date" name="birthday"
-										id="birthday" th:field="*{birthday}"
+									<label>BirthDay</label> <input class="form-control" type="date"
+										name="birthday" id="birthday" th:field="*{birthday}"
 										value="${person.birthday}">
 								</div>
 								<br> <input type="hidden" name="id" id="id"
@@ -151,7 +150,8 @@ a.back {
 									value="${person.email}" th:field="*{email}">
 								<div class="form-group">
 									<div id="gg">
-										<button type="submit" class="btn btn-success" style=" margin: 0px 0px 0px 190px;">Update</button>
+										<button type="submit" class="btn btn-success"
+											style="margin: 0px 0px 0px 190px;">Update</button>
 									</div>
 								</div>
 							</div>
