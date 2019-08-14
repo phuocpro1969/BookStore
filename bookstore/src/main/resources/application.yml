@@ -22,20 +22,20 @@ spring:
 # ===============================
 # = MAIL configurations
 # ===============================
-  mail:
-    default-encoding: UTF-8
-    host: localhost
-    username: user1@testmail.com
-    password: 123456
-    port: 587
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-    protocol: smtp
-    test-connection: false
+#  mail:
+#    default-encoding: UTF-8
+#    host: localhost
+#    username: user1@testmail.com
+#    password: 123456
+#    port: 587
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enable: true
+#    protocol: smtp
+#    test-connection: false
 
 # ===============================
 # = Logging configurations

@@ -6,6 +6,10 @@
 <title>Book Store</title>
 <meta name="keywords" content="" />
 <meta name="description" content="" />
+
+<link rel="stylesheet" type="text/css"
+	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+
 <link th:href="@{/css/templatemo_style.css}" rel="stylesheet"
 	type="text/css" />
 
@@ -76,34 +80,35 @@
 			<div id="templatemo_content_right">
 
 				<form action="#" th:action="@{/book/save}" th:object="${book}"
-					method="POST">
+					method="POST" style="width: 430px; margin: 0px 0px 0px 140px;">
 					<input type="hidden" th:field="*{id}" />
-					<div class="form-group">
-						<label>Title   </label> <input type="text" class="form-control"
-							th:field="*{title}" />
+					<div class="form-group" style="margin: 35px 0px 0px 50px;">
+						<label class="font">Title </label> <input type="text"
+							class="form-control" th:field="*{title}" />
 					</div>
 
-					<div class="form-group">
-						<label>Price   </label> <input type="text" class="form-control"
-							th:field="*{price}" />
+					<div class="form-group" style="margin: 35px 0px 0px 50px;">
+						<label class="font">Price </label> <input type="text"
+							class="form-control" th:field="*{price}" />
 					</div>
-					<div class="form-group">
-						<label>Domain  </label> <input type="text" class="form-control"
-							th:field="*{domain}" />
-					</div>
-
-					<div class="form-group">
-						<label>Picture</label> <input type="text" class="form-control"
-							th:field="*{picture}" />
+					<div class="form-group" style="margin: 35px 0px 0px 50px;">
+						<label class="font">Domain </label> <input type="text"
+							class="form-control" th:field="*{domain}" />
 					</div>
 
-					<div class="form-group">
-						<label>Author</label> <input type="text" class="form-control"
-							th:field="*{authors}" />
+					<div class="form-group" style="margin: 35px 0px 0px 50px;">
+						<label class="font">Upload Image</label> <input type="file"
+							class="form-control" th:field="*{picture}" />
+					</div>
+
+					<div class="form-group" style="margin: 35px 0px 30px 50px;">
+						<label class="font">Author</label> <input type="text"
+							class="form-control" th:field="*{authors}" />
 					</div>
 
 
-					<button type="submit" class="btn btn-primary">Save</button>
+					<button type="submit" class="btn btn-primary"
+						style="margin: 55px 0px 0px 210px";>Save</button>
 				</form>
 				<!-- /.container -->
 
@@ -115,6 +120,7 @@
 		</div>
 		<!-- end of content -->
 	</div>
+	<div class="cleaner_with_height">&nbsp;</div>
 	<footer th:replace="indexheader :: ${footer}"></footer>
 
 

@@ -5,13 +5,16 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import pq.jdev.b001.bookstore.books.model.Book;
+import pq.jdev.b001.bookstore.users.model.Person;
 
 
 @Service
 public interface ListBookService {
-	Iterable<Book> findAll();
+	List<Book> findAll();
 
-    List<Book> search(String q);
+	Book findByTitle(String title);
+	
+//    List<Book> search(String q);
 
     Book findOne(long id);
 

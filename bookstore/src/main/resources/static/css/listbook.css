@@ -14,8 +14,8 @@
 	overflow: hidden;
 }
 
-.content-table a{
-	text-align:center;
+.content-table a {
+	text-align: center;
 	color: #FD560F;
 }
 
@@ -27,7 +27,7 @@
 	border: 2px solid white;
 }
 
-.content-table tbody tr td{
+.content-table tbody tr td {
 	color: black;
 	max-width: 56px;
 	font-weight: bold;
@@ -35,11 +35,11 @@
 	border: 2px solid white;
 }
 
-.content-table tbody tr td span{
+.content-table tbody tr td span {
 	text-align: left;
 	display: block;
-  	overflow: hidden;
-  	text-overflow: ellipsis;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .content-table tbody tr {
@@ -94,7 +94,7 @@
 
 .pagination {
 	display: flex;
-	justify-content:center;
+	justify-content: center;
 }
 
 .form-group {
@@ -112,7 +112,66 @@
 	margin: 20px 0px 0px 0px;
 }
 
-.pagination li {
+.pagination ul li {
 	margin: 20px 10px 0px 0px;
 	font-size: 12pt;
+}
+
+.menu ul {
+	
+}
+
+.menu {
+	margin: 95px 0px 0px 0px;
+	height: 295px;
+}
+
+.menu .product {
+	float: left;
+	border: 1px solid #333;
+	width: 45%;
+	height: 47%;
+	margin: 0px 10px 10px 25px;
+	display: flex;
+}
+
+.menu .images {
+	height: 85%;
+	width: 45%;
+	margin: 10px 0px 0px 0px;
+}
+
+.menu .product .images img {
+	width: 100% !important;
+	height: 100% !important;
+	max-width: 145px;
+	max-height: 115px;
+}
+
+.menu .content {
+	margin: 0px 0px 0px 15px;
+	width: 165px;
+}
+
+.menu ul li {
+	font-weight: bold;
+	font-size: 11pt;
+	width: 160px;
+}
+
+.menu ul li span {
+	max-width: 110px;
+	display: inline-block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	margin: 0px 0px -3px 0px;
+}
+
+.form-group .font {
+	height: 20px;
+	font-size: 10pt;
+}
+
+.form-group input{
+
 }

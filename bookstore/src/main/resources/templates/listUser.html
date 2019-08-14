@@ -87,18 +87,20 @@ tr {
 						method="get">
 						<div class="form-group">
 							<input type="text" class="form-control" name="keyword" id="key"
-								style="margin: 0px 0px 5px -190px;     padding: 0px 0px 0px 14px;"
+								style="margin: 0px 0px 5px -190px; padding: 0px 0px 0px 14px;"
 								placeholder="Type username, firstname lastname, id..." />
-							<button type="submit" class="btn btn-primary" style="margin: -45px 0px 0px 77px; margin: -45px 10px 1px 130px;">
+							<button type="submit" class="btn btn-primary"
+								style="margin: -45px 0px 0px 77px; margin: -45px 10px 1px 130px;">
 								<img th:src="@{/images/icon_search.png}"
-									style="width: 30px; height: 30px;"></img></button>
+									style="width: 30px; height: 30px;"></img>
+							</button>
 						</div>
 					</form>
 				</div>
 
 				<th:block th:if="${#lists.isEmpty(list.pageList)}">
 					<div class="table">
-					<h1>No User Available</h1>
+						<h1>No User Available</h1>
 					</div>
 				</th:block>
 
@@ -130,7 +132,7 @@ tr {
 							</tr>
 						</tbody>
 					</table>
-					<ul class="pagination">
+					<ul class="pagination" style="margin: -10px 0px 0px 0px;">
 						<li
 							th:class="${currentIndex == 1}? 'page-item disabled' : 'page-item'">
 							<a class="page-link" th:href="@{|${baseUrl}1|}">First</a>

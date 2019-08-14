@@ -64,14 +64,14 @@ public class PasswordFogotController {
 			result.rejectValue("email", null, "We could not find an account for that e-mail address.");
 			return "forgot-password";
 		}
-
+		
 		PasswordResetToken token = new PasswordResetToken();
 		token.setToken(UUID.randomUUID().toString());
 		token.setPerson(person);
 
 		token.setExpiryDate();
 		userService.saveToken(token);
-
+		
 		Mail mail = new Mail();
 		mail.setFrom("user1@testmail.com");
 		mail.setTo(person.getEmail());

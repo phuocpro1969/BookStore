@@ -34,7 +34,9 @@ a.back {
 </head>
 <body>
 	<div th:if="${param.success}">
-		<div class="alert-info">You've successfully Update!</div>
+		<script type="text/javascript">
+			window.location.href = "/";
+		</script>
 	</div>
 	<nav th:replace="indexheader :: ${header}"></nav>
 	<div id="templatemo_container">

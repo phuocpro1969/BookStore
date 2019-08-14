@@ -1,43 +1,229 @@
 package pq.jdev.b001.bookstore.users.web;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import pq.jdev.b001.bookstore.books.model.Book;
+import pq.jdev.b001.bookstore.listbooks.service.ListBookService;
 
 @Controller
 public class LoginController {
 
+	@Autowired
+	private ListBookService listBookService;
+
 	@GetMapping({ "/" })
-	public String root(Authentication authentication, ModelMap map) {
+	public String root(Authentication authentication, ModelMap map, Model model, HttpServletRequest request) {
+
+		int pageNumber = 1;
+		PagedListHolder<?> pages = (PagedListHolder<?>) request.getSession().getAttribute("booklist");
+		int pagesize = 4;
+		List<Book> list = (List<Book>) listBookService.findAll();
+		System.out.println(list.size());
+		if (pages == null) {
+			pages = new PagedListHolder<>(list);
+			pages.setPageSize(pagesize);
+		} else {
+			final int goToPage = pageNumber - 1;
+			if (goToPage <= pages.getPageCount() && goToPage >= 0) {
+				pages.setPage(goToPage);
+			}
+		}
+		request.getSession().setAttribute("booklist", pages);
+		int current = pages.getPage() + 1;
+		int begin = Math.max(1, current - list.size());
+		int end = Math.min(begin + 5, pages.getPageCount());
+		int totalPageCount = pages.getPageCount();
+		String baseUrl = "/page/";
+
+		model.addAttribute("beginIndex", begin);
+		model.addAttribute("endIndex", end);
+		model.addAttribute("currentIndex", current);
+		model.addAttribute("totalPageCount", totalPageCount);
+		model.addAttribute("baseUrl", baseUrl);
+		model.addAttribute("books", pages);
+
 		if (authentication != null) {
 			Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 			List<String> roles = new ArrayList<String>();
 			for (GrantedAuthority a : authorities) {
 				roles.add(a.getAuthority());
 			}
-			
 			if (isUser(roles)) {
 				map.addAttribute("header", "header_user");
 				map.addAttribute("footer", "footer_user");
-				return "indexcontainer";
-			} else 
-			if (isAdmin(roles)) {
+				map.addAttribute("ok", "FALSE");
+			} else if (isAdmin(roles)) {
 				map.addAttribute("header", "header_admin");
 				map.addAttribute("footer", "footer_admin");
-				return "indexcontainer";
+				map.addAttribute("ok", "TRUE");
+			}
+		} else {
+			map.addAttribute("header", "header_login");
+			map.addAttribute("footer", "footer_login");
+			map.addAttribute("ok", "FALSE");
+		}		
+		return "indexcontainer";
+	}
+
+	@GetMapping("/page/{pageNumber}")
+	public String showBookPage(Authentication authentication, HttpServletRequest request, @PathVariable int pageNumber,
+			Model model, ModelMap map) {
+
+		PagedListHolder<?> pages = (PagedListHolder<?>) request.getSession().getAttribute("booklist");
+		int pagesize = 4;
+		List<Book> list = (List<Book>) listBookService.findAll();
+		System.out.println(list.size());
+		if (pages == null) {
+			pages = new PagedListHolder<>(list);
+			pages.setPageSize(pagesize);
+		} else {
+			final int goToPage = pageNumber - 1;
+			if (goToPage <= pages.getPageCount() && goToPage >= 0) {
+				pages.setPage(goToPage);
 			}
 		}
-		map.addAttribute("header", "header_login");
-		map.addAttribute("footer", "footer_login");
+		request.getSession().setAttribute("booklist", pages);
+		int current = pages.getPage() + 1;
+		int begin = Math.max(1, current - list.size());
+		int end = Math.min(begin + 5, pages.getPageCount());
+		int totalPageCount = pages.getPageCount();
+		String baseUrl = "/page/";
+		model.addAttribute("beginIndex", begin);
+		model.addAttribute("endIndex", end);
+		model.addAttribute("currentIndex", current);
+		model.addAttribute("totalPageCount", totalPageCount);
+		model.addAttribute("baseUrl", baseUrl);
+		model.addAttribute("books", pages);
+
+		if (authentication != null) {
+			Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+			List<String> roles = new ArrayList<String>();
+			for (GrantedAuthority a : authorities) {
+				roles.add(a.getAuthority());
+			}
+			if (isUser(roles)) {
+				map.addAttribute("header", "header_user");
+				map.addAttribute("footer", "footer_user");
+				map.addAttribute("ok", "FALSE");
+			} else if (isAdmin(roles)) {
+				map.addAttribute("header", "header_admin");
+				map.addAttribute("footer", "footer_admin");
+				map.addAttribute("ok", "TRUE");
+			}
+		} else {
+			map.addAttribute("header", "header_login");
+			map.addAttribute("footer", "footer_login");
+			map.addAttribute("ok", "FALSE");
+		}
+		return "indexcontainer";
+	}
+
+	// tao list
+	@ModelAttribute("list")
+	public List<Book> getList() {
+		List<Book> oldList = listBookService.findAll();
+		List<Book> newList = new ArrayList<Book>();
+
+		for (Book b : oldList) {
+			newList.add(b);
+		}
+		return newList;
+	}
+
+	@GetMapping("/search/{pageNumber}")
+	public String search(@RequestParam("s") String s, Authentication authentication, Model model,
+			HttpServletRequest request, @PathVariable int pageNumber, ModelMap map, Principal principal) {
+
+		if (authentication != null) {
+			Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+			List<String> roles = new ArrayList<String>();
+			for (GrantedAuthority a : authorities) {
+				roles.add(a.getAuthority());
+			}
+			if (isUser(roles)) {
+				map.addAttribute("header", "header_user");
+				map.addAttribute("footer", "footer_user");
+				map.addAttribute("ok", "FALSE");
+			} else if (isAdmin(roles)) {
+				map.addAttribute("header", "header_admin");
+				map.addAttribute("footer", "footer_admin");
+				map.addAttribute("ok", "TRUE");
+			}
+		} else {
+			map.addAttribute("header", "header_login");
+			map.addAttribute("footer", "footer_login");
+			map.addAttribute("ok", "FALSE");
+		}
+		
+		if (s.equals("")) {
+			return "redirect:/";
+		}
+
+//		List<Book> list = listBookService.search(s);
+//		if (list == null) {
+//			return "redirect:/book";
+//		}
+
+		List<Book> listBookGet = getList();
+		List<Book> list = new ArrayList<Book>();
+
+		for (Book a : listBookGet) {
+			if (String.valueOf(a.getId()).equalsIgnoreCase(s) || a.getTitle().equalsIgnoreCase(s)
+					|| is(a.getDomain(), s) || is(a.getAuthors(), s))
+				list.add(a);
+		}
+
+		for (Book a : listBookGet) {
+			if (error(a.getTitle(), s) || error(a.getDomain(), s) || error(a.getAuthors(), s))
+				if (!list.contains(a))
+					list.add(a);
+		}
+
+		PagedListHolder<?> pages = (PagedListHolder<?>) request.getSession().getAttribute("booklist2");
+		int pagesize = 4;
+
+		pages = new PagedListHolder<>(list);
+		pages.setPageSize(pagesize);
+
+		final int goToPage = pageNumber - 1;
+		if (goToPage <= pages.getPageCount() && goToPage >= 0) {
+			pages.setPage(goToPage);
+		}
+
+		request.getSession().setAttribute("booklist2", pages);
+		int current = pages.getPage() + 1;
+		int begin = Math.max(1, current - list.size());
+		int end = Math.min(begin + 5, pages.getPageCount());
+		int totalPageCount = pages.getPageCount();
+		String baseUrl = "/page/";
+
+		model.addAttribute("beginIndex", begin);
+		model.addAttribute("endIndex", end);
+		model.addAttribute("currentIndex", current);
+		model.addAttribute("totalPageCount", totalPageCount);
+		model.addAttribute("baseUrl", baseUrl);
+		model.addAttribute("books", pages);
+
 		return "indexcontainer";
 	}
 
@@ -54,7 +240,7 @@ public class LoginController {
 	public String userPage(ModelMap map) {
 		map.addAttribute("header", "header_user");
 		map.addAttribute("footer", "footer_user");
-		return "user";
+		return "redirect:/";
 	}
 
 	@PreAuthorize("hasRole('ADMIN')")
@@ -63,7 +249,7 @@ public class LoginController {
 		map.addAttribute("user", getPrincipal());
 		map.addAttribute("header", "header_admin");
 		map.addAttribute("footer", "footer_admin");
-		return "admin";
+		return "redirect:/";
 	}
 
 	@GetMapping(value = "/403")
@@ -74,17 +260,15 @@ public class LoginController {
 			for (GrantedAuthority a : authorities) {
 				roles.add(a.getAuthority());
 			}
-			
+
 			if (isUser(roles)) {
 				map.addAttribute("header", "header_user");
 				map.addAttribute("footer", "footer_user");
-			} else 
-			if (isAdmin(roles)) {
+			} else if (isAdmin(roles)) {
 				map.addAttribute("header", "header_admin");
 				map.addAttribute("footer", "footer_admin");
-			} 
-		}else
-		{
+			}
+		} else {
 			map.addAttribute("header", "header_login");
 			map.addAttribute("footer", "footer_login");
 		}
@@ -114,6 +298,19 @@ public class LoginController {
 		if (roles.contains("ROLE_ADMIN")) {
 			return true;
 		}
+		return false;
+	}
+	
+	boolean is(String a, String b) {
+		b.replace("+", " ");
+		return b.equalsIgnoreCase(a);
+	}
+
+	boolean error(String a, String b) {
+		String[] arr = b.split("\\+");
+		for (String item : arr)
+			if (a.contains(item))
+				return true;
 		return false;
 	}
 

@@ -15,14 +15,14 @@ public class ListBookServiceImpl implements ListBookService {
     private ListBookRepository listBookRepository;
 
     @Override
-    public Iterable<Book> findAll() {
+    public List<Book> findAll() {
         return listBookRepository.findAll();
     }
 
-    @Override
-    public List<Book> search(String q) {
-        return listBookRepository.findByTitleContaining(q);
-    }
+//    @Override
+//    public List<Book> search(String q) {
+//        return listBookRepository.findByTitleContaining(q);
+//    }
 
     @Override
     public Book findOne(long id) {
@@ -38,4 +38,11 @@ public class ListBookServiceImpl implements ListBookService {
     public void delete(long id) {
     	listBookRepository.deleteById(id);
     }
+
+	@Override
+	public Book findByTitle(String title) {
+		return listBookRepository.findByTitle(title);
+	}
+
+	
 }
