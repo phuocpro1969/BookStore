@@ -17,6 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import pq.jdev.b001.bookstore.Category.model.Category;
+import pq.jdev.b001.bookstore.Category.repository.CategoryRepository;
+import pq.jdev.b001.bookstore.books.model.Book;
+import pq.jdev.b001.bookstore.books.model.SelectCategory;
+import pq.jdev.b001.bookstore.books.model.Upload;
 import pq.jdev.b001.bookstore.books.repository.BookRepository;
 import pq.jdev.b001.bookstore.books.repository.UploadRepository;
 import pq.jdev.b001.bookstore.books.web.dto.BookDTO;
@@ -25,11 +30,6 @@ import pq.jdev.b001.bookstore.publisher.models.Publishers;
 import pq.jdev.b001.bookstore.publishers.repository.PublisherRepository;
 import pq.jdev.b001.bookstore.users.model.Person;
 import pq.jdev.b001.bookstore.users.repository.UserRepository;
-import pq.jdev.b001.bookstore.Category.model.Category;
-import pq.jdev.b001.bookstore.Category.repository.CategoryRepository;
-import pq.jdev.b001.bookstore.books.model.Book;
-import pq.jdev.b001.bookstore.books.model.SelectCategory;
-import pq.jdev.b001.bookstore.books.model.Upload;
 
 @Service
 @Transactional

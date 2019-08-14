@@ -1,7 +1,5 @@
 package pq.jdev.b001.bookstore.Category.controller;
 
-import java.util.Locale.Category;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

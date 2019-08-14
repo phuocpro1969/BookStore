@@ -81,32 +81,30 @@
 
 				<form action="#" th:action="@{/book/save}" th:object="${book}"
 					method="POST" style="width: 430px; margin: 0px 0px 0px 140px;">
-					<input type="hidden" th:field="*{id}" />
+					<input type="hidden" value="${book.id}" th:field="*{id}" />
 					<div class="form-group" style="margin: 35px 0px 0px 50px;">
 						<label class="font">Title </label> <input type="text"
-							class="form-control" th:field="*{title}" />
+							value="${book.title}" class="form-control" th:field="*{title}" />
 					</div>
 
 					<div class="form-group" style="margin: 35px 0px 0px 50px;">
 						<label class="font">Price </label> <input type="text"
-							class="form-control" th:field="*{price}" />
+							value="${book.price}" class="form-control" th:field="*{price}" />
 					</div>
 					<div class="form-group" style="margin: 35px 0px 0px 50px;">
 						<label class="font">Domain </label> <input type="text"
-							class="form-control" th:field="*{domain}" />
+							value="${book.domain}" class="form-control" th:field="*{domain}" />
 					</div>
-
+				
 					<div class="form-group" style="margin: 35px 0px 0px 50px;">
-						<label class="font">Upload Image</label> <input type="file"
-							class="form-control" th:field="*{picture}" />
+						<label class="font">Upload Image</label> <input type="file" 
+						th:value="${'images/' + book.picture}" class="form-control" th:field="*{picture}" />
 					</div>
 
 					<div class="form-group" style="margin: 35px 0px 30px 50px;">
 						<label class="font">Author</label> <input type="text"
-							class="form-control" th:field="*{authors}" />
+							th:value="${book.authors}" class="form-control" th:field="*{authors}" />
 					</div>
-
-
 					<button type="submit" class="btn btn-primary"
 						style="margin: 55px 0px 0px 210px";>Save</button>
 				</form>

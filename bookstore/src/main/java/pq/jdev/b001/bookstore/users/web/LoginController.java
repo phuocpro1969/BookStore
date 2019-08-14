@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import pq.jdev.b001.bookstore.books.model.Book;
 import pq.jdev.b001.bookstore.listbooks.service.ListBookService;
+import pq.jdev.b001.bookstore.users.model.Person;
+import pq.jdev.b001.bookstore.users.service.UserService;
 
 @Controller
 public class LoginController {
@@ -31,26 +33,35 @@ public class LoginController {
 	@Autowired
 	private ListBookService listBookService;
 
-	@GetMapping({ "/" })
-	public String root(Authentication authentication, ModelMap map, Model model, HttpServletRequest request) {
+	@Autowired
+	private UserService userService;
 
-		int pageNumber = 1;
-		PagedListHolder<?> pages = (PagedListHolder<?>) request.getSession().getAttribute("booklist");
+	@GetMapping({ "/" })
+	public String root(Authentication authentication, ModelMap map, Model model, HttpServletRequest request,
+			Principal principal) {
+
+		PagedListHolder<?> pages = null;
+
 		int pagesize = 4;
-		List<Book> list = (List<Book>) listBookService.findAll();
-		System.out.println(list.size());
-		if (pages == null) {
-			pages = new PagedListHolder<>(list);
-			pages.setPageSize(pagesize);
+		List<Book> listH = null;
+		if (principal == null) {
+			listH = (List<Book>) listBookService.findAll();
 		} else {
-			final int goToPage = pageNumber - 1;
-			if (goToPage <= pages.getPageCount() && goToPage >= 0) {
-				pages.setPage(goToPage);
-			}
+			Person per = userService.findByUsername(principal.getName());
+			listH = getList(per);
 		}
-		request.getSession().setAttribute("booklist", pages);
+
+		if (pages == null) {
+			pages = new PagedListHolder<>(listH);
+			pages.setPageSize(pagesize);
+		} 
+		if (principal == null)
+			request.getSession().setAttribute("bookListC", pages);
+		else
+			request.getSession().setAttribute("bookListR", pages);
+		
 		int current = pages.getPage() + 1;
-		int begin = Math.max(1, current - list.size());
+		int begin = Math.max(1, current - listH.size());
 		int end = Math.min(begin + 5, pages.getPageCount());
 		int totalPageCount = pages.getPageCount();
 		String baseUrl = "/page/";
@@ -81,18 +92,26 @@ public class LoginController {
 			map.addAttribute("header", "header_login");
 			map.addAttribute("footer", "footer_login");
 			map.addAttribute("ok", "FALSE");
-		}		
+		}
 		return "indexcontainer";
 	}
 
 	@GetMapping("/page/{pageNumber}")
 	public String showBookPage(Authentication authentication, HttpServletRequest request, @PathVariable int pageNumber,
-			Model model, ModelMap map) {
+			Model model, ModelMap map, Principal principal) {
 
-		PagedListHolder<?> pages = (PagedListHolder<?>) request.getSession().getAttribute("booklist");
+		PagedListHolder<?> pages = null;
 		int pagesize = 4;
-		List<Book> list = (List<Book>) listBookService.findAll();
-		System.out.println(list.size());
+		List<Book> list = null;
+		if (principal == null) {
+			list = (List<Book>) listBookService.findAll();
+			pages = (PagedListHolder<?>) request.getSession().getAttribute("bookListC");
+		} else {
+			Person per = userService.findByUsername(principal.getName());
+			pages = (PagedListHolder<?>) request.getSession().getAttribute("bookListR");
+			list = getList(per);
+		}
+
 		if (pages == null) {
 			pages = new PagedListHolder<>(list);
 			pages.setPageSize(pagesize);
@@ -102,7 +121,10 @@ public class LoginController {
 				pages.setPage(goToPage);
 			}
 		}
-		request.getSession().setAttribute("booklist", pages);
+		if (principal == null)
+			request.getSession().setAttribute("bookListC", pages);
+		else
+			request.getSession().setAttribute("bookListR", pages);
 		int current = pages.getPage() + 1;
 		int begin = Math.max(1, current - list.size());
 		int end = Math.min(begin + 5, pages.getPageCount());
@@ -140,11 +162,14 @@ public class LoginController {
 
 	// tao list
 	@ModelAttribute("list")
-	public List<Book> getList() {
+	public List<Book> getList(Person p) {
 		List<Book> oldList = listBookService.findAll();
 		List<Book> newList = new ArrayList<Book>();
-
+		Long id = p.getId();
 		for (Book b : oldList) {
+			b.setOk(0);
+			if (b.getPerson().getId() == id)
+				b.setOk(1);
 			newList.add(b);
 		}
 		return newList;
@@ -174,7 +199,7 @@ public class LoginController {
 			map.addAttribute("footer", "footer_login");
 			map.addAttribute("ok", "FALSE");
 		}
-		
+
 		if (s.equals("")) {
 			return "redirect:/";
 		}
@@ -183,8 +208,16 @@ public class LoginController {
 //		if (list == null) {
 //			return "redirect:/book";
 //		}
-
-		List<Book> listBookGet = getList();
+		PagedListHolder<?> pages = null;
+		List<Book> listBookGet = null;
+		if (principal == null) {
+			listBookGet = (List<Book>) listBookService.findAll();
+			pages = (PagedListHolder<?>) request.getSession().getAttribute("bookListC");
+		} else {
+			Person per = userService.findByUsername(principal.getName());
+			pages = (PagedListHolder<?>) request.getSession().getAttribute("bookListR");
+			listBookGet = getList(per);
+		}
 		List<Book> list = new ArrayList<Book>();
 
 		for (Book a : listBookGet) {
@@ -199,7 +232,7 @@ public class LoginController {
 					list.add(a);
 		}
 
-		PagedListHolder<?> pages = (PagedListHolder<?>) request.getSession().getAttribute("booklist2");
+		
 		int pagesize = 4;
 
 		pages = new PagedListHolder<>(list);
@@ -210,7 +243,11 @@ public class LoginController {
 			pages.setPage(goToPage);
 		}
 
-		request.getSession().setAttribute("booklist2", pages);
+		if (principal == null)
+			request.getSession().setAttribute("bookListC", pages);
+		else
+			request.getSession().setAttribute("bookListR", pages);
+
 		int current = pages.getPage() + 1;
 		int begin = Math.max(1, current - list.size());
 		int end = Math.min(begin + 5, pages.getPageCount());
@@ -300,7 +337,7 @@ public class LoginController {
 		}
 		return false;
 	}
-	
+
 	boolean is(String a, String b) {
 		b.replace("+", " ");
 		return b.equalsIgnoreCase(a);

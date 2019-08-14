@@ -35,22 +35,25 @@ public class Book implements Serializable {
 	@Column(name = "ID")
 	private long id;
 
-	@Column(name = "TITLE")
+	@Column(name = "TITLE", columnDefinition = "VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin")
 	private String title;
 
 	@Column(name = "PRICE")
 	private long price;
+	
+	@Column(name = "OK")
+	private int ok;
 
-	@Column(name = "DOMAIN")
+	@Column(name = "DOMAIN", columnDefinition = "VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin")
 	private String domain;
 
-	@Column(name = "PICTURE")
+	@Column(name = "PICTURE", columnDefinition = "VARCHAR(255)")
 	private String picture;
 
 	@Column(name = "UPLOADED_DATE")
 	private Date uploadedDate;
 
-	@Column(name = "AUTHORS")
+	@Column(name = "AUTHORS", columnDefinition = "VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin")
 	private String authors;
 
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
@@ -71,6 +74,8 @@ public class Book implements Serializable {
 
 	@Column(name = "PUBLISHED_YEAR")
 	private int publishedYear;
+
+	
 
 	public long getId() {
 		return id;
@@ -166,6 +171,14 @@ public class Book implements Serializable {
 
 	public void setPublishedYear(int publishedYear) {
 		this.publishedYear = publishedYear;
+	}
+
+	public int getOk() {
+		return ok;
+	}
+
+	public void setOk(int ok) {
+		this.ok = ok;
 	}
 
 }

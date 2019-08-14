@@ -123,7 +123,6 @@
 
 .menu {
 	margin: 95px 0px 0px 0px;
-	height: 295px;
 }
 
 .menu .product {
@@ -157,14 +156,17 @@
 	font-weight: bold;
 	font-size: 11pt;
 	width: 160px;
+	display: block;
 }
 
 .menu ul li span {
-	max-width: 110px;
-	display: inline-block;
+	max-width: 85px;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	white-space: nowrap;
 	margin: 0px 0px -3px 0px;
+	max-height: 40px !important;
+	position: absolute;
 }
 
 .form-group .font {

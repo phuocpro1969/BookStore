@@ -166,7 +166,7 @@
 									<div class="detail_button">
 										<a href="subpage.html">Detail</a>
 									</div>
-									<div th:if="${ok == 'TRUE'}"
+									<div th:if="${ok == 'TRUE'} or ${contact.ok == 1}"
 										style="margin: -12px 0px 0px 90px;">
 										<a th:href="@{/book/{id}/edit(id=${contact.id})}"><span></span>Edit</a>
 										<a th:href="@{/book/{id}/delete(id=${contact.id})}"><span></span>Delete</a>

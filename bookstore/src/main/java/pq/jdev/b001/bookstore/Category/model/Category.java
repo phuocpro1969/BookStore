@@ -1,7 +1,6 @@
 package pq.jdev.b001.bookstore.Category.model;
 
 import java.sql.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -11,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
 import pq.jdev.b001.bookstore.books.model.Book;
 
 /*
