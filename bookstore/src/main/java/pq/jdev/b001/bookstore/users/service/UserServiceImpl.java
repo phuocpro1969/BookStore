@@ -291,4 +291,9 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	@Override
+	public void changeAuthorize(Long idTo, long idFrom) {
+		userRepository.changeAuthorize(idTo, idFrom);
+	}
+
 }

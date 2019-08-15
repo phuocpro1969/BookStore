@@ -34,31 +34,31 @@ public class AdminUpdateInfoController {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
 	@ModelAttribute("person")
 	public UserUpdateInfoDto updateInfoDto(Principal principal) {
-		String username = principal.getName(); 
+		String username = principal.getName();
 		Person p = userService.findByUsername(username);
 		return userService.updateInfo(p);
 	}
-	
+
 	@ModelAttribute("person2")
 	public UserChangePassDto changePass(Principal principal) {
-		String username = principal.getName(); 
+		String username = principal.getName();
 		Person p = userService.findByUsername(username);
 		return userService.updateInfoP(p);
 	}
-	
+
 	@ModelAttribute("singleSelectAllValues")
-    public String[] getSingleSelectAllValues() {
-        return new String[] {"Male", "Female"};
-    }
-	
-	//update info
-	
+	public String[] getSingleSelectAllValues() {
+		return new String[] { "Male", "Female" };
+	}
+
+	// update info
+
 	@GetMapping
 	public String showUpdateInfoForm(ModelMap map) {
 		map.addAttribute("header", "header_admin");
@@ -67,21 +67,24 @@ public class AdminUpdateInfoController {
 	}
 
 	@PostMapping
-	public String UpdateUserAccount(@ModelAttribute("person") @Valid UserUpdateInfoDto userDto,
-			BindingResult result, ModelMap map) throws Exception {
+	public String UpdateUserAccount(@ModelAttribute("person") @Valid UserUpdateInfoDto userDto, BindingResult result,
+			ModelMap map, Authentication authentication) throws Exception {
 
-	    if (result.hasErrors()) {
-	    	map.addAttribute("header", "header_admin");
+		if (authentication == null)
+			return "redirect:/";
+
+		if (result.hasErrors()) {
+			map.addAttribute("header", "header_admin");
 			map.addAttribute("footer", "footer_admin");
-            return "accountAdmin";
-	    }
+			return "accountAdmin";
+		}
 		userService.save(userDto);
-		
+
 		return "redirect:/accountAdmin?success";
 	}
-	
-	//update pass
-	
+
+	// update pass
+
 	@PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping(value = "/changePassAdmin", method = RequestMethod.GET)
 	public String showChangePassForm(ModelMap map) {
@@ -89,33 +92,39 @@ public class AdminUpdateInfoController {
 		map.addAttribute("footer", "footer_admin");
 		return "/changePassAdmin";
 	}
-	
+
 	@RequestMapping(value = "/changePassAdmin", method = RequestMethod.POST)
 	public String UpdatePassUserAccount(@ModelAttribute("person2") @Valid UserChangePassDto userDto,
-			BindingResult result, ModelMap map) {
+			BindingResult result, ModelMap map, Authentication authentication) {
 
-	    if (result.hasErrors()) {
-	    	map.addAttribute("header", "header_admin");
+		if (authentication == null)
+			return "redirect:/";
+
+		if (result.hasErrors()) {
+			map.addAttribute("header", "header_admin");
 			map.addAttribute("footer", "footer_admin");
-            return "/changePassAdmin";
-	    }
-	    
-	    String updatedPassword = passwordEncoder.encode(userDto.getPassword());
+			return "/changePassAdmin";
+		}
+
+		String updatedPassword = passwordEncoder.encode(userDto.getPassword());
 		userService.updatePassword(updatedPassword, userDto.getId());
 		userService.loadUserByUsername(userDto.getUserName());
 		return "redirect:/accountAdmin/changePassAdmin?success";
 	}
-	
+
 	// delete user
 	@PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
 	public String delete(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null){    
-            new SecurityContextLogoutHandler().logout(request, response, auth);
-        }
-        userService.deleteTokenByIdPerson(id);
-		userService.delete(id);
-		return "redirect:/";
+		if (id != 1) {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			if (auth != null) {
+				new SecurityContextLogoutHandler().logout(request, response, auth);
+			}
+			userService.deleteTokenByIdPerson(id);
+			userService.delete(id);
+			return "redirect:/";
+		} else
+			return "redirect:/accountAdmin";
 	}
 }

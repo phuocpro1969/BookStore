@@ -67,8 +67,11 @@ public class UserUpdateInfoController {
 
 	@PostMapping
 	public String UpdateUserAccount(@ModelAttribute("person") @Valid UserUpdateInfoDto userDto,
-			BindingResult result, ModelMap map) throws Exception {
+			BindingResult result, ModelMap map, Authentication authentication) throws Exception {
 
+		if (authentication == null)
+			return "redirect:/";
+		
 	    if (result.hasErrors()) {
 	    	System.out.println(result.toString());
 	    	System.out.println(userDto.getPassword());
@@ -94,8 +97,11 @@ public class UserUpdateInfoController {
 	
 	@RequestMapping(value = "/changePassword", method = RequestMethod.POST)
 	public String UpdatePassUserAccount(@ModelAttribute("person2") @Valid UserChangePassDto userDto,
-			BindingResult result, ModelMap map) {
-
+			BindingResult result, ModelMap map, Authentication authentication) {
+		
+		if (authentication == null)
+			return "redirect:/";
+		
 	    if (result.hasErrors()) {
 	    	map.addAttribute("header", "header_user");
 			map.addAttribute("footer", "footer_user");
@@ -115,9 +121,10 @@ public class UserUpdateInfoController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null){    
             new SecurityContextLogoutHandler().logout(request, response, auth);
+            userService.changeAuthorize((long) 1, id);
+        	userService.deleteTokenByIdPerson(id);
+			userService.delete(id);
         }
-        userService.deleteTokenByIdPerson(id);
-		userService.delete(id);
 		return "redirect:/";
 	}
 }

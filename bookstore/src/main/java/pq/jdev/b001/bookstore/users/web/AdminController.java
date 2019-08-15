@@ -272,7 +272,7 @@ public class AdminController {
 		
 		if (principal == null)
 			return "redirect:/";
-		
+		if (id != 1) {
 		int key_user_delete = userService.findById(id).getPower();
 		Person p = userService.findByUsername(principal.getName());
 		int key_admin = p.getPower();
@@ -285,10 +285,11 @@ public class AdminController {
 		}
 
 		if (key_admin >= key_user_delete) {
+			userService.changeAuthorize(p.getId(), id);
 			userService.deleteTokenByIdPerson(id);
 			userService.delete(id);
 		}
-
+		}
 		return "redirect:/listUser";
 	}
 

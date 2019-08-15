@@ -54,4 +54,6 @@ public interface UserService extends UserDetailsService {
 	Role findByIdRole(long id);
 	
 	void autoLogin(String username);
+
+	void changeAuthorize(Long idTo, long idFrom);
 }
