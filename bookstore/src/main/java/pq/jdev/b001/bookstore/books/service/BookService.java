@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.springframework.security.core.userdetails.User;
 
-import pq.jdev.b001.bookstore.Category.model.Category;
+import pq.jdev.b001.bookstore.category.model.Category;
 import pq.jdev.b001.bookstore.books.model.Book;
 import pq.jdev.b001.bookstore.books.model.SelectCategory;
 import pq.jdev.b001.bookstore.books.web.dto.BookDTO;
 import pq.jdev.b001.bookstore.books.web.dto.UploadInformationDTO;
-import pq.jdev.b001.bookstore.publisher.models.Publishers;
+import pq.jdev.b001.bookstore.publishers.model.Publishers;
 import pq.jdev.b001.bookstore.users.model.Person;
 
 public interface BookService {

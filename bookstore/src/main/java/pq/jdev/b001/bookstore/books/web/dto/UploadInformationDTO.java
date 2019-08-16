@@ -6,9 +6,9 @@ import javax.validation.constraints.NotEmpty;
 import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
 
-import pq.jdev.b001.bookstore.Category.model.Category;
+import pq.jdev.b001.bookstore.category.model.Category;
 import pq.jdev.b001.bookstore.books.model.SelectCategory;
-import pq.jdev.b001.bookstore.publisher.models.Publishers;
+import pq.jdev.b001.bookstore.publishers.model.Publishers;
 
 public class UploadInformationDTO {
 	@NotEmpty

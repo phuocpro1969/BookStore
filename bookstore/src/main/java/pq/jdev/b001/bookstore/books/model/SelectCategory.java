@@ -1,6 +1,6 @@
 package pq.jdev.b001.bookstore.books.model;
 
-import pq.jdev.b001.bookstore.Category.model.Category;
+import pq.jdev.b001.bookstore.category.model.Category;
 
 public class SelectCategory {
 

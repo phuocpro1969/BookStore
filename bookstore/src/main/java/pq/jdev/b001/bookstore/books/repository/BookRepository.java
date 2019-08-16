@@ -10,9 +10,9 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import pq.jdev.b001.bookstore.Category.model.Category;
+import pq.jdev.b001.bookstore.category.model.Category;
 import pq.jdev.b001.bookstore.books.model.Book;
-import pq.jdev.b001.bookstore.publisher.models.Publishers;
+import pq.jdev.b001.bookstore.publishers.model.Publishers;
 import pq.jdev.b001.bookstore.users.model.Person;
 
 @Repository

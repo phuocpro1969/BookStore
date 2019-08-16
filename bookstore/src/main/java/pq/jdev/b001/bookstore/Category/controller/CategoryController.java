@@ -1,4 +1,4 @@
-package pq.jdev.b001.bookstore.Category.controller;
+package pq.jdev.b001.bookstore.category.controller;
 
 import java.util.List;
 
@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import pq.jdev.b001.bookstore.Category.model.Category;
-import pq.jdev.b001.bookstore.Category.service.CategoryAddEditService;
-import pq.jdev.b001.bookstore.Category.web.CategoryWeb;
-import pq.jdev.b001.bookstore.publisher.models.Publishers;
+import pq.jdev.b001.bookstore.category.model.Category;
+import pq.jdev.b001.bookstore.category.service.CategoryAddEditService;
+import pq.jdev.b001.bookstore.category.web.CategoryWeb;
+import pq.jdev.b001.bookstore.publishers.model.Publishers;
 import pq.jdev.b001.bookstore.publishers.service.PublisherService;
 
 /*
@@ -29,26 +29,25 @@ import pq.jdev.b001.bookstore.publishers.service.PublisherService;
  * 
  * */
 
-
 @Controller
 @RequestMapping("/addition")
 public class CategoryController {
 	@Autowired
 	private CategoryAddEditService categoryservice;
-	
+
 	@Autowired
 	private PublisherService publisherService;
-	
+
 	@ModelAttribute("category")
 	public CategoryWeb categoryweb() {
 		return new CategoryWeb();
 	}
-	
+
 	@GetMapping
-	public String AddEditForm(Model model,ModelMap map) {
+	public String AddEditForm(Model model, ModelMap map) {
 		map.addAttribute("header", "header_admin");
 		map.addAttribute("footer", "footer_admin");
-		
+
 		int pagesizeCP = 10;
 		PagedListHolder<?> pagePubs = null;
 		PagedListHolder<?> pageCates = null;
@@ -61,16 +60,15 @@ public class CategoryController {
 		if (pagePubs == null) {
 			pagePubs = new PagedListHolder<>(listPub);
 			pagePubs.setPageSize(pagesizeCP);
-		} 
+		}
 		model.addAttribute("publishers", pagePubs);
 		model.addAttribute("categories", pageCates);
 		return "categoryadd";
 	}
-	
-	
+
 	@PostMapping
 	public String Add(CategoryWeb categoryweb) {
-		pq.jdev.b001.bookstore.Category.model.Category category = categoryservice.save(categoryweb);
+		pq.jdev.b001.bookstore.category.model.Category category = categoryservice.save(categoryweb);
 		return "redirect:/categorylist";
 	}
 }

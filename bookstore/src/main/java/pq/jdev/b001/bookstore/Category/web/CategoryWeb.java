@@ -1,4 +1,4 @@
-package pq.jdev.b001.bookstore.Category.web;
+package pq.jdev.b001.bookstore.category.web;
 
 import javax.validation.constraints.NotEmpty;
 

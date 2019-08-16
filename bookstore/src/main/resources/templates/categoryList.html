@@ -49,11 +49,11 @@
 					<p class="my-5">
 						<a th:href="@{/addition}" class="btn"><i> Add Category</i></a>
 					</p>
-					<th:block th:if="${#lists.isEmpty(categoriesL.pageList)}">
+					<th:block th:if="${#lists.isEmpty(categoryL.pageList)}">
 						<h3>No Category</h3>
 					</th:block>
 
-					<th:block th:unless="${#lists.isEmpty(categoriesL.pageList)}">
+					<th:block th:unless="${#lists.isEmpty(categoryL.pageList)}">
 
 						<div>
 							<table class="content-table" align="center">
@@ -66,7 +66,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr th:each="category : ${categoriesL.pageList}">
+									<tr th:each="category : ${categoryL.pageList}">
 										<td th:text="${category.id}"></td>
 										<td th:text="${category.name}"></td>
 										<td th:text="${category.createdate}"></td>

@@ -28,9 +28,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import pq.jdev.b001.bookstore.Category.model.Category;
-import pq.jdev.b001.bookstore.Category.service.CategoryAddEditService;
-import pq.jdev.b001.bookstore.publisher.models.Publishers;
+import pq.jdev.b001.bookstore.category.model.Category;
+import pq.jdev.b001.bookstore.category.service.CategoryAddEditService;
+import pq.jdev.b001.bookstore.publishers.model.Publishers;
 import pq.jdev.b001.bookstore.publishers.service.PublisherService;
 import pq.jdev.b001.bookstore.users.model.Person;
 import pq.jdev.b001.bookstore.users.model.Role;

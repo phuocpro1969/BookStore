@@ -22,9 +22,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import pq.jdev.b001.bookstore.Category.model.Category;
-import pq.jdev.b001.bookstore.Category.service.CategoryAddEditService;
-import pq.jdev.b001.bookstore.publisher.models.Publishers;
+import pq.jdev.b001.bookstore.category.model.Category;
+import pq.jdev.b001.bookstore.category.service.CategoryAddEditService;
+import pq.jdev.b001.bookstore.publishers.model.Publishers;
 import pq.jdev.b001.bookstore.publishers.service.PublisherService;
 
 @Controller
@@ -79,6 +79,23 @@ public class PublisherController {
 				map.addAttribute("header", "header_login");
 				map.addAttribute("footer", "footer_login");
 		}
+		
+		int pagesizeCP = 10;
+		PagedListHolder<?> pagePubs = null;
+		PagedListHolder<?> pageCates = null;
+		List<Publishers> listPub = (List<Publishers>) publisherService.findAll();
+		List<Category> categoryList = categoryservice.findAll();
+		if (pageCates == null) {
+			pageCates = new PagedListHolder<>(categoryList);
+			pageCates.setPageSize(pagesizeCP);
+		}
+		if (pagePubs == null) {
+			pagePubs = new PagedListHolder<>(listPub);
+			pagePubs.setPageSize(pagesizeCP);
+		}
+		model.addAttribute("publishers", pagePubs);
+		model.addAttribute("categories", pageCates);
+		
 		model.addAttribute("publisher", new Publishers());
 		return "publisherAdd";
 	}

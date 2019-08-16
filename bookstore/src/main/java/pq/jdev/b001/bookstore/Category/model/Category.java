@@ -1,4 +1,4 @@
-package pq.jdev.b001.bookstore.Category.model;
+package pq.jdev.b001.bookstore.category.model;
 
 import java.sql.Date;
 import java.util.Set;

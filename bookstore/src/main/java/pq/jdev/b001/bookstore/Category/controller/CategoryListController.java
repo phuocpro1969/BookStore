@@ -1,4 +1,4 @@
-package pq.jdev.b001.bookstore.Category.controller;
+package pq.jdev.b001.bookstore.category.controller;
 
 import java.util.List;
 
@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import pq.jdev.b001.bookstore.Category.model.Category;
-import pq.jdev.b001.bookstore.Category.service.CategoryAddEditService;
-import pq.jdev.b001.bookstore.Category.web.CategoryWeb;
-import pq.jdev.b001.bookstore.publisher.models.Publishers;
+import pq.jdev.b001.bookstore.category.model.Category;
+import pq.jdev.b001.bookstore.category.service.CategoryAddEditService;
+import pq.jdev.b001.bookstore.category.web.CategoryWeb;
+import pq.jdev.b001.bookstore.publishers.model.Publishers;
 import pq.jdev.b001.bookstore.publishers.service.PublisherService;
 
 /*
@@ -33,13 +33,12 @@ import pq.jdev.b001.bookstore.publishers.service.PublisherService;
  * 
  * */
 
-
 @PreAuthorize("hasRole('ADMIN')")
 @Controller
 public class CategoryListController {
 	@Autowired
 	private CategoryAddEditService categoryservice;
-	
+
 	@Autowired
 	private PublisherService publisherService;
 
@@ -56,28 +55,28 @@ public class CategoryListController {
 			redirect.addFlashAttribute("success", model.asMap().get("success").toString());
 		return "redirect:/categorylist/page/1";
 	}
-	
+
 	@GetMapping("/categorylist/page/{pageNumber}")
-	public String ListForm(HttpServletRequest request, @PathVariable int pageNumber, Model model,ModelMap map) {
+	public String ListForm(HttpServletRequest request, @PathVariable int pageNumber, Model model, ModelMap map) {
 		map.addAttribute("header", "header_admin");
 		map.addAttribute("footer", "footer_admin");
-		PagedListHolder<?> pages = (PagedListHolder<?>) request.getSession().getAttribute("listCategory");
+		PagedListHolder<?> pageLs = (PagedListHolder<?>) request.getSession().getAttribute("listCategory");
 		int pagesize = 6;
 		List<Category> categoryList = categoryservice.findAll();
-		if (pages == null) {
-			pages = new PagedListHolder<>(categoryList);
-			pages.setPageSize(pagesize);
+		if (pageLs == null) {
+			pageLs = new PagedListHolder<>(categoryList);
+			pageLs.setPageSize(pagesize);
 		} else {
 			final int goToPage = pageNumber - 1;
-			if (goToPage <= pages.getPageCount() && goToPage >= 0) {
-				pages.setPage(goToPage);
+			if (goToPage <= pageLs.getPageCount() && goToPage >= 0) {
+				pageLs.setPage(goToPage);
 			}
 		}
-		request.getSession().setAttribute("listCategory", pages);
-		int current = pages.getPage() + 1;
+		request.getSession().setAttribute("listCategory", pageLs);
+		int current = pageLs.getPage() + 1;
 		int begin = Math.max(1, current - categoryList.size());
-		int end = Math.min(begin + 5, pages.getPageCount());
-		int totalPageCount = pages.getPageCount();
+		int end = Math.min(begin + 5, pageLs.getPageCount());
+		int totalPageCount = pageLs.getPageCount();
 		String baseUrl = "/categorylist/page/";
 
 		model.addAttribute("beginIndex", begin);
@@ -85,7 +84,7 @@ public class CategoryListController {
 		model.addAttribute("currentIndex", current);
 		model.addAttribute("totalPageCount", totalPageCount);
 		model.addAttribute("baseUrl", baseUrl);
-		model.addAttribute("categoriesL", pages);
+		model.addAttribute("categoryL", pageLs);
 
 		int pagesizeCP = 10;
 		PagedListHolder<?> pagePubs = null;
@@ -98,49 +97,64 @@ public class CategoryListController {
 		if (pagePubs == null) {
 			pagePubs = new PagedListHolder<>(listPub);
 			pagePubs.setPageSize(pagesizeCP);
-		} 
+		}
 		model.addAttribute("publishers", pagePubs);
 		model.addAttribute("categories", pageCates);
-		
+
 		return "categoryList";
 	}
-	
+
 	@GetMapping("/categorylist/delete/{id}")
 	public String delete(@PathVariable long id, RedirectAttributes redirect) {
 		categoryservice.delete(id);
 		redirect.addFlashAttribute("success", "Deleted book successfully!");
 		return "redirect:/categorylist";
 	}
-	
+
 	@GetMapping("/categorylist/search/{pageNumber}")
 	public String search(@RequestParam("s") String s, Model model, HttpServletRequest request,
-			@PathVariable int pageNumber,ModelMap map) {
+			@PathVariable int pageNumber, ModelMap map) {
 		map.addAttribute("header", "header_admin");
 		map.addAttribute("footer", "footer_admin");
+		int pagesizeCP = 10;
+		PagedListHolder<?> pagePubs = null;
+		PagedListHolder<?> pageCates = null;
+		List<Publishers> listPub = (List<Publishers>) publisherService.findAll();
+		List<Category> listCate = categoryservice.findAll();
+		if (pageCates == null) {
+			pageCates = new PagedListHolder<>(listCate);
+			pageCates.setPageSize(pagesizeCP);
+		}
+		if (pagePubs == null) {
+			pagePubs = new PagedListHolder<>(listPub);
+			pagePubs.setPageSize(pagesizeCP);
+		}
+		model.addAttribute("publishers", pagePubs);
+		model.addAttribute("categories", pageCates);
 		if (s.equals("")) {
 			return "redirect:/categorylist";
 		}
-		
+
 		List<Category> categoryList = categoryservice.findByName(s);
 		if (categoryList == null) {
 			return "redirect:/categorylist";
 		}
-		PagedListHolder<?> pages = (PagedListHolder<?>) request.getSession().getAttribute("listCategory");
+		PagedListHolder<?> pageLs = (PagedListHolder<?>) request.getSession().getAttribute("listCategory");
 		int pagesize = 4;
 
-		pages = new PagedListHolder<>(categoryList);
-		pages.setPageSize(pagesize);
-		
+		pageLs = new PagedListHolder<>(categoryList);
+		pageLs.setPageSize(pagesize);
+
 		final int goToPage = pageNumber - 1;
-		if (goToPage <= pages.getPageCount() && goToPage >= 0) {
-			pages.setPage(goToPage);
+		if (goToPage <= pageLs.getPageCount() && goToPage >= 0) {
+			pageLs.setPage(goToPage);
 		}
 
-		request.getSession().setAttribute("listCategory", pages);
-		int current = pages.getPage() + 1;
+		request.getSession().setAttribute("listCategory", pageLs);
+		int current = pageLs.getPage() + 1;
 		int begin = Math.max(1, current - categoryList.size());
-		int end = Math.min(begin + 5, pages.getPageCount());
-		int totalPageCount = pages.getPageCount();
+		int end = Math.min(begin + 5, pageLs.getPageCount());
+		int totalPageCount = pageLs.getPageCount();
 		String baseUrl = "/categorylist/search/";
 
 		model.addAttribute("beginIndex", begin);
@@ -148,22 +162,7 @@ public class CategoryListController {
 		model.addAttribute("currentIndex", current);
 		model.addAttribute("totalPageCount", totalPageCount);
 		model.addAttribute("baseUrl", baseUrl);
-		model.addAttribute("categoriesL", pages);
-		
-		int pagesizeCP = 10;
-		PagedListHolder<?> pagePubs = null;
-		PagedListHolder<?> pageCates = null;
-		List<Publishers> listPub = (List<Publishers>) publisherService.findAll();
-		if (pageCates == null) {
-			pageCates = new PagedListHolder<>(categoryList);
-			pageCates.setPageSize(pagesizeCP);
-		}
-		if (pagePubs == null) {
-			pagePubs = new PagedListHolder<>(listPub);
-			pagePubs.setPageSize(pagesizeCP);
-		} 
-		model.addAttribute("publishers", pagePubs);
-		model.addAttribute("categories", pageCates);
+		model.addAttribute("categoryL", pageLs);
 
 		return "categoryList";
 	}
