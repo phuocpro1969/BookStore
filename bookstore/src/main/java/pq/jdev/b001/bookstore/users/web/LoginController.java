@@ -1,9 +1,11 @@
 package pq.jdev.b001.bookstore.users.web;
 
 import java.security.Principal;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,9 +24,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import pq.jdev.b001.bookstore.books.model.Book;
 import pq.jdev.b001.bookstore.category.model.Category;
 import pq.jdev.b001.bookstore.category.service.CategoryAddEditService;
-import pq.jdev.b001.bookstore.books.model.Book;
 import pq.jdev.b001.bookstore.listbooks.service.ListBookService;
 import pq.jdev.b001.bookstore.publishers.model.Publishers;
 import pq.jdev.b001.bookstore.publishers.service.PublisherService;
@@ -39,13 +41,13 @@ public class LoginController {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private PublisherService publisherService;
 
 	@Autowired
 	private CategoryAddEditService categoryservice;
-	
+
 	@GetMapping({ "/" })
 	public String root(Authentication authentication, ModelMap map, Model model, HttpServletRequest request,
 			Principal principal) {
@@ -64,12 +66,12 @@ public class LoginController {
 		if (pages == null) {
 			pages = new PagedListHolder<>(listH);
 			pages.setPageSize(pagesize);
-		} 
+		}
 		if (principal == null)
 			request.getSession().setAttribute("bookListC", pages);
 		else
 			request.getSession().setAttribute("bookListR", pages);
-		
+
 		int current = pages.getPage() + 1;
 		int begin = Math.max(1, current - listH.size());
 		int end = Math.min(begin + 5, pages.getPageCount());
@@ -82,8 +84,7 @@ public class LoginController {
 		model.addAttribute("totalPageCount", totalPageCount);
 		model.addAttribute("baseUrl", baseUrl);
 		model.addAttribute("books", pages);
-		
-		 
+
 		int pagesizeCP = 10;
 		PagedListHolder<?> pagePubs = null;
 		PagedListHolder<?> pageCates = null;
@@ -96,10 +97,10 @@ public class LoginController {
 		if (pagePubs == null) {
 			pagePubs = new PagedListHolder<>(listPub);
 			pagePubs.setPageSize(pagesizeCP);
-		} 
+		}
 		model.addAttribute("publishers", pagePubs);
 		model.addAttribute("categories", pageCates);
-		
+
 		if (authentication != null) {
 			Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 			List<String> roles = new ArrayList<String>();
@@ -163,7 +164,7 @@ public class LoginController {
 		model.addAttribute("totalPageCount", totalPageCount);
 		model.addAttribute("baseUrl", baseUrl);
 		model.addAttribute("books", pages);
-		
+
 		int pagesizeCP = 10;
 		PagedListHolder<?> pagePubs = null;
 		PagedListHolder<?> pageCates = null;
@@ -176,7 +177,7 @@ public class LoginController {
 		if (pagePubs == null) {
 			pagePubs = new PagedListHolder<>(listPub);
 			pagePubs.setPageSize(pagesizeCP);
-		} 
+		}
 		model.addAttribute("publishers", pagePubs);
 		model.addAttribute("categories", pageCates);
 
@@ -262,20 +263,19 @@ public class LoginController {
 			listBookGet = getList(per);
 		}
 		List<Book> list = new ArrayList<Book>();
-
 		for (Book a : listBookGet) {
-			if (String.valueOf(a.getId()).equalsIgnoreCase(s) || a.getTitle().equalsIgnoreCase(s)
-					|| is(a.getDomain(), s) || is(a.getAuthors(), s))
+			if (is(String.valueOf(a.getId()), s) || is(a.getTitle(), s) || is(a.getDomain(), s)
+					|| is(a.getAuthors(), s) || is(publisherService.findOne(a.getPublisher().getId()).getPublisher(), s))
 				list.add(a);
 		}
-
+		
 		for (Book a : listBookGet) {
-			if (error(a.getTitle(), s) || error(a.getDomain(), s) || error(a.getAuthors(), s))
+			if (error(String.valueOf(a.getId()), s) || error(a.getTitle(), s) || error(a.getDomain(), s)
+					|| error(a.getAuthors(), s) || error(publisherService.find(a.getPublisher().getId()).getPublisher(),s))
 				if (!list.contains(a))
 					list.add(a);
 		}
 
-		
 		int pagesize = 4;
 
 		pages = new PagedListHolder<>(list);
@@ -303,7 +303,7 @@ public class LoginController {
 		model.addAttribute("totalPageCount", totalPageCount);
 		model.addAttribute("baseUrl", baseUrl);
 		model.addAttribute("books", pages);
-		
+
 		int pagesizeCP = 10;
 		PagedListHolder<?> pagePubs = null;
 		PagedListHolder<?> pageCates = null;
@@ -316,7 +316,7 @@ public class LoginController {
 		if (pagePubs == null) {
 			pagePubs = new PagedListHolder<>(listPub);
 			pagePubs.setPageSize(pagesizeCP);
-		} 
+		}
 		model.addAttribute("publishers", pagePubs);
 		model.addAttribute("categories", pageCates);
 
@@ -398,16 +398,32 @@ public class LoginController {
 	}
 
 	boolean is(String a, String b) {
+		a = unAccent(a);
+		b = unAccent(b);
 		b.replace("+", " ");
+		b.replace("%20", " ");
+		b = b.toLowerCase();
+		a = a.toLowerCase();
 		return b.equalsIgnoreCase(a);
 	}
 
 	boolean error(String a, String b) {
+		a = unAccent(a);
+		b = unAccent(b);
+		b.replace("%20", "+");
+		b = b.toLowerCase();
+		a = a.toLowerCase();
 		String[] arr = b.split("\\+");
 		for (String item : arr)
 			if (a.contains(item))
 				return true;
 		return false;
+	}
+
+	public static String unAccent(String s) {
+		String temp = Normalizer.normalize(s, Normalizer.Form.NFD);
+		Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+		return pattern.matcher(temp).replaceAll("").replaceAll("Đ", "D").replace("đ", "d");
 	}
 
 }

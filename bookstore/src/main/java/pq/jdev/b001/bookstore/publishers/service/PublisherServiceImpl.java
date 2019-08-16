@@ -39,13 +39,13 @@ public class PublisherServiceImpl implements PublisherService {
 	}
 
 	@Override
-	public void delete(int id) {
+	public void delete(long id) {
 		// TODO Auto-generated method stub
 		publisherRepository.deleteById((long) id);
 	}
 
 	@Override
-	public Publishers findOne(int id) {
+	public Publishers findOne(long id) {
 		// TODO Auto-generated method stub
 		return publisherRepository.findById((long) id).get();
 	}

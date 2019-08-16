@@ -61,7 +61,7 @@ public class CategoryListController {
 		map.addAttribute("header", "header_admin");
 		map.addAttribute("footer", "footer_admin");
 		PagedListHolder<?> pageLs = (PagedListHolder<?>) request.getSession().getAttribute("listCategory");
-		int pagesize = 6;
+		int pagesize = 4;
 		List<Category> categoryList = categoryservice.findAll();
 		if (pageLs == null) {
 			pageLs = new PagedListHolder<>(categoryList);

@@ -16,7 +16,7 @@ public interface PublisherService {
 	/* List<Publishers> search(String q); */
 	
 	public Long count();
-	void delete(int id);
-	Publishers findOne(int id);
+	void delete(long id);
+	Publishers findOne(long id);
 	void save(Publishers contact);
 }

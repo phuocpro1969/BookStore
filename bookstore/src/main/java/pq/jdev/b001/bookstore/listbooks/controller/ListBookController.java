@@ -1,9 +1,11 @@
 package pq.jdev.b001.bookstore.listbooks.controller;
 
 import java.security.Principal;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -228,7 +230,21 @@ public class ListBookController {
 				map.addAttribute("footer", "footer_admin");
 			}
 		}
-		
+		int pagesizeCP = 10;
+		PagedListHolder<?> pagePubs = null;
+		PagedListHolder<?> pageCates = null;
+		List<Publishers> listPub = (List<Publishers>) publisherService.findAll();
+		List<Category> categoryList = categoryservice.findAll();
+		if (pageCates == null) {
+			pageCates = new PagedListHolder<>(categoryList);
+			pageCates.setPageSize(pagesizeCP);
+		}
+		if (pagePubs == null) {
+			pagePubs = new PagedListHolder<>(listPub);
+			pagePubs.setPageSize(pagesizeCP);
+		} 
+		model.addAttribute("publishers", pagePubs);
+		model.addAttribute("categories", pageCates);
 		model.addAttribute("book", new Book());
 		
 		return "savebook";
@@ -261,6 +277,21 @@ public class ListBookController {
 				map.addAttribute("footer", "footer_login");
 				return "redirect:/";
 		}
+		int pagesizeCP = 10;
+		PagedListHolder<?> pagePubs = null;
+		PagedListHolder<?> pageCates = null;
+		List<Publishers> listPub = (List<Publishers>) publisherService.findAll();
+		List<Category> categoryList = categoryservice.findAll();
+		if (pageCates == null) {
+			pageCates = new PagedListHolder<>(categoryList);
+			pageCates.setPageSize(pagesizeCP);
+		}
+		if (pagePubs == null) {
+			pagePubs = new PagedListHolder<>(listPub);
+			pagePubs.setPageSize(pagesizeCP);
+		} 
+		model.addAttribute("publishers", pagePubs);
+		model.addAttribute("categories", pageCates);
 		model.addAttribute("book", listBookService.findOne(id));
 		return "savebook";
 	}
@@ -336,13 +367,14 @@ public class ListBookController {
 		List<Book> list = new ArrayList<Book>();
 
 		for (Book a : listBookGet) {
-			if (String.valueOf(a.getId()).equalsIgnoreCase(s) || a.getTitle().equalsIgnoreCase(s)
-					|| is(a.getDomain(), s) || is(a.getAuthors(), s))
+			if (is(String.valueOf(a.getId()), s) || is(a.getTitle(), s) || is(a.getDomain(), s)
+					|| is(a.getAuthors(), s) || is(publisherService.findOne(a.getPublisher().getId()).getPublisher(), s))
 				list.add(a);
 		}
 
 		for (Book a : listBookGet) {
-			if (error(a.getTitle(), s) || error(a.getDomain(), s) || error(a.getAuthors(), s))
+			if (error(String.valueOf(a.getId()), s) || error(a.getTitle(), s) || error(a.getDomain(), s)
+					|| error(a.getAuthors(), s) || error(publisherService.find(a.getPublisher().getId()).getPublisher(),s))
 				if (!list.contains(a))
 					list.add(a);
 		}
@@ -406,15 +438,35 @@ public class ListBookController {
 	}
 
 	boolean is(String a, String b) {
+		a = unAccent(a);
+		b = unAccent(b);
 		b.replace("+", " ");
+		b.replace("%20", " ");
+		b = b.toLowerCase();
+		a = a.toLowerCase();
 		return b.equalsIgnoreCase(a);
 	}
-	
+
 	boolean error(String a, String b) {
+		a = unAccent(a);
+		b = unAccent(b);
+		System.out.println(a);
+		System.out.println(b);
+		b.replace("%20", "+");
+		b = b.toLowerCase();
+		a = a.toLowerCase();
 		String[] arr = b.split("\\+");
+		System.out.println(a);
+		System.out.println(arr.toString());
 		for (String item : arr)
 			if (a.contains(item))
 				return true;
 		return false;
+	}
+
+	public static String unAccent(String s) {
+		String temp = Normalizer.normalize(s, Normalizer.Form.NFD);
+		Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+		return pattern.matcher(temp).replaceAll("").replaceAll("Đ", "D").replace("đ", "d");
 	}
 }

@@ -1,9 +1,11 @@
 package pq.jdev.b001.bookstore.users.web;
 
 import java.security.Principal;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -250,13 +252,13 @@ public class AdminController {
 		List<Person> list = new ArrayList<Person>();
 
 		for (Person a : listUserGet) {
-			if (a.getId().toString().equalsIgnoreCase(kw) || a.getUsername().equalsIgnoreCase(kw)
+			if (is(a.getId().toString(),kw) || is(a.getUsername(),kw)
 					|| is(a.getFirstname(), kw) || is(a.getLastname(), kw) || is(a.getAddress(), kw))
 				list.add(a);
 		}
 
 		for (Person a : listUserGet) {
-			if (error(a.getFirstname(), kw) || error(a.getLastname(), kw) || error(a.getAddress(), kw))
+			if (error(a.getId().toString(), kw) || error(a.getFirstname(), kw) || error(a.getLastname(), kw) || error(a.getAddress(), kw))
 				if (!list.contains(a))
 					list.add(a);
 		}
@@ -320,15 +322,35 @@ public class AdminController {
 	}
 
 	boolean is(String a, String b) {
+		a = unAccent(a);
+		b = unAccent(b);
 		b.replace("+", " ");
+		b.replace("%20", " ");
+		b = b.toLowerCase();
+		a = a.toLowerCase();
 		return b.equalsIgnoreCase(a);
 	}
 
 	boolean error(String a, String b) {
+		a = unAccent(a);
+		b = unAccent(b);
+		System.out.println(a);
+		System.out.println(b);
+		b.replace("%20", "+");
+		b = b.toLowerCase();
+		a = a.toLowerCase();
 		String[] arr = b.split("\\+");
+		System.out.println(a);
+		System.out.println(arr.toString());
 		for (String item : arr)
 			if (a.contains(item))
 				return true;
 		return false;
+	}
+
+	public static String unAccent(String s) {
+		String temp = Normalizer.normalize(s, Normalizer.Form.NFD);
+		Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+		return pattern.matcher(temp).replaceAll("").replaceAll("Đ", "D").replace("đ", "d");
 	}
 }
