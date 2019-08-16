@@ -213,6 +213,7 @@ img {
 #templatemo_content #templatemo_content_left {
 	float: left;
 	width: 200px;
+	height:524px;
 	padding: 10px 0px 0px 0px;
 	background-color: #171716;
 	border: 1px solid #212120;
@@ -221,7 +222,7 @@ img {
 #templatemo_content #templatemo_content_right {
 	float: right;
 	width: 740px;
-	height:505px;
+	height:524px;
 	padding: 0px 0px 0px 0px;
 	background-color: #171716;
 }
@@ -372,6 +373,10 @@ img {
     margin:0 auto;
 	background: #1C1C1C;
 	color: red;
+}
+
+.col-md-4{
+	position: unset;
 }
 
 .col-md-6{

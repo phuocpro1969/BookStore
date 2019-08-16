@@ -14,7 +14,7 @@ public class PublisherServiceImpl implements PublisherService {
 	PublisherRepository publisherRepository;
 
 	@Override
-	public List<Publishers> findall() {
+	public List<Publishers> findAll() {
 		// TODO Auto-generated method stub
 		return (List<Publishers>) publisherRepository.findAll();
 	}

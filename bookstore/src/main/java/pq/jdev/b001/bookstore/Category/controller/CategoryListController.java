@@ -19,6 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pq.jdev.b001.bookstore.Category.model.Category;
 import pq.jdev.b001.bookstore.Category.service.CategoryAddEditService;
 import pq.jdev.b001.bookstore.Category.web.CategoryWeb;
+import pq.jdev.b001.bookstore.publisher.models.Publishers;
+import pq.jdev.b001.bookstore.publishers.service.PublisherService;
 
 /*
  * CategoryListController Class
@@ -37,6 +39,9 @@ import pq.jdev.b001.bookstore.Category.web.CategoryWeb;
 public class CategoryListController {
 	@Autowired
 	private CategoryAddEditService categoryservice;
+	
+	@Autowired
+	private PublisherService publisherService;
 
 	@ModelAttribute("category")
 	public CategoryWeb categoryweb() {
@@ -57,7 +62,7 @@ public class CategoryListController {
 		map.addAttribute("header", "header_admin");
 		map.addAttribute("footer", "footer_admin");
 		PagedListHolder<?> pages = (PagedListHolder<?>) request.getSession().getAttribute("listCategory");
-		int pagesize = 3;
+		int pagesize = 6;
 		List<Category> categoryList = categoryservice.findAll();
 		if (pages == null) {
 			pages = new PagedListHolder<>(categoryList);
@@ -80,8 +85,23 @@ public class CategoryListController {
 		model.addAttribute("currentIndex", current);
 		model.addAttribute("totalPageCount", totalPageCount);
 		model.addAttribute("baseUrl", baseUrl);
-		model.addAttribute("categories", pages);
+		model.addAttribute("categoriesL", pages);
 
+		int pagesizeCP = 10;
+		PagedListHolder<?> pagePubs = null;
+		PagedListHolder<?> pageCates = null;
+		List<Publishers> listPub = (List<Publishers>) publisherService.findAll();
+		if (pageCates == null) {
+			pageCates = new PagedListHolder<>(categoryList);
+			pageCates.setPageSize(pagesizeCP);
+		}
+		if (pagePubs == null) {
+			pagePubs = new PagedListHolder<>(listPub);
+			pagePubs.setPageSize(pagesizeCP);
+		} 
+		model.addAttribute("publishers", pagePubs);
+		model.addAttribute("categories", pageCates);
+		
 		return "categoryList";
 	}
 	
@@ -106,7 +126,7 @@ public class CategoryListController {
 			return "redirect:/categorylist";
 		}
 		PagedListHolder<?> pages = (PagedListHolder<?>) request.getSession().getAttribute("listCategory");
-		int pagesize = 3;
+		int pagesize = 4;
 
 		pages = new PagedListHolder<>(categoryList);
 		pages.setPageSize(pagesize);
@@ -128,7 +148,22 @@ public class CategoryListController {
 		model.addAttribute("currentIndex", current);
 		model.addAttribute("totalPageCount", totalPageCount);
 		model.addAttribute("baseUrl", baseUrl);
-		model.addAttribute("categories", pages);
+		model.addAttribute("categoriesL", pages);
+		
+		int pagesizeCP = 10;
+		PagedListHolder<?> pagePubs = null;
+		PagedListHolder<?> pageCates = null;
+		List<Publishers> listPub = (List<Publishers>) publisherService.findAll();
+		if (pageCates == null) {
+			pageCates = new PagedListHolder<>(categoryList);
+			pageCates.setPageSize(pagesizeCP);
+		}
+		if (pagePubs == null) {
+			pagePubs = new PagedListHolder<>(listPub);
+			pagePubs.setPageSize(pagesizeCP);
+		} 
+		model.addAttribute("publishers", pagePubs);
+		model.addAttribute("categories", pageCates);
 
 		return "categoryList";
 	}

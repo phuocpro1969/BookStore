@@ -18,7 +18,7 @@ public class Publishers {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	@Column(name = "PUBLISHINGHOUSE")
+	@Column(name = "PUBLISHINGHOUSE", columnDefinition = "VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin")
 	private String publisher;
 
 	@Column(name = "CREATEDUSER")

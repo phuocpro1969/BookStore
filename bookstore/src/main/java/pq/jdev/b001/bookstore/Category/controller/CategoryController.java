@@ -1,6 +1,9 @@
 package pq.jdev.b001.bookstore.Category.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -9,8 +12,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import pq.jdev.b001.bookstore.Category.model.Category;
 import pq.jdev.b001.bookstore.Category.service.CategoryAddEditService;
 import pq.jdev.b001.bookstore.Category.web.CategoryWeb;
+import pq.jdev.b001.bookstore.publisher.models.Publishers;
+import pq.jdev.b001.bookstore.publishers.service.PublisherService;
 
 /*
  * CategoryController Class
@@ -30,6 +36,9 @@ public class CategoryController {
 	@Autowired
 	private CategoryAddEditService categoryservice;
 	
+	@Autowired
+	private PublisherService publisherService;
+	
 	@ModelAttribute("category")
 	public CategoryWeb categoryweb() {
 		return new CategoryWeb();
@@ -39,6 +48,22 @@ public class CategoryController {
 	public String AddEditForm(Model model,ModelMap map) {
 		map.addAttribute("header", "header_admin");
 		map.addAttribute("footer", "footer_admin");
+		
+		int pagesizeCP = 10;
+		PagedListHolder<?> pagePubs = null;
+		PagedListHolder<?> pageCates = null;
+		List<Publishers> listPub = (List<Publishers>) publisherService.findAll();
+		List<Category> categoryList = categoryservice.findAll();
+		if (pageCates == null) {
+			pageCates = new PagedListHolder<>(categoryList);
+			pageCates.setPageSize(pagesizeCP);
+		}
+		if (pagePubs == null) {
+			pagePubs = new PagedListHolder<>(listPub);
+			pagePubs.setPageSize(pagesizeCP);
+		} 
+		model.addAttribute("publishers", pagePubs);
+		model.addAttribute("categories", pageCates);
 		return "categoryadd";
 	}
 	
