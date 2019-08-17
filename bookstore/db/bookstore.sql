@@ -1,4 +1,4 @@
--- phpMyAdmin SQL Dump
+﻿-- phpMyAdmin SQL Dump
 -- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
@@ -118,6 +118,7 @@ INSERT INTO `category` (`id`, `createdate`, `name`, `updatedate`) VALUES
 (37, '2019-08-16', 'Tiếng Anh', '2019-08-16'),
 (39, '2019-08-16', 'Hóa Học ', '2019-08-16'),
 (40, '2019-08-16', 'Vật Lý', '2019-08-16');
+(41, '2019-08-17', 'Self-Help', '2019-08-17');
 
 -- --------------------------------------------------------
 

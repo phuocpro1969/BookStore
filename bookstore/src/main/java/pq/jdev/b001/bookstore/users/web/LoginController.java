@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import pq.jdev.b001.bookstore.books.model.Book;
 import pq.jdev.b001.bookstore.category.model.Category;
-import pq.jdev.b001.bookstore.category.service.CategoryAddEditService;
+import pq.jdev.b001.bookstore.category.service.CategoryService;
 import pq.jdev.b001.bookstore.listbooks.service.ListBookService;
 import pq.jdev.b001.bookstore.publishers.model.Publishers;
 import pq.jdev.b001.bookstore.publishers.service.PublisherService;
@@ -46,7 +46,7 @@ public class LoginController {
 	private PublisherService publisherService;
 
 	@Autowired
-	private CategoryAddEditService categoryservice;
+	private CategoryService categoryservice;
 
 	@GetMapping({ "/" })
 	public String root(Authentication authentication, ModelMap map, Model model, HttpServletRequest request,

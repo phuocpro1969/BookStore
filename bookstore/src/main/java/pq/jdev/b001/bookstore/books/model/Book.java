@@ -16,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 import pq.jdev.b001.bookstore.category.model.Category;
 import pq.jdev.b001.bookstore.publishers.model.Publishers;
@@ -34,13 +35,14 @@ public class Book implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
 	private long id;
-
+	
 	@Column(name = "TITLE", columnDefinition = "VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin")
 	private String title;
-
-	@Column(name = "PRICE")
-	private long price;
 	
+	@NotEmpty
+	@Column(name = "PRICE")
+	private Long price;
+
 	@Column(name = "OK")
 	private int ok;
 
@@ -71,11 +73,12 @@ public class Book implements Serializable {
 
 	@OneToMany(mappedBy = "book")
 	private Set<Upload> uploads;
-
-	@Column(name = "PUBLISHED_YEAR")
-	private int publishedYear;
-
 	
+	@Column(name = "PUBLISHED_YEAR")
+	private Integer publishedYear;
+
+	@Column(name = "DESCRIPTION")
+	private String description;
 
 	public long getId() {
 		return id;
@@ -165,11 +168,11 @@ public class Book implements Serializable {
 		this.uploads = uploads;
 	}
 
-	public int getPublishedYear() {
+	public Integer getPublishedYear() {
 		return publishedYear;
 	}
 
-	public void setPublishedYear(int publishedYear) {
+	public void setPublishedYear(Integer publishedYear) {
 		this.publishedYear = publishedYear;
 	}
 
@@ -179,6 +182,14 @@ public class Book implements Serializable {
 
 	public void setOk(int ok) {
 		this.ok = ok;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

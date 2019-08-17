@@ -1,6 +1,7 @@
 package pq.jdev.b001.bookstore.books.service;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -29,14 +30,14 @@ import pq.jdev.b001.bookstore.category.repository.CategoryRepository;
 import pq.jdev.b001.bookstore.publishers.model.Publishers;
 import pq.jdev.b001.bookstore.publishers.repository.PublisherRepository;
 import pq.jdev.b001.bookstore.users.model.Person;
-import pq.jdev.b001.bookstore.users.repository.UserRepository;
+import pq.jdev.b001.bookstore.users.service.UserService;
 
 @Service
 @Transactional
 public class BookServiceImpl implements BookService {
 
 	@Autowired
-	private UserRepository userRepository;
+	private UserService userService;
 
 	@Autowired
 	private PublisherRepository publisherRepository;
@@ -59,11 +60,7 @@ public class BookServiceImpl implements BookService {
 	@Autowired
 	private ServletContext context;
 
-	/** Method findCurrentUser is used to get the current user information */
-	public Person findCurrentUser(User user) throws Exception {
-		Person person = userRepository.findByUsername(user.getUsername());
-		return person;
-	}
+	private FileInputStream stream;
 
 	/**
 	 * Method checkInput is used to check if user didn't miss any important
@@ -81,7 +78,7 @@ public class BookServiceImpl implements BookService {
 		}
 		return false;
 	}
-	
+
 	/** Method save is used to insert a new book to database */
 	public UploadInformationDTO save(UploadInformationDTO dto, Person person, List<String> categoriesId)
 			throws Exception {
@@ -108,6 +105,8 @@ public class BookServiceImpl implements BookService {
 			book.setPublisher(dtoPublisher);
 			/** Set book.publishedYear */
 			book.setPublishedYear(dto.getPublishedYear());
+			/** Set book.description */
+			book.setDescription(dto.getDescription());
 			/** Save book to get book.id */
 			Book dbBook = bookRepository.save(book);
 			/** Upload book's cover and set book.picture */
@@ -118,7 +117,7 @@ public class BookServiceImpl implements BookService {
 						String originalFileName = pictureFile.getOriginalFilename();
 						String modifiedFileName = dbBook.getId() + "_" + FilenameUtils.getBaseName(originalFileName)
 								+ "." + FilenameUtils.getExtension(originalFileName);
-						File storePictureFile = uploadPathService.getFilePath(modifiedFileName, "images/bookscover");
+						File storePictureFile = uploadPathService.getFilePath(modifiedFileName, "img/bookscover");
 						if (storePictureFile != null) {
 							try {
 								FileUtils.writeByteArrayToFile(storePictureFile, pictureFile.getBytes());
@@ -180,8 +179,9 @@ public class BookServiceImpl implements BookService {
 						zipFileService.zipDirectory(dir, modifiedFilePath);
 						/** Delete temporary directory */
 						FileUtils.deleteDirectory(dir);
+						dbUpload.setModifiedFileName(dbUpload.getId() + ".zip");
 					} else {
-						modifiedFilePath = sourcePath + "uploads" + File.separator + dbUpload.getId()
+						modifiedFilePath = sourcePath + "uploads" + File.separator + dbUpload.getId() + "."
 								+ FilenameUtils.getExtension(originalFileUploadName);
 						for (MultipartFile file : dto.getFiles()) {
 							String filename = file.getOriginalFilename();
@@ -198,13 +198,15 @@ public class BookServiceImpl implements BookService {
 								}
 							}
 						}
+						dbUpload.setModifiedFileName(
+								dbUpload.getId() + "." + FilenameUtils.getExtension(originalFileUploadName));
 					}
 					/** Set upload.originalFileName */
 					dbUpload.setOriginalFileName(originalFileUploadName);
 					/** Set upload.modifiedFileName */
 					dbUpload.setModifiedFileName(dbUpload.getId() + ".zip");
 					/** Set upload.modifiedFilePath */
-					dbUpload.setModifiedFilePath(modifiedFilePath);
+					dbUpload.setModifiedFilePath(sourcePath + "uploads" + File.separator + dbUpload.getId());
 					/** Save upload */
 					uploadRepository.save(dbUpload);
 				} catch (Exception e) {
@@ -219,11 +221,9 @@ public class BookServiceImpl implements BookService {
 				Long categoryId = Long.parseLong(categoryStringId);
 				t = categoryRepository.getOne(categoryId);
 				categories.add(t);
-				System.out.println(t.getName());
 				t = new Category();
 			}
 			dbBook.setCategories(categories);
-			bookRepository.saveUpdateCategories(dbBook.getId(), categories);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -232,7 +232,7 @@ public class BookServiceImpl implements BookService {
 	}
 
 	public boolean checkRightInteraction(User user, Book book) throws Exception {
-		Person currentUser = findCurrentUser(user);
+		Person currentUser = userService.findByUsername(user.getUsername());
 		if (currentUser.getPower() == 2) {
 			return true;
 		} else if (currentUser.getPower() == 1) {
@@ -276,15 +276,17 @@ public class BookServiceImpl implements BookService {
 			bookRepository.saveUpdatePublisher(bookid, dtoPublisher);
 			/** Update book.publishedYear */
 			bookRepository.saveUpdatePublishedYear(bookid, dto.getPublishedYear());
+			/** Update book.description */
+			bookRepository.saveUpdateDescription(bookid, dto.getDescription());
 			/** Update book.picture */
-			if (!dto.getPictureFile().isEmpty()) {
+			if (dto.getPictureFile() != null) {
 				try {
 					MultipartFile pictureFile = dto.getPictureFile();
 					if (pictureFile != null & StringUtils.hasText(pictureFile.getOriginalFilename())) {
 						String originalFileName = pictureFile.getOriginalFilename();
 						String modifiedFileName = bookid + "_" + FilenameUtils.getBaseName(originalFileName) + "."
 								+ FilenameUtils.getExtension(originalFileName);
-						File storePictureFile = uploadPathService.getFilePath(modifiedFileName, "images/bookscover");
+						File storePictureFile = uploadPathService.getFilePath(modifiedFileName, "img/bookscover");
 						if (storePictureFile != null) {
 							try {
 								FileUtils.writeByteArrayToFile(storePictureFile, pictureFile.getBytes());
@@ -305,7 +307,6 @@ public class BookServiceImpl implements BookService {
 				/** Set upload.uploadedDate */
 				long millisUploadedDate = System.currentTimeMillis();
 				java.sql.Date dateUploadedDate = new java.sql.Date(millisUploadedDate);
-				System.out.println(dateUploadedDate);
 				upload.setUploadedDate(dateUploadedDate);
 				/** Set upload.book */
 				upload.setBook(editBook);
@@ -371,7 +372,7 @@ public class BookServiceImpl implements BookService {
 						/** Set upload.modifiedFileName */
 						dbUpload.setModifiedFileName(dbUpload.getId() + ".zip");
 						/** Set upload.modifiedFilePath */
-						dbUpload.setModifiedFilePath(modifiedFilePath);
+						dbUpload.setModifiedFilePath(sourcePath + "uploads" + File.separator + dbUpload.getId());
 						/** Save upload */
 						uploadRepository.save(dbUpload);
 					} catch (Exception e) {
@@ -387,12 +388,9 @@ public class BookServiceImpl implements BookService {
 				Long categoryId = Long.parseLong(categoryStringId);
 				t = categoryRepository.getOne(categoryId);
 				categories.add(t);
-				System.out.println(t.getName());
 				t = new Category();
 			}
 			editBook.setCategories(categories);
-			bookRepository.saveUpdateCategories(editBook.getId(), categories);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -406,7 +404,7 @@ public class BookServiceImpl implements BookService {
 		for (Book book : allBooks) {
 			String stringCategories = "";
 			for (Category category : book.getCategories()) {
-				stringCategories += category;
+				stringCategories = stringCategories + category.getName() + ", ";
 			}
 			temp.setCurrentBook(book);
 			books.add(temp);
@@ -435,9 +433,8 @@ public class BookServiceImpl implements BookService {
 		List<SelectCategory> selectCategories = new ArrayList<SelectCategory>();
 		SelectCategory temp = new SelectCategory();
 		for (int i = 0; i < categories.size(); i++) {
-			System.out.println(categories.get(i).getName());
+			temp.setCategory(categories.get(i));
 			for (Category o : editBook.getCategories()) {
-				temp.setCategory(o);
 				if (o.getId() == categories.get(i).getId()) {
 					temp.setFlag(1);
 				}
@@ -447,4 +444,5 @@ public class BookServiceImpl implements BookService {
 		}
 		return selectCategories;
 	}
+
 }

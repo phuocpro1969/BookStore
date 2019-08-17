@@ -2,20 +2,22 @@ package pq.jdev.b001.bookstore.books.web.dto;
 
 import java.sql.Date;
 import java.util.List;
+
 import javax.validation.constraints.NotEmpty;
+
 import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
 
-import pq.jdev.b001.bookstore.category.model.Category;
 import pq.jdev.b001.bookstore.books.model.SelectCategory;
+import pq.jdev.b001.bookstore.category.model.Category;
 import pq.jdev.b001.bookstore.publishers.model.Publishers;
 
 public class UploadInformationDTO {
 	@NotEmpty
 	private String title;
 
-	@Nullable
-	private long price;
+	@NotEmpty
+	private Long price;
 
 	@Nullable
 	private String domain;
@@ -32,9 +34,9 @@ public class UploadInformationDTO {
 
 	private List<Publishers> publishers;
 
-	@Nullable
-	private int publishedYear;
-	
+	@NotEmpty
+	private Integer publishedYear;
+
 	private List<String> categoriesId;
 
 	@Nullable
@@ -47,7 +49,7 @@ public class UploadInformationDTO {
 
 	private List<SelectCategory> selectCategories;
 
-	private String uploadMessage;
+	private String description;
 
 	public String getTitle() {
 		return title;
@@ -57,11 +59,11 @@ public class UploadInformationDTO {
 		this.title = title;
 	}
 
-	public long getPrice() {
+	public Long getPrice() {
 		return price;
 	}
 
-	public void setPrice(long price) {
+	public void setPrice(Long price) {
 		this.price = price;
 	}
 
@@ -113,11 +115,11 @@ public class UploadInformationDTO {
 		this.publishers = publishers;
 	}
 
-	public int getPublishedYear() {
+	public Integer getPublishedYear() {
 		return publishedYear;
 	}
 
-	public void setPublishedYear(int publishedYear) {
+	public void setPublishedYear(Integer publishedYear) {
 		this.publishedYear = publishedYear;
 	}
 
@@ -161,12 +163,12 @@ public class UploadInformationDTO {
 		this.selectCategories = selectCategories;
 	}
 
-	public String getUploadMessage() {
-		return uploadMessage;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setUploadMessage(String uploadMessage) {
-		this.uploadMessage = uploadMessage;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

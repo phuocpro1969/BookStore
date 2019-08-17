@@ -23,7 +23,7 @@ import pq.jdev.b001.bookstore.category.web.CategoryWeb;
  * */
 
 @Service
-public class CategoryAddEditServiceImpl implements CategoryAddEditService{
+public class CategoryServiceImpl implements CategoryService{
 	@Autowired
 	private CategoryRepository categoryrepository;
 	@Override

@@ -38,7 +38,7 @@
 				<h1>List Book</h1>
 
 				<div class="gom">
-					<a th:href="@{/book/create}"
+					<a th:href="@{/bookview/createform}"
 						style="font-size: 14pt; margin: 30px 0px 10px 20px; float: left">Add
 						New Book</a>
 					<form class="searchbar" th:action="@{/book/search/1}" method="get">
@@ -86,10 +86,10 @@
 										Now</a>
 								</div>
 								<div class="detail_button">
-									<a href="subpage.html">Detail</a>
+									<a th:href="@{/bookview/infor/{id}(id=${contact.id})}">Detail</a>
 								</div>
 								<div>
-									<a th:href="@{/book/{id}/edit(id=${contact.id})}"><span></span>Edit</a>
+									<a th:href="@{/bookview/editform/{id}(id=${contact.id})}"><span></span>Edit</a>
 									<a th:href="@{/book/{id}/delete(id=${contact.id})}"><span></span>Delete</a>
 									</td>
 								</div>
@@ -106,7 +106,7 @@
 							<div class="product book1"
 								th:each="contact,iterStat : ${books.pageList}">
 								<div class="images">
-									<img th:src="@{|/images/${contact.picture}|}"
+									<img th:src="@{|/img/bookscover/${contact.picture}|}"
 										style="width: 30px; height: 30px; margin: 0px 0px 0px 10px;">
 								</div>
 
@@ -123,11 +123,11 @@
 											Now</a>
 									</div>
 									<div class="detail_button">
-										<a href="subpage.html">Detail</a>
+										<a th:href="@{/bookview/infor/{id}(id=${contact.id})}">Detail</a>
 									</div>
 									<div th:if="${ok == 'TRUE'} or ${contact.ok == 1}"
 										style="margin: -12px 0px 0px 90px;">
-										<a th:href="@{/book/{id}/edit(id=${contact.id})}"><span></span>Edit</a>
+										<a th:href="@{/bookview/editform/{id}(id=${contact.id})}"><span></span>Edit</a>
 										<a th:href="@{/book/{id}/delete(id=${contact.id})}"><span></span>Delete</a>
 									</div>
 								</ul>
