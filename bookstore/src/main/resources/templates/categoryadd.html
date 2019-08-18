@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<link rel="stylesheet" href="style.css" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<title>Add Category</title>
+<link th:href="@{/css/templatemo_style.css}" rel="stylesheet"
+	type="text/css" />
+<link th:href="@{/css/category.css}" rel="stylesheet" type="text/css" />
+<style>
+input[type=text] {
+	border: 0;
+	width: 200px;
+	padding: 12px 10px;
+	background: none;
+	color: yellow;
+	margin: 20px 10;
+	display: block;
+	border: 2px solid rgb(42, 206, 51);
+	border-radius: 24px;
+	outline: none;
+	transition: 0.25s;
+}
+
+input[type=text]:focus {
+	width: 280px;
+	border-color: rgb(32, 236, 209);
+}
+
+button {
+	background-color: white;
+	/* Green */
+	border: 2px solid #4caf50;
+	color: black;
+	padding: 16px 24px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	-webkit-transition-duration: 0.4s;
+	/* Safari */
+	transition-duration: 0.4s;
+	overflow: hidden;
+	cursor: pointer;
+}
+
+button:hover {
+	background-color: #4caf50;
+	color: white;
+}
+</style>
+</head>
+
+<body>
+
+	<nav th:replace="indexheader :: ${header}"></nav>
+	<div id="templatemo_container">
+		<div id="templatemo_content">
+
+			<div id="templatemo_content_left">
+				<nav th:replace="indexheader :: templatemo_content_left_sec"></nav>
+			</div>
+			<!-- end of content left -->
+
+			<div id="templatemo_content_right">
+				<form th:action="@{/addition}" th:object="${category}" method="post">
+					<div>
+						<label for="name">Category Name</label> <input type="text"
+							id="categoryName" name="name" placeholder="new category..."
+							required />
+					</div>
+					<button type="submit" id="add">ADD</button>
+				</form>
+			</div>
+			<div class="cleaner_with_height">&nbsp;</div>
+		</div>
+		<!-- end of content -->
+
+		<footer th:replace="indexheader :: ${footer}"></footer>
+</body>
+
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>BookShare_SharingInformation</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<style type="text/css">
+fieldset.scheduler-border 
+{
+    border: 1px groove #ddd !important;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    margin: 0 0 1.5em 0 !important;
+    -webkit-box-shadow:  0px 0px 0px 0px #000;
+            box-shadow:  0px 0px 0px 0px #000;
+}
+
+legend.scheduler-border 
+{
+    font-size: 1.5em !important;
+    color: #27AE60;
+    font-weight: bold !important;
+    text-align: left !important;
+}
+</style>
+</head>
+<body>
+<div class="jumbotron text-center">
+  <h1>Book Share</h1>
+  <p>Books are a uniquely portable magic.</p> 
+</div>
+
+<form th:action="@{/bookview/createform}" th:object = "${dto}" method="post">
+        <fieldset class="scheduler-border">
+            <legend class="scheduler-border"><center>Book Information</center></legend>
+            <br>
+
+            <div class="form-group row">
+  <label class="col-3 col-form-label">Title</label>
+  <div class="col-8">
+    <input class="form-control" type="text" name="title" id="title" th:value = "${dto.title}">
+  </div>
+</div>
+
+<div class="form-group row">
+  <label class="col-3 col-form-label">Price</label>
+  <div class="col-8">
+    <input class="form-control" type="text" name="price" id="price" th:value = "${dto.price}">
+  </div>
+</div>
+
+<div class="form-group row">
+  <label class="col-3 col-form-label">Domain</label>
+  <div class="col-8">
+    <input class="form-control" type="text" name="domain" id="domain" th:value = "${dto.domain}">
+  </div>
+</div>
+
+<div class="form-group row">
+  <label class="col-3 col-form-label">Book's Cover</label>
+  <div class="col-8">
+    <input class="form-control" type="file" accept=".jpeg, .jpg, .png, .gif, .tif, .tiff, .psd, .pdf, .eps, .ai, .indd, .raw, .bmp, .cr2, .nef, .orf, .sr2, .xcf, .cdr" name="picture" id="picture">
+  </div>
+</div>
+
+           <div class="form-group row">
+  <label class="col-3 col-form-label">Authors</label>
+  <div class="col-8">
+    <input class="form-control" type="text" name="authors" id="authors" th:value = "${dto.authors}">
+  </div>
+</div>
+
+<div class="form-group row">
+          <label class="col-3 col-form-label">Publishers</label>
+          <div class="col-8">
+          <select name="listpublishers">
+                <option value="" disabled selected>Please select</option>
+                <option th:each="publisher : ${dto.listpublishers}" th:text = "${publisher.name}" th:value = "${publisher}"></option>
+            </select>
+          </div>
+</div>
+
+            <div class="form-group row">
+  <label class="col-3 col-form-label">Year</label>
+  <div class="col-8">
+    <input class="form-control" type="text" name="year" id="year" th:value = "${dto.year}">
+  </div>
+</div>
+
+            <div class="form-group row">
+  <label class="col-3 col-form-label">Upload Book's File</label>
+  <div class="col-8">
+    <input class="form-control" type="file" name="file" id="file">
+  </div>
+</div>
+
+ 	<div class="form-group row">
+       	<label class="col-3 col-form-label">Categories</label>
+     	<div class="col-8">
+     	<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">Please select<span class="glyphicon glyphicon-cog"></span> <span class="caret"></span></button>
+     	<div>
+     	<ul class="dropdown-menu" th:if="${listcategories.empty}">
+  <li>No Category</li>
+</ul>
+     	</div>
+     	
+     	<div>
+     	<ul class="dropdown-menu" id="listcategories" name="listcategories" th:if="${dto.listcategories != null}">
+  <li th:each="categories : ${dto.listcategories}" th:text="${categories.name}" th:value = "${categories}"><a href="#" class="small" data-value="option1" tabIndex="-1"><input type="checkbox" th:text="${categories.author}"/>&nbsp;</a></li>
+</ul>
+
+     	</div>
+
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+                    $(document).ready(function() 
+                    {
+                        var options = [];
+
+$( '.dropdown-menu a' ).on( 'click', function( event ) 
+{
+
+   	var $target = $( event.currentTarget ),
+       	val = $target.attr( 'data-value' ),
+       	$inp = $target.find( 'input' ),
+       	idx;
+
+   	if ( ( idx = options.indexOf( val ) ) > -1 ) {
+      options.splice( idx, 1 );
+      setTimeout( function() { $inp.prop( 'checked', false ) }, 0);
+   	} else {
+      options.push( val );
+      setTimeout( function() { $inp.prop( 'checked', true ) }, 0);
+   	}
+
+   	$( event.target ).blur();
+      
+   	console.log( options );
+   	return false;
+});
+                    });
+                    /*]]>*/
+                </script>
+  </div>
+ 	</div>
+</fieldset>
+    <div class="jumbotron text-center">
+        <button class="btn btn-success" type="submit">Submit &raquo;</button>
+    </div>
+ </form>
+</body>
+</html>
