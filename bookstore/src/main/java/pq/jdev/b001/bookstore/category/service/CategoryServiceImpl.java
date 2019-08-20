@@ -25,7 +25,7 @@ public class CategoryServiceImpl implements CategoryService{
 		return (List<Category>) categoryRepository.findAll();
 	}
 	@Override
-	public void delete(long id) {
+	public void delete(Long id) {
 		categoryRepository.deleteById(id);
 	}
 	@Override
@@ -36,8 +36,8 @@ public class CategoryServiceImpl implements CategoryService{
 	public Category findCategoryByID(Long id) {
 		return categoryRepository.findById(id).get();
 	}
-//	@Override
-//	public void changeCategory(Long idTo, Long idFrom) {
-//		bookService.changeCategory(idTo, idFrom);
-//	}
+	@Override
+	public List<Category> findCategoryByIdBook(Long idBook) {
+		return categoryRepository.findCategoryByIdBook(idBook);
+	}
 }

@@ -49,7 +49,7 @@ public class ListBookController {
 
 	@Autowired
 	private CategoryService categoryservice;
-	
+
 	@Autowired
 	private UploadPathService uploadPathService;
 
@@ -292,6 +292,7 @@ public class ListBookController {
 			pagePubs = new PagedListHolder<>(listPub);
 			pagePubs.setPageSize(pagesizeCP);
 		}
+		
 		model.addAttribute("publishers", pagePubs);
 		model.addAttribute("categories", pageCates);
 		model.addAttribute("book", listBookService.findOne(id));
@@ -322,7 +323,8 @@ public class ListBookController {
 		for (GrantedAuthority a : authorities) {
 			roles.add(a.getAuthority());
 		}
-		if ((authentication != null) && ((userService.findByUsername(authentication.getName()).getId() == listBookService.findOne(id).getPerson().getId()) || (isAdmin(roles)))) {
+		if ((authentication != null) && ((userService.findByUsername(authentication.getName())
+				.getId() == listBookService.findOne(id).getPerson().getId()) || (isAdmin(roles)))) {
 			uploadPathService.deleteAllUploadByIdBook(id);
 			listBookService.delete(id);
 			redirect.addFlashAttribute("success", "Deleted book successfully!");

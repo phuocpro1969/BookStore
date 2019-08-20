@@ -1,5 +1,6 @@
 package pq.jdev.b001.bookstore.books.service;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.security.core.userdetails.User;
@@ -36,6 +37,8 @@ public interface BookService {
 
 	public void changePublisher(Long idFrom, Long idTo);
 
-//	public void changeCategory(Long idTo, Long idFrom);
+	public void changeCategory(long idTo, long idFrom);
+	
+	public List<Book> findBookByCategories(Collection<Category> categories);
 
 }

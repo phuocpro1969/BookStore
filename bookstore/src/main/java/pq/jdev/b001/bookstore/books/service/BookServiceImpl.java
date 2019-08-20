@@ -3,6 +3,7 @@ package pq.jdev.b001.bookstore.books.service;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -140,7 +141,7 @@ public class BookServiceImpl implements BookService {
 			System.out.println(dateUploadedDate);
 			upload.setUploadedDate(dateUploadedDate);
 			/** Set upload.book */
-			upload.setBook(dbBook);
+			upload.setBookId(dbBook.getId());
 			/** Save upload to get upload.id */
 			Upload dbUpload = uploadRepository.save(upload);
 			/** Upload book's files */
@@ -214,6 +215,7 @@ public class BookServiceImpl implements BookService {
 				}
 				/** Complete handling with upload */
 			}
+			book.setUploads(dbUpload);
 			/** Set book.categories */
 			Set<Category> categories = new HashSet<Category>();
 			Category t = new Category();
@@ -309,7 +311,7 @@ public class BookServiceImpl implements BookService {
 				java.sql.Date dateUploadedDate = new java.sql.Date(millisUploadedDate);
 				upload.setUploadedDate(dateUploadedDate);
 				/** Set upload.book */
-				upload.setBook(editBook);
+				upload.setBookId(editBook.getId());
 				/** Save upload to get upload.id */
 				Upload dbUpload = uploadRepository.save(upload);
 				/** Upload book's files */
@@ -380,7 +382,9 @@ public class BookServiceImpl implements BookService {
 					}
 				}
 				/** Complete handling with upload */
+				editBook.setUploads(dbUpload);
 			}
+			
 			/** Set book.categories */
 			Set<Category> categories = new HashSet<Category>();
 			Category t = new Category();
@@ -434,7 +438,7 @@ public class BookServiceImpl implements BookService {
 		SelectCategory temp = new SelectCategory();
 		for (int i = 0; i < categories.size(); i++) {
 			temp.setCategory(categories.get(i));
-			for (Category o : editBook.getCategories()) {
+			for (Category o : categoryRepository.findCategoryByIdBook(editBook.getId())) {
 				if (o.getId() == categories.get(i).getId()) {
 					temp.setFlag(1);
 				}
@@ -450,8 +454,31 @@ public class BookServiceImpl implements BookService {
 		bookRepository.changePublisher(idFrom, idTo);
 	}
 
-//	@Override
-//	public void changeCategory(Long idTo, Long idFrom) {
-//	}
+	@Override
+	public List<Book> findBookByCategories(Collection<Category> categories) {
+		return bookRepository.findByCategories(categories);
+	}
 
+	@Override
+	public void changeCategory(long idTo, long idFrom) {
+		Category cateTo = categoryRepository.findById(idTo);
+		Collection<Category> categoryCollection = new HashSet<Category>();
+		Set<Category> categorySet = new HashSet<Category>();
+		categoryCollection.add(categoryRepository.findById(idFrom));
+		List<Book> lb = findBookByCategories(categoryCollection);
+		for (Book b : lb) {
+			List<Category> lc = categoryRepository.findCategoryByIdBook(b.getId());
+			for (Category c : lc){
+				if (c.getId() != idFrom)
+					categorySet.add(c);
+			}
+			if (categorySet==null)
+				categorySet.add(cateTo);
+			Book book = bookRepository.findByid(b.getId());
+			book.setCategories(categorySet);
+			System.out.println(book.getId());
+			bookRepository.save(book);
+			categorySet = new HashSet<Category>();
+		}
+	}
 }

@@ -2,6 +2,7 @@ package pq.jdev.b001.bookstore.books.model;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,8 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -39,9 +39,19 @@ public class Upload implements Serializable {
 	@Column(name = "UPLOADED_DATE")
 	private Date uploadedDate;
 
-	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinColumn(name = "BOOK_ID")
-	private Book book;
+	@OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL)
+	private Set<Book> books;
+	
+	@Column(name = "BOOK_ID")
+	private long bookId;
+
+	public long getBookId() {
+		return bookId;
+	}
+
+	public void setBookId(long bookId) {
+		this.bookId = bookId;
+	}
 
 	public long getId() {
 		return id;
@@ -83,12 +93,12 @@ public class Upload implements Serializable {
 		this.uploadedDate = uploadedDate;
 	}
 
-	public Book getBook() {
-		return book;
+	public Set<Book> getBooks() {
+		return books;
 	}
 
-	public void setBook(Book book) {
-		this.book = book;
+	public void setBooks(Set<Book> books) {
+		this.books = books;
 	}
 
 }

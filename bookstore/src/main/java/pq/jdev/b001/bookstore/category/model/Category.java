@@ -55,6 +55,31 @@ public class Category {
 
 
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((books == null) ? 0 : books.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Category other = (Category) obj;
+		if (books == null) {
+			if (other.books != null)
+				return false;
+		} else if (!books.equals(other.books))
+			return false;
+		return true;
+	}
+
 	public Category(Long createId, Long updateId) {
 		this.createId = createId;
 		this.updateId = updateId;
@@ -108,5 +133,5 @@ public class Category {
 	public void setUpdateId(Long updateId) {
 		this.updateId = updateId;
 	}
-
+	
 }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import pq.jdev.b001.bookstore.books.service.BookService;
 import pq.jdev.b001.bookstore.category.model.Category;
 import pq.jdev.b001.bookstore.category.service.CategoryService;
 import pq.jdev.b001.bookstore.publishers.model.Publishers;
@@ -31,6 +32,9 @@ public class CategoryListController {
 
 	@Autowired
 	private PublisherService publisherService;
+	
+	@Autowired
+	private BookService bookService;
 
 	@Autowired
 	private UserService userService;
@@ -93,11 +97,14 @@ public class CategoryListController {
 	}
 
 	@GetMapping("/categoryList/delete/{id}")
-	public String delete(@PathVariable long id, RedirectAttributes redirect, Authentication authentication) {
-		if ((authentication != null) && (id != 1)) {
+	public String delete(@PathVariable Long id, RedirectAttributes redirect, Authentication authentication) {
+		if (id == (long)(1))
+			return "redirect:/categoryList";
+		if ((authentication != null) && (id != (long)(1))) {
+			bookService.changeCategory((long) 1, id);
 			categoryService.delete(id);
 			redirect.addFlashAttribute("success", "Deleted category successfully!");
-		}
+		} 
 		return "redirect:/categoryList";
 	}
 

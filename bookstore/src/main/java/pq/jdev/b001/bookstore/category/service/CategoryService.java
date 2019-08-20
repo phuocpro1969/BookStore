@@ -13,6 +13,6 @@ public interface CategoryService {
 	List<Category> findAll();
 	List<Category> findByName(String name);
 	Category findCategoryByID(Long id);
-	void delete(long id);
-//	void changeCategory(Long idTo, Long idFrom);
+	void delete(Long id);
+	List<Category> findCategoryByIdBook(Long idBook);
 }

@@ -43,11 +43,11 @@ public class DataNewService implements ApplicationListener<ContextRefreshedEvent
 	@Transactional
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		
-		if (categoryRepository.findById(1) == null) {
+		if (categoryRepository.findById((long) 1) == null) {
 			categoryRepository.save(new Category("updatingCategory", getTimeNow(), getTimeNow(), (long) 1 , (long) 1));
 		}
 		
-		if (publisherRepository.findByPublisher("updatingPublisher") == null) {
+		if (publisherRepository.findById((long) 1) == null) {
 			publisherRepository.save(new Publishers("updatingPublisher", getTimeNow(), getTimeNow(), (long) 1 , (long) 1));
 		}
 		

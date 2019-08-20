@@ -159,14 +159,6 @@ public class Person implements Serializable{
 		this.sex = sex;
 	}
 
-	@Override
-	public String toString() {
-		return "Person [id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", phone=" + phone
-				+ ", Address=" + Address + ", email=" + email + ", sex=" + sex + ", power=" + power + ", username="
-				+ username + ", password=" + password + ", birthday=" + birthday + ", create_date=" + create_date
-				+ ", update_date=" + update_date + ", roles=" + roles + "]";
-	}
-
 	public int getPower() {
 		return power;
 	}

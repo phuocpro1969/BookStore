@@ -62,10 +62,4 @@ public class PasswordResetToken {
     public boolean isExpired() {
         return new Date().after(this.expiryDate);
     }
-
-	@Override
-	public String toString() {
-		return "PasswordResetToken [id=" + id + ", token=" + token + ", person=" + person + ", expiryDate=" + expiryDate
-				+ "]";
-	}
 }

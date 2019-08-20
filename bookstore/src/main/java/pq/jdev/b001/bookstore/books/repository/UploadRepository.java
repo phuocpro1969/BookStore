@@ -13,12 +13,12 @@ import pq.jdev.b001.bookstore.books.model.Upload;
 
 @Repository
 public interface UploadRepository extends CrudRepository<Upload, Long> {
-	@Query("SELECT u FROM Upload u WHERE u.book.id = :id and u.uploadedDate = :uploadedDate")
+	@Query("SELECT u FROM Upload u WHERE u.bookId = :id and u.uploadedDate = :uploadedDate")
 	public Upload findUploadByIdBookandUploadedDate(@Param("id") Long id, @Param("uploadedDate") Date uploadedDate);
-	@Query("SELECT u FROM Upload u WHERE u.book.id = :id")
+	@Query("SELECT u FROM Upload u WHERE u.bookId = :id")
 	public List<Upload> findUploadByIdBook(@Param("id") Long id);
 	
 	@Modifying
-    @Query("Delete FROM Upload u where u.book.id = :id")
+    @Query("Delete FROM Upload u where u.bookId = :id")
     void deleteByIdUpload(@Param("id") Long id);
 }

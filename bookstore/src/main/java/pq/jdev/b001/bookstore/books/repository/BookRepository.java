@@ -1,6 +1,8 @@
 package pq.jdev.b001.bookstore.books.repository;
 
 import java.sql.Date;
+import java.util.Collection;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -10,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import pq.jdev.b001.bookstore.books.model.Book;
+import pq.jdev.b001.bookstore.category.model.Category;
 import pq.jdev.b001.bookstore.publishers.model.Publishers;
 import pq.jdev.b001.bookstore.users.model.Person;
 
@@ -65,12 +68,12 @@ public interface BookRepository extends CrudRepository<Book, Long>, JpaRepositor
 
 	public Book findByTitle(String title);
 	
+	public Book findByid(Long id);
+	
 	@Modifying
 	@Query("Update Book book set book.publisher.id = :idTo where book.publisher.id = :idFrom")
 	public void changePublisher(@Param("idFrom") Long idFrom, @Param("idTo") Long idTo);
-	
-//	@Modifying
-//	@Query("Select b From Book b where b.categories.id = :idFrom")
-//	public List<Book> findBookByCategoryId(@Param("idFrom") Long idFrom);
 
+	@Query("SELECT b FROM Book b INNER JOIN b.categories c WHERE c IN (:categories)")
+	List<Book> findByCategories(@Param("categories") Collection<Category> categories);
 }

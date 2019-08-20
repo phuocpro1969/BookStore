@@ -118,10 +118,4 @@ public class Publishers {
 		this.createId = createId;
 		this.updateId = updateId;
 	}
-
-	@Override
-	public String toString() {
-		return "Publishers [id=" + id + ", publisher=" + publisher + ", createId=" + createId + ", createDate="
-				+ createDate + ", updateId=" + updateId + ", updateDate=" + updateDate + ", books=" + books + "]";
-	}
 }

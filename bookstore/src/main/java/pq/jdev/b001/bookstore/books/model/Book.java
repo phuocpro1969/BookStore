@@ -15,7 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -74,8 +73,9 @@ public class Book implements Serializable {
 			@JoinColumn(name = "CATEGORY_ID") })
 	private Set<Category> categories;
 
-	@OneToMany(mappedBy = "book")
-	private Set<Upload> uploads;
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "UPLOAD_ID")
+	private Upload uploads;
 	
 	@Column(name = "PUBLISHED_YEAR")
 	private Integer publishedYear;
@@ -163,11 +163,11 @@ public class Book implements Serializable {
 		this.categories = categories;
 	}
 
-	public Set<Upload> getUploads() {
+	public Upload getUploads() {
 		return uploads;
 	}
 
-	public void setUploads(Set<Upload> uploads) {
+	public void setUploads(Upload uploads) {
 		this.uploads = uploads;
 	}
 
@@ -194,5 +194,5 @@ public class Book implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+	
 }
