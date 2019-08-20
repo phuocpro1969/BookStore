@@ -73,10 +73,6 @@ public class UserUpdateInfoController {
 			return "redirect:/";
 		
 	    if (result.hasErrors()) {
-	    	System.out.println(result.toString());
-	    	System.out.println(userDto.getPassword());
-	    	System.out.println(userDto.getConfirmPassword());
-	    	System.out.println(userDto.getConfirmPassword().equals(userDto.getPassword()));
 	    	map.addAttribute("header", "header_user");
 			map.addAttribute("footer", "footer_user");
             return "accountUser";

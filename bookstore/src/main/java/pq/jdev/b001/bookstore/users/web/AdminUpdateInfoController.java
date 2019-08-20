@@ -1,6 +1,9 @@
 package pq.jdev.b001.bookstore.users.web;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,6 +12,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -115,16 +119,37 @@ public class AdminUpdateInfoController {
 	// delete user
 	@PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-	public String delete(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response) {
+	public String delete(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response,
+			Authentication authentication) {
 		if (id != 1) {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			if (auth != null) {
-				new SecurityContextLogoutHandler().logout(request, response, auth);
+			if (auth.getName() == authentication.getName()) {
+				if (isAdmin(roleAuthentication(auth)) && (userService.findByUsername(auth.getName()).getId() == id)) {
+					new SecurityContextLogoutHandler().logout(request, response, auth);
+				}
+				userService.deleteTokenByIdPerson(id);
+				userService.delete(id);
+				return "redirect:/";
 			}
-			userService.deleteTokenByIdPerson(id);
-			userService.delete(id);
-			return "redirect:/";
-		} else
-			return "redirect:/accountAdmin";
+		}
+		return "redirect:/accountAdmin";
+	}
+
+	public List<String> roleAuthentication(Authentication authentication) {
+		List<String> roles = new ArrayList<String>();
+		if (authentication != null) {
+			Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+			for (GrantedAuthority a : authorities) {
+				roles.add(a.getAuthority());
+			}
+		}
+		return roles;
+	}
+
+	private boolean isAdmin(List<String> roles) {
+		if (roles.contains("ROLE_ADMIN")) {
+			return true;
+		}
+		return false;
 	}
 }

@@ -49,7 +49,7 @@ public class AdminController {
 
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
-	
+
 	@Autowired
 	private PublisherService publisherService;
 
@@ -116,7 +116,7 @@ public class AdminController {
 	@GetMapping("/page/{pageNumber}")
 	public String showListUser(HttpServletRequest request, @PathVariable int pageNumber, Model model, ModelMap map,
 			Principal principal) {
-		
+
 		map.addAttribute("header", "header_admin");
 		map.addAttribute("footer", "footer_admin");
 
@@ -143,7 +143,7 @@ public class AdminController {
 		model.addAttribute("totalPageCount", totalPageCount);
 		model.addAttribute("baseUrl", baseUrl);
 		model.addAttribute("list", pages);
-		
+
 		int pagesizeCP = 15;
 		PagedListHolder<?> pagePubs = null;
 		PagedListHolder<?> pageCates = null;
@@ -156,10 +156,10 @@ public class AdminController {
 		if (pagePubs == null) {
 			pagePubs = new PagedListHolder<>(listPub);
 			pagePubs.setPageSize(pagesizeCP);
-		} 
+		}
 		model.addAttribute("publishers", pagePubs);
 		model.addAttribute("categories", pageCates);
-		
+
 		return "listUser";
 	}
 
@@ -215,7 +215,8 @@ public class AdminController {
 
 	@RequestMapping(value = "/edit-user-{id}/changePassword", method = RequestMethod.POST)
 	public String UpdatePassUserAccount(@PathVariable long id,
-			@ModelAttribute("person") @Valid UserUpdateInfoDto userDto, BindingResult result, ModelMap map, Principal principal) {
+			@ModelAttribute("person") @Valid UserUpdateInfoDto userDto, BindingResult result, ModelMap map,
+			Principal principal) {
 		if (principal == null)
 			return "redirect:/";
 		String url = "";
@@ -237,10 +238,10 @@ public class AdminController {
 	@GetMapping("/search/{pageNumber}")
 	public String searchUser(HttpServletRequest request, @RequestParam("keyword") String kw,
 			@PathVariable("pageNumber") int pageNumber, Model model, ModelMap map, Principal principal) {
-		
+
 		if (principal == null)
 			return "redirect:/";
-		
+
 		map.addAttribute("header", "header_admin");
 		map.addAttribute("footer", "footer_admin");
 
@@ -252,13 +253,14 @@ public class AdminController {
 		List<Person> list = new ArrayList<Person>();
 
 		for (Person a : listUserGet) {
-			if (is(a.getId().toString(),kw) || is(a.getUsername(),kw)
-					|| is(a.getFirstname(), kw) || is(a.getLastname(), kw) || is(a.getAddress(), kw))
+			if (is(a.getId().toString(), kw) || is(a.getUsername(), kw) || is(a.getFirstname(), kw)
+					|| is(a.getLastname(), kw) || is(a.getAddress(), kw))
 				list.add(a);
 		}
 
 		for (Person a : listUserGet) {
-			if (error(a.getId().toString(), kw) || error(a.getFirstname(), kw) || error(a.getLastname(), kw) || error(a.getAddress(), kw))
+			if (error(a.getId().toString(), kw) || error(a.getFirstname(), kw) || error(a.getLastname(), kw)
+					|| error(a.getAddress(), kw))
 				if (!list.contains(a))
 					list.add(a);
 		}
@@ -297,26 +299,26 @@ public class AdminController {
 	@GetMapping(value = { "/delete-user-{id}" })
 	public String deleteUser(@PathVariable long id, Principal principal, HttpServletRequest request,
 			HttpServletResponse response) {
-		
+
 		if (principal == null)
 			return "redirect:/";
 		if (id != 1) {
-		int key_user_delete = userService.findById(id).getPower();
-		Person p = userService.findByUsername(principal.getName());
-		int key_admin = p.getPower();
+			int key_user_delete = userService.findById(id).getPower();
+			Person p = userService.findByUsername(principal.getName());
+			int key_admin = p.getPower();
 
-		if (id == p.getId()) {
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			if (auth != null) {
-				new SecurityContextLogoutHandler().logout(request, response, auth);
+			if (id == p.getId()) {
+				Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+				if (auth != null) {
+					new SecurityContextLogoutHandler().logout(request, response, auth);
+				}
 			}
-		}
 
-		if (key_admin >= key_user_delete) {
-			userService.changeAuthorize(p.getId(), id);
-			userService.deleteTokenByIdPerson(id);
-			userService.delete(id);
-		}
+			if (key_admin >= key_user_delete) {
+				userService.changeAuthorize(p.getId(), id);
+				userService.deleteTokenByIdPerson(id);
+				userService.delete(id);
+			}
 		}
 		return "redirect:/listUser";
 	}

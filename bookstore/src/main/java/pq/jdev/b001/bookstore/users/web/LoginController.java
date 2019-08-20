@@ -102,11 +102,7 @@ public class LoginController {
 		model.addAttribute("categories", pageCates);
 
 		if (authentication != null) {
-			Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-			List<String> roles = new ArrayList<String>();
-			for (GrantedAuthority a : authorities) {
-				roles.add(a.getAuthority());
-			}
+			List<String> roles = roleAuthentication(authentication);
 			if (isUser(roles)) {
 				map.addAttribute("header", "header_user");
 				map.addAttribute("footer", "footer_user");
@@ -182,11 +178,7 @@ public class LoginController {
 		model.addAttribute("categories", pageCates);
 
 		if (authentication != null) {
-			Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-			List<String> roles = new ArrayList<String>();
-			for (GrantedAuthority a : authorities) {
-				roles.add(a.getAuthority());
-			}
+			List<String> roles = roleAuthentication(authentication);
 			if (isUser(roles)) {
 				map.addAttribute("header", "header_user");
 				map.addAttribute("footer", "footer_user");
@@ -224,11 +216,7 @@ public class LoginController {
 			HttpServletRequest request, @PathVariable int pageNumber, ModelMap map, Principal principal) {
 
 		if (authentication != null) {
-			Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-			List<String> roles = new ArrayList<String>();
-			for (GrantedAuthority a : authorities) {
-				roles.add(a.getAuthority());
-			}
+			List<String> roles = roleAuthentication(authentication);
 			if (isUser(roles)) {
 				map.addAttribute("header", "header_user");
 				map.addAttribute("footer", "footer_user");
@@ -248,10 +236,6 @@ public class LoginController {
 			return "redirect:/";
 		}
 
-//		List<Book> list = listBookService.search(s);
-//		if (list == null) {
-//			return "redirect:/book";
-//		}
 		PagedListHolder<?> pages = null;
 		List<Book> listBookGet = null;
 		if (principal == null) {
@@ -351,11 +335,7 @@ public class LoginController {
 	@GetMapping(value = "/403")
 	public String accessDeniedPage(Authentication authentication, ModelMap map, Model model) {
 		if (authentication != null) {
-			Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-			List<String> roles = new ArrayList<String>();
-			for (GrantedAuthority a : authorities) {
-				roles.add(a.getAuthority());
-			}
+			List<String> roles = roleAuthentication(authentication);
 
 			if (isUser(roles)) {
 				map.addAttribute("header", "header_user");
@@ -400,6 +380,17 @@ public class LoginController {
 		return userName;
 	}
 
+	public List<String> roleAuthentication(Authentication authentication) {
+		List<String> roles = new ArrayList<String>();
+		if (authentication != null) {
+			Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+			for (GrantedAuthority a : authorities) {
+				roles.add(a.getAuthority());
+			}
+		}
+		return roles;
+	}
+	
 	private boolean isUser(List<String> roles) {
 		if (roles.contains("ROLE_EMPLOYEE")) {
 			return true;

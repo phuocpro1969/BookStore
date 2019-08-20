@@ -1,7 +1,6 @@
 package pq.jdev.b001.bookstore.books.service;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -61,7 +60,7 @@ public class BookServiceImpl implements BookService {
 	@Autowired
 	private ServletContext context;
 
-	private FileInputStream stream;
+//	private FileInputStream stream;
 
 	/**
 	 * Method checkInput is used to check if user didn't miss any important
@@ -459,6 +458,7 @@ public class BookServiceImpl implements BookService {
 		return bookRepository.findByCategories(categories);
 	}
 
+	@SuppressWarnings("null")
 	@Override
 	public void changeCategory(long idTo, long idFrom) {
 		Category cateTo = categoryRepository.findById(idTo);

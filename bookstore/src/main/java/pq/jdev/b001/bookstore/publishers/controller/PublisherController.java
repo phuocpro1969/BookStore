@@ -53,43 +53,37 @@ public class PublisherController {
 	 * 
 	 * return "index"; }
 	 */
-	
+
 	@Autowired
 	private PublisherService publisherService;
 
 	@Autowired
 	private CategoryService categoryservice;
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private BookService bookService;
 
 	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/publisher/add")
-	public String create(Model model,ModelMap map, Authentication authentication, HttpServletRequest request) {
+	public String create(Model model, ModelMap map, Authentication authentication, HttpServletRequest request) {
 		if (authentication != null) {
-			Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-			List<String> roles = new ArrayList<String>();
-			for (GrantedAuthority a : authorities) {
-				roles.add(a.getAuthority());
-			}
-			
+			List<String> roles = roleAuthentication(authentication);
+
 			if (isAdmin(roles)) {
 				map.addAttribute("header", "header_admin");
 				map.addAttribute("footer", "footer_admin");
-			}
-			else if (isUser(roles)){
+			} else if (isUser(roles)) {
 				map.addAttribute("header", "header_user");
 				map.addAttribute("footer", "footer_user");
-			} 
+			}
+		} else {
+			map.addAttribute("header", "header_login");
+			map.addAttribute("footer", "footer_login");
 		}
-		else {
-				map.addAttribute("header", "header_login");
-				map.addAttribute("footer", "footer_login");
-		}
-		
+
 		int pagesizeCP = 15;
 		PagedListHolder<?> pagePubs = null;
 		PagedListHolder<?> pageCates = null;
@@ -105,33 +99,37 @@ public class PublisherController {
 		}
 		model.addAttribute("publishers", pagePubs);
 		model.addAttribute("categories", pageCates);
-		
+
 		Long idP = userService.findByUsername(authentication.getName()).getId();
 		request.getSession().setAttribute("idC", idP);
 		request.getSession().setAttribute("idU", idP);
 		model.addAttribute("publisher", new Publishers(idP, idP));
-		java.util.Date date= new java.util.Date();
+		java.util.Date date = new java.util.Date();
 		long time = date.getTime();
 		Timestamp ts = new Timestamp(time);
 		map.addAttribute("cd", ts);
 		map.addAttribute("ud", ts);
 		return "publisherAdd";
 	}
-	
+
 	@PostMapping("/publisher/save")
-	public String savePublisher(@Valid Publishers publishers, BindingResult result, RedirectAttributes redirect, HttpServletRequest request) {
-		if (result.hasErrors()) {
-			return "publisherAdd";
+	public String savePublisher(@Valid Publishers publishers, BindingResult result, RedirectAttributes redirect,
+			HttpServletRequest request, Authentication authentication) {
+
+		if (isAdmin(roleAuthentication(authentication))) {
+			if (result.hasErrors()) {
+				return "publisherAdd";
 			}
-		Long idPub = (Long) request.getSession().getAttribute("idPub");
-		if (idPub == publishers.getId())
-			publishers.setCreateDate((Timestamp)request.getSession().getAttribute("cd"));
-		publishers.setCreateId((Long)request.getSession().getAttribute("idC"));
-		publishers.setUpdateId((Long)request.getSession().getAttribute("idU"));
-		publisherService.save(publishers);
+			Long idPub = (Long) request.getSession().getAttribute("idPub");
+			if (idPub == publishers.getId())
+				publishers.setCreateDate((Timestamp) request.getSession().getAttribute("cd"));
+			publishers.setCreateId((Long) request.getSession().getAttribute("idC"));
+			publishers.setUpdateId((Long) request.getSession().getAttribute("idU"));
+			publisherService.save(publishers);
+		}
 		return "redirect:/publishersList";
 	}
-	
+
 	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/publishersList")
 	public String viewPublishersList() {
@@ -141,8 +139,8 @@ public class PublisherController {
 	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/publisher/{id}/delete")
 	public String delete(@PathVariable Long id, RedirectAttributes redirect, Authentication authentication) {
-		if (authentication != null && id != (long) 1)
-		{
+
+		if (isAdmin(roleAuthentication(authentication)) && id != (long) 1) {
 			bookService.changePublisher(id, (long) 1);
 			publisherService.delete(id);
 		}
@@ -151,7 +149,8 @@ public class PublisherController {
 
 	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/publisher/{id}/edit")
-	public String edit(@PathVariable int id, Model model, ModelMap map, HttpServletRequest request, Authentication authentication) {
+	public String edit(@PathVariable int id, Model model, ModelMap map, HttpServletRequest request,
+			Authentication authentication) {
 		map.addAttribute("header", "header_admin");
 		map.addAttribute("footer", "footer_admin");
 		int pagesizeCP = 15;
@@ -173,11 +172,11 @@ public class PublisherController {
 		request.getSession().setAttribute("cd", pub.getCreateDate());
 		request.getSession().setAttribute("idPub", pub.getId());
 		model.addAttribute("publisher", pub);
-		
+
 		Long idP = userService.findByUsername(authentication.getName()).getId();
 		request.getSession().setAttribute("idC", pub.getCreateId());
 		request.getSession().setAttribute("idU", idP);
-		java.util.Date date= new java.util.Date();
+		java.util.Date date = new java.util.Date();
 		long time = date.getTime();
 		Timestamp ts = new Timestamp(time);
 		map.addAttribute("cd", pub.getCreateDate());
@@ -185,25 +184,17 @@ public class PublisherController {
 		return "publisherAdd";
 	}
 
-	/*
-	 * @GetMapping("/publisher/search") public String search(@RequestParam("s")
-	 * String s, Model model) { if (s.equals("")) { return
-	 * "redirect:/publishersList"; }
-	 * 
-	 * model.addAttribute("publisher", publisherService.search(s)); return
-	 * "publishersList"; }
-	 */
 	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/publishersList/page/{pageNumber}")
 	public String showPage(HttpServletRequest request, @PathVariable int pageNumber, Model model, ModelMap map) {
 		map.addAttribute("header", "header_admin");
 		map.addAttribute("footer", "footer_admin");
-		
+
 		int pagesize = 8;
 		List<Publishers> list = (List<Publishers>) publisherService.findAll();
 		PagedListHolder<?> pages = new PagedListHolder<>(list);
 		pages.setPageSize(pagesize);
-		
+
 		final int goToPage = pageNumber - 1;
 		if (goToPage <= pages.getPageCount() && goToPage >= 0) {
 			pages.setPage(goToPage);
@@ -221,7 +212,7 @@ public class PublisherController {
 		model.addAttribute("totalPageCount", totalPageCount);
 		model.addAttribute("baseUrl", baseUrl);
 		model.addAttribute("publishersL", pages);
-		
+
 		int pagesizeCP = 15;
 		PagedListHolder<?> pagePubs = null;
 		PagedListHolder<?> pageCates = null;
@@ -239,7 +230,18 @@ public class PublisherController {
 		model.addAttribute("categories", pageCates);
 		return "publishersList";
 	}
-	
+
+	public List<String> roleAuthentication(Authentication authentication) {
+		List<String> roles = new ArrayList<String>();
+		if (authentication != null) {
+			Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+			for (GrantedAuthority a : authorities) {
+				roles.add(a.getAuthority());
+			}
+		}
+		return roles;
+	}
+
 	private boolean isUser(List<String> roles) {
 		if (roles.contains("ROLE_EMPLOYEE")) {
 			return true;

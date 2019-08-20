@@ -1,6 +1,8 @@
 package pq.jdev.b001.bookstore.category.controller;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -22,7 +25,6 @@ import pq.jdev.b001.bookstore.category.service.CategoryService;
 import pq.jdev.b001.bookstore.publishers.model.Publishers;
 import pq.jdev.b001.bookstore.publishers.service.PublisherService;
 import pq.jdev.b001.bookstore.users.service.UserService;
-
 
 @Controller
 public class CategoryController {
@@ -73,17 +75,38 @@ public class CategoryController {
 	}
 
 	@PostMapping("/category/save")
-	public String Add(@Valid Category category, BindingResult result, HttpServletRequest request) {
-		if (result.hasErrors()) {
-			return "categoryadd";
+	public String Add(@Valid Category category, BindingResult result, HttpServletRequest request,
+			Authentication authentication) {
+		List<String> roles = roleAuthentication(authentication);
+		if (isAdmin(roles)) {
+			if (result.hasErrors()) {
+				return "categoryadd";
+			}
+			Long idCate = (Long) request.getSession().getAttribute("idCate");
+			if (idCate == category.getId())
+				category.setCreateDate((Timestamp) request.getSession().getAttribute("cd"));
+			category.setCreateId((Long) request.getSession().getAttribute("idC"));
+			category.setUpdateId((Long) request.getSession().getAttribute("idU"));
+			categoryService.save(category);
 		}
-		Long idCate = (Long) request.getSession().getAttribute("idCate");
-		if (idCate == category.getId())
-			category.setCreateDate((Timestamp) request.getSession().getAttribute("cd"));
-		category.setCreateId((Long) request.getSession().getAttribute("idC"));
-		category.setUpdateId((Long) request.getSession().getAttribute("idU"));
-		categoryService.save(category);
-
 		return "redirect:/categoryList";
+	}
+	
+	public List<String> roleAuthentication(Authentication authentication) {
+		List<String> roles = new ArrayList<String>();
+		if (authentication != null) {
+			Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+			for (GrantedAuthority a : authorities) {
+				roles.add(a.getAuthority());
+			}
+		}
+		return roles;
+	}
+	
+	private boolean isAdmin(List<String> roles) {
+		if (roles.contains("ROLE_ADMIN")) {
+			return true;
+		}
+		return false;
 	}
 }
