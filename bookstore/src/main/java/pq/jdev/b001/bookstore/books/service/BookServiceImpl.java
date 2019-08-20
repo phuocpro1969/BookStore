@@ -68,7 +68,8 @@ public class BookServiceImpl implements BookService {
 	 */
 	public boolean checkInput(UploadInformationDTO dto) {
 		if (!dto.getTitle().equals("")) {
-			if (dto.getPublisherId() >= 0) {
+			//if (dto.getPublisherId() >= 0) 
+			{
 				for (MultipartFile file : dto.getFiles()) {
 					if (file != null && StringUtils.hasText(file.getOriginalFilename())) {
 						return true;
@@ -101,7 +102,7 @@ public class BookServiceImpl implements BookService {
 			/** Set book.person */
 			book.setPerson(person);
 			/** Set book.publisher */
-			Publishers dtoPublisher = publisherRepository.getOne(dto.getPublisherId());
+			Publishers dtoPublisher = publisherRepository.findByPublisher(dto.getPublisherName());
 			book.setPublisher(dtoPublisher);
 			/** Set book.publishedYear */
 			book.setPublishedYear(dto.getPublishedYear());
@@ -273,7 +274,7 @@ public class BookServiceImpl implements BookService {
 			/** Update book.person */
 			bookRepository.saveUpdatePerson(bookid, person);
 			/** Update book.publisher */
-			Publishers dtoPublisher = publisherRepository.getOne(dto.getPublisherId());
+			Publishers dtoPublisher = publisherRepository.findByPublisher(dto.getPublisherName());
 			bookRepository.saveUpdatePublisher(bookid, dtoPublisher);
 			/** Update book.publishedYear */
 			bookRepository.saveUpdatePublishedYear(bookid, dto.getPublishedYear());

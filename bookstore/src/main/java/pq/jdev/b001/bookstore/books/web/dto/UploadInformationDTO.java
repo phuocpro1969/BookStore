@@ -30,7 +30,7 @@ public class UploadInformationDTO {
 	@Nullable
 	private String authors;
 
-	private Long publisherId;
+	private String publisherName;
 
 	private List<Publishers> publishers;
 
@@ -99,12 +99,12 @@ public class UploadInformationDTO {
 		this.authors = authors;
 	}
 
-	public Long getPublisherId() {
-		return publisherId;
+	public String getPublisherName() {
+		return publisherName;
 	}
 
-	public void setPublisherId(Long publisherId) {
-		this.publisherId = publisherId;
+	public void setPublisherName(String publisherName) {
+		this.publisherName = publisherName;
 	}
 
 	public List<Publishers> getPublishers() {

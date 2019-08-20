@@ -25,7 +25,7 @@ public class Upload implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
-	private long id;
+	private Long id;
 
 	@Column(name = "ORIGINAL_FILE_NAME")
 	private String originalFileName;
@@ -42,22 +42,22 @@ public class Upload implements Serializable {
 	@OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL)
 	private Set<Book> books;
 	
-	@Column(name = "BOOK_ID")
-	private long bookId;
+	@Column(name = "BOOK_ID" , unique = true)
+	private Long bookId;
 
-	public long getBookId() {
+	public Long getBookId() {
 		return bookId;
 	}
 
-	public void setBookId(long bookId) {
+	public void setBookId(Long bookId) {
 		this.bookId = bookId;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

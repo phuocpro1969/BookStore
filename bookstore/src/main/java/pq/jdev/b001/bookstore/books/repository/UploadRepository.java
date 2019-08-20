@@ -19,6 +19,6 @@ public interface UploadRepository extends CrudRepository<Upload, Long> {
 	public List<Upload> findUploadByIdBook(@Param("id") Long id);
 	
 	@Modifying
-    @Query("Delete FROM Upload u where u.bookId = :id")
-    void deleteByIdUpload(@Param("id") Long id);
+    @Query("Delete FROM Upload u WHERE u.bookId = :id")
+    void deleteByIdBook(@Param("id") Long id);
 }

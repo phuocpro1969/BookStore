@@ -32,6 +32,6 @@ public class UploadPathServiceImpl implements UploadPathService {
 
 	@Override
 	public void deleteAllUploadByIdBook(Long id) {
-		uploadRepository.deleteByIdUpload(id);
+		uploadRepository.deleteByIdBook(id);
 	}
 }

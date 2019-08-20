@@ -245,7 +245,8 @@ public class BookController {
 			dto.setAuthors(editBook.getAuthors());
 			dto.setPublishers(bookService.showAllPublishers());
 			String currentSelected = editBook.getPublisher().getPublisher();
-			model.addAttribute("currentSelected", currentSelected);
+			dto.setPublisherName(currentSelected);
+			map.addAttribute("currentSelected", currentSelected);
 			dto.setPublishedYear(editBook.getPublishedYear());
 			dto.setSelectCategories(bookService.showAllCategoriesWithFlag(editBook));
 			dto.setDescription(editBook.getDescription());
