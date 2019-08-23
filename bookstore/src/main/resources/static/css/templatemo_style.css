@@ -93,16 +93,19 @@ img {
 
 #templatemo_footer {
 	width: 1000px;
+	height:100px;
+	text-align: center;
 	margin: 0 auto;
 	background: url("../images/templatemo_menu_bg.jpg") no-repeat;
-	color: #fff;
+	background-size: 1000px;
+	padding: 10px 0px 0px 0px;
 }
 
 #templatemo_footer a {
 	color: #e6e154;
 	font-size: 12px;
 	text-align: center;
-	height: 100px ;
+	font-weight: normal;
 }
 
 /* menu */
@@ -336,20 +339,7 @@ img {
 /* end of content */
 
 /* footer */
-#templatemo_footer {
-	width: 1000px;
-	text-align: center;
-	background-color: url("../images/templatemo_menu_bg.jpg") no-repeat;
-	background-size: 1000px;
-	margin: 0 auto;
-	
-	
-}
 
-#templatemo_footer a {
-	color: #e6e154;
-	font-weight: normal;
-}
 /* end of footer */
 
 .container_right {

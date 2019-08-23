@@ -33,16 +33,13 @@ public class Upload implements Serializable {
 	@Column(name = "MODIFIED_FILE_NAME")
 	private String modifiedFileName;
 
-	@Column(name = "MODIFIED_FILE_PATH")
-	private String modifiedFilePath;
-
 	@Column(name = "UPLOADED_DATE")
 	private Date uploadedDate;
 
-	@OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "uploads", cascade = CascadeType.ALL)
 	private Set<Book> books;
-	
-	@Column(name = "BOOK_ID" , unique = true)
+
+	@Column(name = "BOOK_ID")
 	private Long bookId;
 
 	public Long getBookId() {
@@ -77,14 +74,6 @@ public class Upload implements Serializable {
 		this.modifiedFileName = modifiedFileName;
 	}
 
-	public String getModifiedFilePath() {
-		return modifiedFilePath;
-	}
-
-	public void setModifiedFilePath(String modifiedFilePath) {
-		this.modifiedFilePath = modifiedFilePath;
-	}
-
 	public Date getUploadedDate() {
 		return uploadedDate;
 	}
@@ -101,4 +90,18 @@ public class Upload implements Serializable {
 		this.books = books;
 	}
 
+	public Upload() {
+	}
+
+	public Upload(Date uploadedDate, Long bookId) {
+		this.uploadedDate = uploadedDate;
+		this.bookId = bookId;
+	}
+	
+	public Upload(String originalFileName, String modifiedFileName, Date uploadedDate, Long bookId) {
+		this.originalFileName = originalFileName;
+		this.modifiedFileName = modifiedFileName;
+		this.uploadedDate = uploadedDate;
+		this.bookId = bookId;
+	}
 }

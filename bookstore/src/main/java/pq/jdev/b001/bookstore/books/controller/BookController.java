@@ -354,8 +354,7 @@ public class BookController {
 			} else {
 				map.addAttribute("header", "header_login");
 				map.addAttribute("footer", "footer_login");
-			}
-
+			}	
 			int pagesizeCP = 15;
 			PagedListHolder<?> pagePubs = null;
 			PagedListHolder<?> pageCates = null;

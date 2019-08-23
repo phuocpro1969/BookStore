@@ -39,6 +39,8 @@ public interface BookService {
 
 	public void changeCategory(long idTo, long idFrom);
 	
+	public void changeUpload(Long idTo, Long idBook);
+	
 	public List<Book> findBookByCategories(Collection<Category> categories);
 
 }

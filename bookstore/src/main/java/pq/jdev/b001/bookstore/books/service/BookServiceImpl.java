@@ -7,8 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.servlet.ServletContext;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,20 +45,15 @@ public class BookServiceImpl implements BookService {
 
 	@Autowired
 	private BookRepository bookRepository;
-
+	
 	@Autowired
 	private UploadRepository uploadRepository;
 
 	@Autowired
 	private UploadPathService uploadPathService;
 
-	@Autowired
-	private ZipFileService zipFileService;
-
-	@Autowired
-	private ServletContext context;
-
-//	private FileInputStream stream;
+//	@Autowired
+//	private ZipFileService zipFileService;
 
 	/**
 	 * Method checkInput is used to check if user didn't miss any important
@@ -68,7 +61,6 @@ public class BookServiceImpl implements BookService {
 	 */
 	public boolean checkInput(UploadInformationDTO dto) {
 		if (!dto.getTitle().equals("")) {
-			//if (dto.getPublisherId() >= 0) 
 			{
 				for (MultipartFile file : dto.getFiles()) {
 					if (file != null && StringUtils.hasText(file.getOriginalFilename())) {
@@ -118,7 +110,7 @@ public class BookServiceImpl implements BookService {
 						String originalFileName = pictureFile.getOriginalFilename();
 						String modifiedFileName = dbBook.getId() + "_" + FilenameUtils.getBaseName(originalFileName)
 								+ "." + FilenameUtils.getExtension(originalFileName);
-						File storePictureFile = uploadPathService.getFilePath(modifiedFileName, "img/bookscover");
+						File storePictureFile = uploadPathService.getFilePath(modifiedFileName, "booksCover");
 						if (storePictureFile != null) {
 							try {
 								FileUtils.writeByteArrayToFile(storePictureFile, pictureFile.getBytes());
@@ -133,22 +125,21 @@ public class BookServiceImpl implements BookService {
 					e.printStackTrace();
 				}
 			}
-
 			/** Upload book's files and handle upload */
 			/** Set upload.uploadedDate */
 			long millisUploadedDate = System.currentTimeMillis();
 			java.sql.Date dateUploadedDate = new java.sql.Date(millisUploadedDate);
-			System.out.println(dateUploadedDate);
 			upload.setUploadedDate(dateUploadedDate);
 			/** Set upload.book */
 			upload.setBookId(dbBook.getId());
 			/** Save upload to get upload.id */
 			Upload dbUpload = uploadRepository.save(upload);
+
 			/** Upload book's files */
 			if (dto.getFiles() != null && dto.getFiles().size() > 0 && dbUpload != null) {
 				String originalFileUploadName = "";
 				try {
-					String sourcePath = context.getRealPath("/");
+//					String sourcePath = context.getRealPath("/");
 					/** upload.originalFileName */
 					for (MultipartFile file : dto.getFiles()) {
 						if (file != null && StringUtils.hasText(file.getOriginalFilename())) {
@@ -157,7 +148,6 @@ public class BookServiceImpl implements BookService {
 						}
 					}
 					/** upload.modifiedFilePath */
-					String modifiedFilePath = "";
 					/** Check to zip files or not when upload book's files */
 					if (dto.getFiles().size() > 1) {
 						for (MultipartFile file : dto.getFiles()) {
@@ -165,7 +155,7 @@ public class BookServiceImpl implements BookService {
 							String modifiedFileName = FilenameUtils.getBaseName(filename) + "."
 									+ FilenameUtils.getExtension(filename);
 							File storeFile = uploadPathService.getFilePath(modifiedFileName,
-									"uploads" + File.separator + dbUpload.getId());
+									"uploads/" + File.separator + book.getId());
 							if (storeFile != null) {
 								try {
 									FileUtils.writeByteArrayToFile(storeFile, file.getBytes());
@@ -174,20 +164,21 @@ public class BookServiceImpl implements BookService {
 								}
 							}
 						}
-						modifiedFilePath = sourcePath + "uploads" + File.separator + dbUpload.getId() + ".zip";
+						// String modifiedFilePath = sourcePath + "uploads" + File.separator + b.getId()
+						// + ".zip";
 						/** Zip all book's files */
-						File dir = new File(sourcePath + "uploads" + File.separator + dbUpload.getId());
-						zipFileService.zipDirectory(dir, modifiedFilePath);
+						// File dir = new File(sourcePath + "uploads" + File.separator + b.getId());
+						// zipFileService.zipDirectory(dir, modifiedFilePath);
 						/** Delete temporary directory */
-						FileUtils.deleteDirectory(dir);
-						dbUpload.setModifiedFileName(dbUpload.getId() + ".zip");
+						dbUpload.setModifiedFileName(dbBook.getId() + ".zip");
 					} else {
-						modifiedFilePath = sourcePath + "uploads" + File.separator + dbUpload.getId() + "."
-								+ FilenameUtils.getExtension(originalFileUploadName);
+						// String modifiedFilePath = sourcePath + "uploads" + File.separator +
+						// dbUpload.getId() + "."
+						// + FilenameUtils.getExtension(originalFileUploadName);
 						for (MultipartFile file : dto.getFiles()) {
 							String filename = file.getOriginalFilename();
-							String modifiedFileName = dbUpload.getId() + "." + FilenameUtils.getExtension(filename);
-							File storeFile = uploadPathService.getFilePath(modifiedFileName, "uploads");
+							String modifiedFileName = FilenameUtils.getBaseName(filename)+ "." + FilenameUtils.getExtension(filename);
+							File storeFile = uploadPathService.getFilePath(modifiedFileName, "uploads/"+ book.getId());
 							if (storeFile != null) {
 								try {
 									FileUtils.writeByteArrayToFile(storeFile, file.getBytes());
@@ -205,9 +196,7 @@ public class BookServiceImpl implements BookService {
 					/** Set upload.originalFileName */
 					dbUpload.setOriginalFileName(originalFileUploadName);
 					/** Set upload.modifiedFileName */
-					dbUpload.setModifiedFileName(dbUpload.getId() + ".zip");
-					/** Set upload.modifiedFilePath */
-					dbUpload.setModifiedFilePath(sourcePath + "uploads" + File.separator + dbUpload.getId());
+					dbUpload.setModifiedFileName(dbBook.getId() + ".zip");
 					/** Save upload */
 					uploadRepository.save(dbUpload);
 				} catch (Exception e) {
@@ -215,7 +204,7 @@ public class BookServiceImpl implements BookService {
 				}
 				/** Complete handling with upload */
 			}
-			book.setUploads(dbUpload);
+			dbBook.setUploads(dbUpload);
 			/** Set book.categories */
 			Set<Category> categories = new HashSet<Category>();
 			Category t = new Category();
@@ -226,10 +215,10 @@ public class BookServiceImpl implements BookService {
 				t = new Category();
 			}
 			dbBook.setCategories(categories);
+			bookRepository.save(dbBook);
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		/** Complete handling with book */
+		} /** Complete handling with book */
 		return dto;
 	}
 
@@ -255,56 +244,72 @@ public class BookServiceImpl implements BookService {
 
 	public UploadInformationDTO update(UploadInformationDTO dto, Person person, List<String> categoriesId,
 			Book editBook) throws Exception {
-		try {
-			Long bookid = editBook.getId();
-			Upload upload = new Upload();
-			/** Update book.title */
-			bookRepository.saveUpdateTitle(bookid, dto.getTitle());
-			/** Update book.price */
-			bookRepository.saveUpdatePrice(bookid, dto.getPrice());
-			/** Update book.domain */
-			bookRepository.saveUpdateDomain(bookid, dto.getDomain());
-			/** Update book.uploadedDate */
-			long millis = System.currentTimeMillis();
-			java.sql.Date date = new java.sql.Date(millis);
-			System.out.println(date);
-			bookRepository.saveUpdateUploadedDate(bookid, date);
-			/** Update book.authors */
-			bookRepository.saveUpdateAuthors(bookid, dto.getAuthors());
-			/** Update book.person */
-			bookRepository.saveUpdatePerson(bookid, person);
-			/** Update book.publisher */
-			Publishers dtoPublisher = publisherRepository.findByPublisher(dto.getPublisherName());
-			bookRepository.saveUpdatePublisher(bookid, dtoPublisher);
-			/** Update book.publishedYear */
-			bookRepository.saveUpdatePublishedYear(bookid, dto.getPublishedYear());
-			/** Update book.description */
-			bookRepository.saveUpdateDescription(bookid, dto.getDescription());
-			/** Update book.picture */
-			if (dto.getPictureFile() != null) {
-				try {
-					MultipartFile pictureFile = dto.getPictureFile();
-					if (pictureFile != null & StringUtils.hasText(pictureFile.getOriginalFilename())) {
-						String originalFileName = pictureFile.getOriginalFilename();
-						String modifiedFileName = bookid + "_" + FilenameUtils.getBaseName(originalFileName) + "."
-								+ FilenameUtils.getExtension(originalFileName);
-						File storePictureFile = uploadPathService.getFilePath(modifiedFileName, "img/bookscover");
-						if (storePictureFile != null) {
-							try {
-								FileUtils.writeByteArrayToFile(storePictureFile, pictureFile.getBytes());
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
+		Upload upload = new Upload();
+		Long bookid = editBook.getId();
+		Book book = bookRepository.findByid(bookid);
+		/** Update book.title */
+		bookRepository.saveUpdateTitle(bookid, dto.getTitle());
+		book.setTitle(dto.getTitle());
+		/** Update book.price */
+		bookRepository.saveUpdatePrice(bookid, dto.getPrice());
+		book.setPrice(dto.getPrice());
+		/** Update book.domain */
+		bookRepository.saveUpdateDomain(bookid, dto.getDomain());
+		book.setDomain(dto.getDomain());
+		/** Update book.uploadedDate */
+		long millis = System.currentTimeMillis();
+		java.sql.Date date = new java.sql.Date(millis);
+		System.out.println(date);
+		bookRepository.saveUpdateUploadedDate(bookid, date);
+		book.setUploadedDate(date);
+		/** Update book.authors */
+		bookRepository.saveUpdateAuthors(bookid, dto.getAuthors());
+		book.setAuthors(dto.getAuthors());
+		/** Update book.person */
+		bookRepository.saveUpdatePerson(bookid, person);
+		book.setPerson(person);
+		/** Update book.publisher */
+		Publishers dtoPublisher = publisherRepository.findByPublisher(dto.getPublisherName());
+		bookRepository.saveUpdatePublisher(bookid, dtoPublisher);
+		book.setPublisher(dtoPublisher);
+		/** Update book.publishedYear */
+		bookRepository.saveUpdatePublishedYear(bookid, dto.getPublishedYear());
+		book.setPublishedYear(dto.getPublishedYear());
+		/** Update book.description */
+		bookRepository.saveUpdateDescription(bookid, dto.getDescription());
+		book.setDescription(dto.getDescription());
+		/** Update book.picture */
+		
+		bookRepository.save(book);
+		
+		if (dto.getPictureFile() != null) {
+			try {
+				MultipartFile pictureFile = dto.getPictureFile();
+				if (pictureFile != null & StringUtils.hasText(pictureFile.getOriginalFilename())) {
+					String originalFileName = pictureFile.getOriginalFilename();
+					String modifiedFileName = bookid + "_" + FilenameUtils.getBaseName(originalFileName) + "."
+							+ FilenameUtils.getExtension(originalFileName);
+					File storePictureFile = uploadPathService.getFilePath(modifiedFileName, "booksCover");
+					if (storePictureFile != null) {
+						try {
+							FileUtils.writeByteArrayToFile(storePictureFile, pictureFile.getBytes());
+						} catch (Exception e) {
+							e.printStackTrace();
 						}
-						bookRepository.saveUpdatePicture(bookid, modifiedFileName);
 					}
-				} catch (Exception e) {
-					e.printStackTrace();
+					bookRepository.saveUpdatePicture(bookid, modifiedFileName);
+					uploadRepository.saveUpdatePicture(book.getUploads().getId(), modifiedFileName);
+					book.setPicture(modifiedFileName);
+					bookRepository.save(book);
 				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-
+		}
+		try {
 			/** Check if user upload files or not */
 			if (checkInput(dto)) {
+				String namePicture = book.getUploads().getOriginalFileName();
 				/** Upload book's files and handle upload */
 				/** Set upload.uploadedDate */
 				long millisUploadedDate = System.currentTimeMillis();
@@ -312,13 +317,15 @@ public class BookServiceImpl implements BookService {
 				upload.setUploadedDate(dateUploadedDate);
 				/** Set upload.book */
 				upload.setBookId(editBook.getId());
+				
+				upload.setOriginalFileName(namePicture);
 				/** Save upload to get upload.id */
-				Upload dbUpload = uploadRepository.save(upload);
 				/** Upload book's files */
-				if (dto.getFiles() != null && dto.getFiles().size() > 0 && dbUpload != null) {
-					String originalFileUploadName = "";
+				if (dto.getFiles() != null && dto.getFiles().size() > 0 && upload != null) {
+					
 					try {
-						String sourcePath = context.getRealPath("/");
+						String originalFileUploadName = "";
+						//String sourcePath = context.getRealPath("/");
 						/** upload.originalFileName */
 						for (MultipartFile file : dto.getFiles()) {
 							if (file != null && StringUtils.hasText(file.getOriginalFilename())) {
@@ -327,7 +334,7 @@ public class BookServiceImpl implements BookService {
 							}
 						}
 						/** upload.modifiedFilePath */
-						String modifiedFilePath = "";
+						//String modifiedFilePath = "";
 						/** Check to zip files or not when upload book's files */
 						if (dto.getFiles().size() > 1) {
 							for (MultipartFile file : dto.getFiles()) {
@@ -335,7 +342,7 @@ public class BookServiceImpl implements BookService {
 								String modifiedFileName = FilenameUtils.getBaseName(filename) + "."
 										+ FilenameUtils.getExtension(filename);
 								File storeFile = uploadPathService.getFilePath(modifiedFileName,
-										"uploads" + File.separator + dbUpload.getId());
+										"uploads" + File.separator + book.getId());
 								if (storeFile != null) {
 									try {
 										FileUtils.writeByteArrayToFile(storeFile, file.getBytes());
@@ -344,19 +351,20 @@ public class BookServiceImpl implements BookService {
 									}
 								}
 							}
-							modifiedFilePath = sourcePath + "uploads" + File.separator + dbUpload.getId() + ".zip";
+							//modifiedFilePath = sourcePath + "uploads" + File.separator + book.getId() + ".zip";
 							/** Zip all book's files */
-							File dir = new File(sourcePath + "uploads" + File.separator + dbUpload.getId());
-							zipFileService.zipDirectory(dir, modifiedFilePath);
+							//File dir = new File(sourcePath + "uploads" + File.separator + book.getId());
+							//zipFileService.zipDirectory(dir, modifiedFilePath);
 							/** Delete temporary directory */
-							FileUtils.deleteDirectory(dir);
+							//FileUtils.deleteDirectory(dir);
+							upload.setModifiedFileName(book.getId() + ".zip");
 						} else {
-							modifiedFilePath = sourcePath + "uploads" + File.separator + dbUpload.getId()
-									+ FilenameUtils.getExtension(originalFileUploadName);
+							//modifiedFilePath = sourcePath + "uploads" + File.separator + book.getId() + "."
+							//		+ FilenameUtils.getExtension(originalFileUploadName);
 							for (MultipartFile file : dto.getFiles()) {
 								String filename = file.getOriginalFilename();
-								String modifiedFileName = dbUpload.getId() + "." + FilenameUtils.getExtension(filename);
-								File storeFile = uploadPathService.getFilePath(modifiedFileName, "uploads");
+								String modifiedFileName = filename + "." + FilenameUtils.getExtension(filename);
+								File storeFile = uploadPathService.getFilePath(modifiedFileName, "uploads/"+book.getId().toString());
 								if (storeFile != null) {
 									try {
 										FileUtils.writeByteArrayToFile(storeFile, file.getBytes());
@@ -368,36 +376,36 @@ public class BookServiceImpl implements BookService {
 									}
 								}
 							}
+							upload.setModifiedFileName(
+									book.getId() + "." + FilenameUtils.getExtension(originalFileUploadName));
 						}
 						/** Set upload.originalFileName */
-						dbUpload.setOriginalFileName(originalFileUploadName);
 						/** Set upload.modifiedFileName */
-						dbUpload.setModifiedFileName(dbUpload.getId() + ".zip");
-						/** Set upload.modifiedFilePath */
-						dbUpload.setModifiedFilePath(sourcePath + "uploads" + File.separator + dbUpload.getId());
+						upload.setModifiedFileName(book.getId() + ".zip");
 						/** Save upload */
-						uploadRepository.save(dbUpload);
+						uploadRepository.save(upload);
+						book.setUploads(upload);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
+					/** Complete handling with upload */
 				}
-				/** Complete handling with upload */
-				editBook.setUploads(dbUpload);
 			}
-			
-			/** Set book.categories */
-			Set<Category> categories = new HashSet<Category>();
-			Category t = new Category();
-			for (String categoryStringId : categoriesId) {
-				Long categoryId = Long.parseLong(categoryStringId);
-				t = categoryRepository.getOne(categoryId);
-				categories.add(t);
-				t = new Category();
-			}
-			editBook.setCategories(categories);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		/** Set book.categories */
+		Set<Category> categories = new HashSet<Category>();
+		Category t = new Category();
+		for (String categoryStringId : categoriesId) {
+			Long categoryId = Long.parseLong(categoryStringId);
+			t = categoryRepository.getOne(categoryId);
+			categories.add(t);
+			t = new Category();
+		}
+		book.setCategories(categories);
+		bookRepository.save(book);
+
 		return dto;
 	}
 
@@ -469,11 +477,11 @@ public class BookServiceImpl implements BookService {
 		List<Book> lb = findBookByCategories(categoryCollection);
 		for (Book b : lb) {
 			List<Category> lc = categoryRepository.findCategoryByIdBook(b.getId());
-			for (Category c : lc){
+			for (Category c : lc) {
 				if (c.getId() != idFrom)
 					categorySet.add(c);
 			}
-			if (categorySet==null)
+			if (categorySet == null)
 				categorySet.add(cateTo);
 			Book book = bookRepository.findByid(b.getId());
 			book.setCategories(categorySet);
@@ -481,5 +489,13 @@ public class BookServiceImpl implements BookService {
 			bookRepository.save(book);
 			categorySet = new HashSet<Category>();
 		}
+	}
+
+	@Override
+	public void changeUpload(Long idTo, Long idBook) {
+		Book b = bookRepository.findByid(idBook);
+		Upload u = uploadRepository.findUploadById(idTo);
+		b.setUploads(u);
+		bookRepository.save(b);
 	}
 }

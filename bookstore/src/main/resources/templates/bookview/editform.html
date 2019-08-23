@@ -235,10 +235,10 @@ legend.scheduler-border {
 								</ul>
 							</div>
 							<div>
-								<ul class="dropdown-menu" id="selectCategories"
+								<ul class="dropdown-menu" id="selectCategories" style="background-color:#ffc107; "
 									th:if="${not #lists.isEmpty(dto.selectCategories)}"
 									th:field="${dto.categories}">
-									<li th:each="selectCategory : ${dto.selectCategories}"><a
+									<li th:each="selectCategory : ${dto.selectCategories}"><a style="color: black;"
 										href="/bookview/editform" class="small"
 										data-value="selectCategory.category" tabIndex="-1"><input
 											th:checked="${selectCategory.flag==1}" type="checkbox"

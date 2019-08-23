@@ -132,10 +132,10 @@ legend.scheduler-border {
 					<div class="col-8">
 						<select id="publishers" name="publishers"
 							class="btn btn-warning dropdown-toggle"
-							th:field="${dto.publisherId}">
+							th:field="*{publisherName}">
 							<option value="" disabled selected>Please select</option>
 							<option th:each="publisher : ${dto.publishers}"
-								th:text="${publisher.publisher}" th:value="${publisher.id}"></option>
+								th:text="${publisher.publisher}" th:value="${publisher.publisher}"></option>
 						</select>
 					</div>
 				</div>
@@ -201,7 +201,7 @@ legend.scheduler-border {
 					<label class="col-3 col-form-label"><font size="4">Categories</font></label>
 					<div class="col-8">
 						<button type="button" class="btn btn-warning dropdown-toggle"
-							data-toggle="dropdown" style="margin: 7px 0px -13px 0px;">
+							data-toggle="dropdown" style="margin: 7px 0px -13px 0px;" >
 							Please select<span class="glyphicon glyphicon-cog"></span> <span
 								class="caret"></span>
 						</button>
@@ -212,9 +212,9 @@ legend.scheduler-border {
 							</ul>
 						</div>
 
-						<ul class="dropdown-menu" id="categories"
+						<ul class="dropdown-menu" id="categories" style="background-color: #ffc107;"
 							th:if="${not #lists.isEmpty(dto.categories)}">
-							<li th:each="category : ${dto.categories}"><a
+							<li th:each="category : ${dto.categories}"><a style="color:black;" 
 								th:href="@{bookview/createform}" class="small"
 								data-value="category" tabIndex="-1"><input type="checkbox"
 									th:text="${category.name}" th:name="idChecked"

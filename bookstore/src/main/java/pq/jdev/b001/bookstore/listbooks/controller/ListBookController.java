@@ -1,5 +1,6 @@
 package pq.jdev.b001.bookstore.listbooks.controller;
 
+import java.io.File;
 import java.security.Principal;
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import pq.jdev.b001.bookstore.books.model.Book;
+import pq.jdev.b001.bookstore.books.service.BookService;
 import pq.jdev.b001.bookstore.books.service.UploadPathService;
 import pq.jdev.b001.bookstore.category.model.Category;
 import pq.jdev.b001.bookstore.category.service.CategoryService;
@@ -46,6 +48,9 @@ public class ListBookController {
 
 	@Autowired
 	private PublisherService publisherService;
+	
+	@Autowired
+	private BookService bookService;
 
 	@Autowired
 	private CategoryService categoryservice;
@@ -325,8 +330,15 @@ public class ListBookController {
 		}
 		if ((authentication != null) && ((userService.findByUsername(authentication.getName())
 				.getId() == listBookService.findOne(id).getPerson().getId()) || (isAdmin(roles)))) {
+			bookService.changeUpload((long) 1, id);
 			uploadPathService.deleteAllUploadByIdBook(id);
 			listBookService.delete(id);
+			ClassLoader classLoader = getClass().getClassLoader();
+			File folder=new File(classLoader.getResource("static/images").getFile(), "uploads/" + id.toString());
+			if(folder.exists() && folder.isDirectory()){
+				for (File f : folder.listFiles()) 
+					f.delete();
+			}
 			redirect.addFlashAttribute("success", "Deleted book successfully!");
 		}
 		return "redirect:/book";

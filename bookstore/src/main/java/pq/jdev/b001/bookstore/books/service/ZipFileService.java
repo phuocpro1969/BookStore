@@ -10,5 +10,7 @@ public interface ZipFileService {
 	public int populateFilesList(File dir) throws IOException;
 
 	public void zipSingleFile(File file, String zipFileName);
+	
+	public void unzipFileWithLink(String link);
 
 }
