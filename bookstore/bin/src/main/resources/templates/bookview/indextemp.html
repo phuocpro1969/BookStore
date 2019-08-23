@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<div class="jumbotron text-center">
+  		<h1>Book Share</h1>
+  		<p>Books are a uniquely portable magic.</p> 
+	</div>
+
+	<form method="get">
+    	<div id="choose">
+        	<p><center><b>Choose your action</b></center></p> 
+        	<br>
+    	</div>
+    	<center><button class="btn btn-success" th:action="@{/bookview/createform}" type="button">Creat</button></center>
+    	<br>
+    	<center><button class="btn btn-success" th:action="@{/bookview/editbookid}" type="button">Edit</button></center>
+	</form>
+</body>
+</html>
