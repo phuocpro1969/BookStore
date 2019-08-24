@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" >
+<!--   <head>
+    <meta charset="UTF-8" />
+    <title>Publisher List</title>
+
+  </head> -->
+  
+	<head>
+	    <meta charset="utf-8">
+	    <meta http-equiv="x-ua-compatible" content="ie=edge">
+	    <title>Publisher</title>
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+	    <!-- <link rel="stylesheet" href="../css/shards.min.css"> -->
+	</head>
+  
+<!--   <body>
+    <h1>Publisher List</h1>
+    
+    <br/><br/>
+    <div>
+      <table border="1">
+        <tr>
+          <th>ID</th>
+          <th>PUBLISHINGHOUSE </th>
+          <th>CREATEDNAME  </th>
+          <th>CREATEDDATE  </th>
+          <th>UPLOADNAME  </th>
+          <th>UPDATEDATE </th>
+        </tr>
+            <tr th:each="publisher : ${publishers}">
+             <td th:utext="${publisher.ID}"></td>
+             <td th:utext="${publisher.PUBLISHINGHOUSE}"></td>
+             <td th:utext="${publisher.CREATEDNAME}"></td>
+             <td th:utext="${publisher.CREATEDDATE}"></td>
+             <td th:utext="${publisher.UPLOADNAME}"></td>
+             <td th:utext="${publisher.UPDATEDATE}"></td>
+          </tr> 
+         <c:forEach items="${publisher}" var ="publishers">
+         <tr>
+            <td>${publishers.ID} </td>
+            <td>${publishers.PUBLISHINGHOUSE} </td>
+            <td>${publishers.CREATEDNAME}</td>
+            <td>${publishers.CREATEDDATE}</td>
+            <td>${publishers.UPLOADNAME}</td>
+            <td>${publisher.UPDATEDATE}</td>
+        </tr>
+        </c:forEach>   
+        
+      </table>
+    </div>
+  </body> -->
+  <body>
+    <div class="container my-2">
+        <div class="card">
+            <div class="card-body">
+                <div th:switch="${publishers}" class="container my-5">
+                
+                    <p class="my-5">
+                    
+                         <a href="/publishers/signup" class="btn btn-primary"><i
+                            class="fas fa-user-plus ml-2"> Add Publisher</i></a> 
+                    </p>
+                    
+                    <div class="col-md-10">
+                        <h2 th:case="null">No Publisher yet!</h2>
+                        <div th:case="*">
+                            <table class="table table-striped table-responsive-md">
+                                <thead>
+                                    <tr>
+							          <th>ID</th>
+							          <th>PUBLISHINGHOUSE </th>
+							          <th>CREATEDNAME  </th>
+							          <th>CREATEDDATE  </th>
+							          <th>UPLOADNAME  </th>
+							          <th>UPDATEDATE </th>
+							          <th>Edit </th>
+							          <th>Delete </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+							        </tr>
+							             <tr th:each="publisher:${publishers}">
+							             <td th:utext="${publisher.id}">ID</td>
+							             <td th:utext="${publisher.publisher}">Publisher</td>
+							             <td th:utext="${publisher.createName}">CreateName</td>
+							             <td th:utext="${publisher.createDate}">CrateDate</td>
+							             <td th:utext="${publisher.updateName}">UploadName</td>
+							             <td th:utext="${publisher.updateDate}">UploadDate</td>
+							             <td><a th:href="@{detailPublishers}" class="btn btn-primary"><i class="fas fa-user-edit ml-2"></i></a></td>
+                                         <td><a th:href="@{publishersList}" class="btn btn-primary"><i class="fas fa-user-times ml-2"></i></a></td>
+							          </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
