@@ -115,7 +115,7 @@ public class ZipFileServiceImpl implements ZipFileService {
 
 	}
 
-	 public static File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
+	   public static File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
 	        File destFile = new File(destinationDir, zipEntry.getName());
 	         
 	        String destDirPath = destinationDir.getCanonicalPath();
@@ -132,21 +132,23 @@ public class ZipFileServiceImpl implements ZipFileService {
 	public void unzipFileWithLink(String link , String linkZipOut) {
 		try {
 			File destDir = new File(linkZipOut);
-			byte[] buffer = new byte[1024];
-			ZipInputStream zis = new ZipInputStream(new FileInputStream(link));
-			ZipEntry zipEntry = zis.getNextEntry();
-			while (zipEntry != null) {
-				File newFile = newFile(destDir, zipEntry);
-				FileOutputStream fos = new FileOutputStream(newFile);
-				int len;
-				while ((len = zis.read(buffer)) > 0) {
-					fos.write(buffer, 0, len);
-				}
-				fos.close();
-				zipEntry = zis.getNextEntry();
-			}
-			zis.closeEntry();
-			zis.close();
+			if (!destDir.exists())
+				destDir.mkdir();
+			 byte[] buffer = new byte[1024];
+		        ZipInputStream zis = new ZipInputStream(new FileInputStream(link));
+		        ZipEntry zipEntry = zis.getNextEntry();
+		        while (zipEntry != null) {
+		            File newFile = newFile(destDir, zipEntry);
+		            FileOutputStream fos = new FileOutputStream(newFile);
+		            int len;
+		            while ((len = zis.read(buffer)) > 0) {
+		                fos.write(buffer, 0, len);
+		            }
+		            fos.close();
+		            zipEntry = zis.getNextEntry();
+		        }
+		        zis.closeEntry();
+		        zis.close();
 		} catch (Exception e) {
 			e.getMessage();
 		}

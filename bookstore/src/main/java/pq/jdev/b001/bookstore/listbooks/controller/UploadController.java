@@ -78,7 +78,7 @@ public class UploadController {
 		model.addAttribute("publishers", pagePubs);
 		model.addAttribute("categories", pageCates);
 		
-//		zipFileService.unzipFileWithLink("src/main/resources/static/images/noImage.rar", "src/main/resources/static/images/uploads/2");
+// xong		zipFileService.unzipFileWithLink("src\\main\\resources\\static\\images\\noImage.zip", "src\\main\\resources\\static\\images\\uploads");
 //		File f1 = new File("src/main/resources/static","images/uploads/3");
 //		File f2 = new File("src/main/resources/static","images/booksCover/");
 		

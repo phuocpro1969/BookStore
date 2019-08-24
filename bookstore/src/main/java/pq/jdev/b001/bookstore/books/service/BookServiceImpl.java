@@ -47,7 +47,7 @@ public class BookServiceImpl implements BookService {
 
 	@Autowired
 	private BookRepository bookRepository;
-	
+
 	@Autowired
 	private UploadRepository uploadRepository;
 
@@ -127,7 +127,7 @@ public class BookServiceImpl implements BookService {
 					e.printStackTrace();
 				}
 			} else {
-				
+
 				String originalFileName = "noImage.jpg";
 				String modifiedFileName = dbBook.getId() + "_" + originalFileName;
 				File storePictureFile = uploadPathService.getFilePath(modifiedFileName, "booksCover");
@@ -167,19 +167,31 @@ public class BookServiceImpl implements BookService {
 					/** upload.modifiedFilePath */
 					/** Check to zip files or not when upload book's files */
 					if (dto.getFiles().size() > 1) {
+						
+						// upload directory file 
 						for (MultipartFile file : dto.getFiles()) {
-							String filename = file.getOriginalFilename();
-							String modifiedFileName = FilenameUtils.getBaseName(filename) + "."
-									+ FilenameUtils.getExtension(filename);
-							File storeFile = uploadPathService.getFilePath(modifiedFileName,
-									"uploads/" + File.separator + book.getId());
-							if (storeFile != null) {
-								try {
-									FileUtils.writeByteArrayToFile(storeFile, file.getBytes());
-								} catch (Exception e) {
-									e.printStackTrace();
-								}
+							File fi = new File("src/main/resources/static/images/uploads/" + book.getId().toString(),
+									file.getOriginalFilename());
+							try {
+								file.transferTo(fi.toPath());
+							} catch (Exception e) {
+								new File(fi.getParent()).mkdirs();
+								file.transferTo(fi.toPath());
 							}
+
+							// upload multipart files
+//							String filename = file.getOriginalFilename();
+//							String modifiedFileName = FilenameUtils.getBaseName(filename) + "."
+//									+ FilenameUtils.getExtension(filename);
+//							File storeFile = uploadPathService.getFilePath(modifiedFileName,
+//									"uploads/" + File.separator + book.getId());
+//							if (storeFile != null) {
+//								try {
+//									FileUtils.writeByteArrayToFile(storeFile, file.getBytes());
+//								} catch (Exception e) {
+//									e.printStackTrace();
+//								}
+//							}
 						}
 						// String modifiedFilePath = sourcePath + "uploads" + File.separator + b.getId()
 						// + ".zip";
@@ -194,8 +206,9 @@ public class BookServiceImpl implements BookService {
 						// + FilenameUtils.getExtension(originalFileUploadName);
 						for (MultipartFile file : dto.getFiles()) {
 							String filename = file.getOriginalFilename();
-							String modifiedFileName = FilenameUtils.getBaseName(filename)+ "." + FilenameUtils.getExtension(filename);
-							File storeFile = uploadPathService.getFilePath(modifiedFileName, "uploads/"+ book.getId());
+							String modifiedFileName = FilenameUtils.getBaseName(filename) + "."
+									+ FilenameUtils.getExtension(filename);
+							File storeFile = uploadPathService.getFilePath(modifiedFileName, "uploads/" + book.getId());
 							if (storeFile != null) {
 								try {
 									FileUtils.writeByteArrayToFile(storeFile, file.getBytes());
@@ -296,9 +309,9 @@ public class BookServiceImpl implements BookService {
 		bookRepository.saveUpdateDescription(bookid, dto.getDescription());
 		book.setDescription(dto.getDescription());
 		/** Update book.picture */
-		
+
 		bookRepository.save(book);
-		
+
 		if (dto.getPictureFile() != null) {
 			try {
 				MultipartFile pictureFile = dto.getPictureFile();
@@ -323,8 +336,8 @@ public class BookServiceImpl implements BookService {
 				e.printStackTrace();
 			}
 		}
-		
-		//upload files
+
+		// upload files
 		try {
 			/** Check if user upload files or not */
 			if (checkInput(dto)) {
@@ -336,16 +349,16 @@ public class BookServiceImpl implements BookService {
 				upload.setUploadedDate(dateUploadedDate);
 				/** Set upload.book */
 				upload.setBookId(editBook.getId());
-				
+
 				upload.setOriginalFileName(namePicture);
 				/** Save upload to get upload.id */
 				/** Upload book's files */
 				if (dto.getFiles() != null && dto.getFiles().size() > 0 && upload != null) {
-					
+
 					try {
 						String originalFileUploadName = "";
 						/** upload.originalFileName */
-						File f = new File("src/main/resources/static/images/uploads/" , book.getId().toString());
+						File f = new File("src/main/resources/static/images/uploads/", book.getId().toString());
 						if (!f.exists())
 							f.mkdir();
 						for (MultipartFile file : dto.getFiles()) {
@@ -355,19 +368,21 @@ public class BookServiceImpl implements BookService {
 							}
 						}
 						/** upload.modifiedFilePath */
-						//String modifiedFilePath = "";
+						// String modifiedFilePath = "";
 						/** Check to zip files or not when upload book's files */
 						if (dto.getFiles().size() > 1) {
 //							List<String> list = new ArrayList<String>(); 
 							for (MultipartFile file : dto.getFiles()) {
-								File fi = new File("src/main/resources/static/images/uploads/"+book.getId().toString() , file.getOriginalFilename());
+								File fi = new File(
+										"src/main/resources/static/images/uploads/" + book.getId().toString(),
+										file.getOriginalFilename());
 								try {
-								file.transferTo(fi.toPath());
+									file.transferTo(fi.toPath());
 								} catch (Exception e) {
 									new File(fi.getParent()).mkdirs();
 									file.transferTo(fi.toPath());
 								}
-								
+
 //								String filename = file.getOriginalFilename();
 //								String modifiedFileName = FilenameUtils.getBaseName(filename) + "."
 //										+ FilenameUtils.getExtension(filename);
@@ -384,22 +399,26 @@ public class BookServiceImpl implements BookService {
 //									list.add("src/main/resources/static/images/uploads/"+book.getId().toString() + "/" + modifiedFileName);
 //								}
 							}
+							
 //							zip multi File
 //							zipFileService.zipMultiFile(list, "src/main/resources/static/images/uploads/"+book.getId()+".zip");
-							//modifiedFilePath = sourcePath + "uploads" + File.separator + book.getId() + ".zip";
+							// modifiedFilePath = sourcePath + "uploads" + File.separator + book.getId() +
+							// ".zip";
 							/** Zip all book's files */
-							//File dir = new File(sourcePath + "uploads" + File.separator + book.getId());
-							//zipFileService.zipDirectory(dir, modifiedFilePath);
+							// File dir = new File(sourcePath + "uploads" + File.separator + book.getId());
+							// zipFileService.zipDirectory(dir, modifiedFilePath);
 							/** Delete temporary directory */
-							//FileUtils.deleteDirectory(dir);
+							// FileUtils.deleteDirectory(dir);
 							upload.setModifiedFileName(book.getId() + ".zip");
 						} else {
-							//modifiedFilePath = sourcePath + "uploads" + File.separator + book.getId() + "."
-							//		+ FilenameUtils.getExtension(originalFileUploadName);
+							// modifiedFilePath = sourcePath + "uploads" + File.separator + book.getId() +
+							// "."
+							// + FilenameUtils.getExtension(originalFileUploadName);
 							for (MultipartFile file : dto.getFiles()) {
 								String filename = file.getOriginalFilename();
 								String modifiedFileName = filename + "." + FilenameUtils.getExtension(filename);
-								File storeFile = uploadPathService.getFilePath(modifiedFileName, "uploads/"+book.getId().toString());
+								File storeFile = uploadPathService.getFilePath(modifiedFileName,
+										"uploads/" + book.getId().toString());
 								if (storeFile != null) {
 									try {
 										FileUtils.writeByteArrayToFile(storeFile, file.getBytes());
@@ -409,9 +428,12 @@ public class BookServiceImpl implements BookService {
 									} catch (Exception e) {
 										e.printStackTrace();
 									}
-									}
-								//zip a file zip
-								zipFileService.zipSingleFile("src/main/resources/static/images/uploads/"+book.getId()+"/"+modifiedFileName, "src/main/resources/static/images/uploads/"+book.getId()+".zip");
+								}
+								// zip a file zip
+								zipFileService.zipSingleFile(
+										"src/main/resources/static/images/uploads/" + book.getId() + "/"
+												+ modifiedFileName,
+										"src/main/resources/static/images/uploads/" + book.getId() + ".zip");
 							}
 							upload.setModifiedFileName(
 									book.getId() + "." + FilenameUtils.getExtension(originalFileUploadName));
