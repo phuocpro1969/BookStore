@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<link rel="stylesheet" type="text/css"
+	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link th:href="@{css/templatemo_style.css}" rel="stylesheet"
+	type="text/css" />
+
+<style>
+h1 {
+	width: 440px;
+}
+</style>
+
+<title>Login</title>
+</head>
+<body>
+	<nav th:replace="user_admin/indexheader :: ${header}"></nav>
+	<div id="templatemo_container">
+		<div id="templatemo_content">
+			<div id="templatemo_content_left">
+				<nav th:replace="user_admin/indexheader :: templatemo_content_left_sec"></nav>
+			</div>
+			<div id="templatemo_content_right" style="color: red;">
+				<div class="col-md-6 col-md-offset-3" style="margin: 10% 15% 15% 20%; width: 500px;">
+					<h1 style="align-content: center; font-weight: 700; font-size: 40px;">Login</h1>
+					<form th:action="@{/login}" method="post" >
+						<div th:if="${param.error}">
+							<div class="alert alert-danger">Invalid username or
+								password.</div>
+						</div>
+						<div th:if="${param.logout}">
+							<div class="alert alert-info">You have been logged out.</div>
+						</div>
+						<div class="form-group">
+							<label for="username" style="font-size: 20px;">Username</label>:
+							<input type="text" id="username" name="username"
+								class="form-control" autofocus="autofocus" style="padding: 0px 0px 0px 10px;"
+								placeholder="Username" />
+						</div>
+						<div class="form-group">
+							<label for="password" style="font-size: 20px;">Password</label>:
+							<input type="password" id="password" name="password" style="padding: 0px 0px 0px 10px;"
+								class="form-control" placeholder="Password" />
+						</div>
+						<input type="hidden" name="remember-me" value="true">
+							<div class="form-group">
+								<div class="row" >
+									<div class="col-sm-6 col-sm-offset-3">
+										<input type="submit" name="login-submit" id="login-submit" style="margin: 15% 15% 0% 0%; font-size: 20px;"
+											class="form-control btn btn-primary" value="Log In" />
+									</div>
+								</div>
+							</div> <br></br>
+							<div class="form-group" style="font-size: 20px; width:600px; margin: 30px 0px 0px 90px;">
+								<span>New user? <a th:href="@{/registration}">Register
+										here</a></span><br></br>
+								<span><a th:href="@{/forgot-password}">Forget
+										Password</a></span>
+							</div>
+					</form>
+					<br></br>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="cleaner_with_height">&nbsp;</div>
+	<footer th:replace="user_admin/indexheader :: ${footer}"></footer>
+</body>
+</html>
