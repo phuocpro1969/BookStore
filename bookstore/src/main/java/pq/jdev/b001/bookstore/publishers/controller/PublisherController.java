@@ -46,7 +46,7 @@ public class PublisherController {
 	public String create(Model model, ModelMap map, Authentication authentication, HttpServletRequest request) {
 
 		List<String> roles = moduleRunFirst.getRole(authentication);
-		moduleRunFirst.leftBar_cate_pub(model);
+		moduleRunFirst.leftBar_cate_pub(model, 15);
 		moduleRunFirst.headerFooter(authentication, map, roles);
 
 		Long idP = userService.findByUsername(authentication.getName()).getId();
@@ -84,7 +84,7 @@ public class PublisherController {
 		if (result.hasErrors()) {
 			Long idP = userService.findByUsername(authentication.getName()).getId();
 			moduleRunFirst.headerFooter(authentication, map, roles);
-			moduleRunFirst.leftBar_cate_pub(model);
+			moduleRunFirst.leftBar_cate_pub(model, 15);
 			model.addAttribute("publisher", publisher);
 			request.getSession().setAttribute("cd", publisher.getCreateDate());
 			request.getSession().setAttribute("idC", publisher.getCreateId());
@@ -127,7 +127,7 @@ public class PublisherController {
 	public String edit(@PathVariable long id, RedirectAttributes redirect, Model model, ModelMap map,
 			HttpServletRequest request, Authentication authentication) {
 		List<String> roles = moduleRunFirst.getRole(authentication);
-		moduleRunFirst.leftBar_cate_pub(model);
+		moduleRunFirst.leftBar_cate_pub(model, 15);
 		moduleRunFirst.headerFooter(authentication, map, roles);
 
 		Long idP = userService.findByUsername(authentication.getName()).getId();
@@ -154,7 +154,7 @@ public class PublisherController {
 			Authentication authentication) {
 		List<String> roles = moduleRunFirst.getRole(authentication);
 		moduleRunFirst.headerFooter(authentication, map, roles);
-		moduleRunFirst.leftBar_cate_pub(model);
+		moduleRunFirst.leftBar_cate_pub(model, 15);
 
 		int pagesize = 8;
 		List<Publishers> list = (List<Publishers>) publisherService.findAll();

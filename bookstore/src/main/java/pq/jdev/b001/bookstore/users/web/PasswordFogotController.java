@@ -49,7 +49,7 @@ public class PasswordFogotController {
 	@GetMapping
 	public String displayForgotPasswordPage(ModelMap map, Model model, Authentication authentication) {
 		List<String> roles = moduleRunFirst.getRole(authentication);
-		moduleRunFirst.leftBar_cate_pub(model);
+		moduleRunFirst.leftBar_cate_pub(model, 15);
 		moduleRunFirst.headerFooter(authentication, map, roles);
 		return "user_admin/no_login/forgot-password";
 	}
@@ -59,11 +59,11 @@ public class PasswordFogotController {
 			BindingResult result, HttpServletRequest request, ModelMap map, Model model,
 			Authentication authentication) {
 		List<String> roles = moduleRunFirst.getRole(authentication);
-		moduleRunFirst.leftBar_cate_pub(model);
+		moduleRunFirst.leftBar_cate_pub(model, 15);
 		moduleRunFirst.headerFooter(authentication, map, roles);
 
 		if (result.hasErrors()) {
-			moduleRunFirst.leftBar_cate_pub(model);
+			moduleRunFirst.leftBar_cate_pub(model, 15);
 			moduleRunFirst.headerFooter(authentication, map, roles);
 			return "user_admin/no_login/forgot-password";
 		}

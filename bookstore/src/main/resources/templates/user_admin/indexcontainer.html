@@ -1,12 +1,27 @@
 <!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Book Store</title>
 <meta name="keywords" content="" />
 <meta name="description" content="" />
+<script src="code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+	integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+	crossorigin="anonymous"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.js"></script>
 
 <link rel="stylesheet" type="text/css"
 	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
@@ -15,13 +30,6 @@
 	type="text/css" />
 
 <link th:href="@{/css/listbook.css}" rel="stylesheet" type="text/css" />
-<style>
-.menu {
-	margin: 20px 0px 0px 0px;
-}
-
-}
-</style>
 </head>
 
 <body>
@@ -29,9 +37,12 @@
 	<div id="templatemo_container">
 		<div id="templatemo_content">
 			<div id="templatemo_content_left">
-				<nav th:replace="user_admin/indexheader :: templatemo_content_left_sec"></nav>
+				<nav
+					th:replace="user_admin/indexheader :: templatemo_content_left_sec"></nav>
 			</div>
+			<hr id="hr_hr" />
 			<div id="templatemo_content_right">
+				<h1>List Book</h1>
 				<div class="gom">
 					<form class="searchbar" th:action="@{/search/1}" method="get">
 						<div class="form-group searchs">
@@ -47,8 +58,17 @@
 					</form>
 				</div>
 				<div class="cleaner_with_height">&nbsp;</div>
-				<nav th:replace="bookview/listbook :: menubook"></nav>
+				<br><br></br> <nav th:replace="bookview/listbook :: menubook"></nav>
 			</div>
+			<script>
+				var h1 = $("#templatemo_content_left").height();
+				var h2 = $("#templatemo_content_right").height();
+				if (h2 > h1)
+					h1 = h2
+				$("#templatemo_content_left").height(h1);
+				$("#hr_hr").height(h1);
+				$("#templatemo_content_right").height(h1);
+			</script>
 			<div class="cleaner_with_height">&nbsp;</div>
 		</div>
 		<!-- end of content -->

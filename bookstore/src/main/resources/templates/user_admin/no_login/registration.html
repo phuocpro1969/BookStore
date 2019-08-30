@@ -13,39 +13,25 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-<style>
-body {
-	background: #4b4743;
-}
-
-form {
-	color: red;
-	font-size: 20px;
-}
-
-#templatemo_content {
-	height: 1300px;
-	max-height: 1300px !important;
-}
-
-#templatemo_content_left {
-	height: 1300px;
-	max-height: 1300px !important;
-}
-
-#templatemo_content_right {
-	height: 1300px;
-	max-height: 1300px !important;
-	color: red;
-	font-size: 20px;
-}
-
-.col-md-6 {
-	margin: 0px 0px 0px 40px;
-	width: 700px;
-}
-</style>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+	integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+	crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"
+	integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+	crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+	integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+	crossorigin="anonymous"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.js"></script>
 <title>Registration</title>
 
 <script th:inline="javascript">
@@ -55,8 +41,7 @@ form {
 					function() {
 						validateForm = function() {
 							var x = document.getElementById("picture").files.length;
-							var ok = ok();
-							if (x == 0 && ok) {
+							if (x == 0) {
 								alert("You are upload successfully. But You didn't upload your image. I will change to default image");
 								return true;
 							} else {
@@ -73,220 +58,303 @@ form {
 			window.location.href = "/";
 		</script>
 	</div>
-	<div th:unless="${param.success}">
-		<script type="text/javascript">
-			$(document).ready(function ok() {
-				var er = '';
-				var gt = $('#t1').text();
-				if (gt != '')
-					er += 'FirstName ' + gt;
-
-				gt = $('#t2').text();
-				if (gt != '')
-					if (er != '')
-						er += '\nLastName ' + gt;
-					else
-						er += gt;
-				gt = $('#t3').text();
-				if (gt != '')
-					if (er != '')
-						er += '\nEmail ' + gt;
-					else
-						er += gt;
-				gt = $('#t4').text();
-				if (gt != '')
-					if (er != '')
-						er += '\nUserName ' + gt;
-					else
-						er += gt;
-				gt = $('#t5').text();
-				if (gt != '')
-					if (er != '')
-						er += '\n' + gt;
-					else
-						er += gt;
-				gt = $('#t6').text();
-				if (gt != '')
-					if (er != '')
-						er += '\n' + gt;
-					else
-						er += gt;
-				if (er != '') {
-					alert(er);
-					return false;
-				}
-				return true;
-			});
-		</script>
-	</div>
 	<nav th:replace="user_admin/indexheader :: ${header}"></nav>
 	<div id="templatemo_container">
 		<div id="templatemo_content">
-			<div id="templatemo_content_left"
-				style="height: 1300px; max-height: 1600px !important;">
+			<div id="templatemo_content_left">
 				<nav
 					th:replace="user_admin/indexheader :: templatemo_content_left_sec"></nav>
 			</div>
-			<div id="templatemo_content_right"
-				style="height: 1300px; max-height: 1600px !important;">
-				<div class="col-md-6 col-md-offset-3">
+			<hr id="hr_hr" />
+			<div id="templatemo_content_right">
+				<h1 style="font-weight: bold">Registration</h1>
+				<form onsubmit="return validateForm()" th:action="@{/registration}"
+					th:object="${person}" enctype="multipart/form-data" method="post"
+					class="form">
 
-					<h1 style="font-weight: bold">Registration</h1>
-					<form onsubmit="return validateForm()" th:action="@{/registration}"
-						th:object="${person}" enctype="multipart/form-data" method="post">
+					<div class="form-group"
+						th:classappend="${#fields.hasErrors('firstName')}? 'has-error':''">
+						<label for="firstName" class="control-label">First name</label> <input
+							id="firstName" class="form-control" th:field="*{firstName}" /> <span
+							class="error-message"
+							th:each="error: ${#fields.errors('firstName')}"
+							th:text="${error}" id="t1"></span>
+					</div>
+					<br>
 
-						<p class="error-message" th:if="${#fields.hasGlobalErrors()}"
-							th:each="error : ${#fields.errors('global')}" th:text="${error}">Validation
-							error</p>
-
-						<div class="form-group"
-							th:classappend="${#fields.hasErrors('firstName')}? 'has-error':''">
-							<label for="firstName" class="control-label">First name</label> <input
-								id="firstName" class="form-control" th:field="*{firstName}" />
-							<span class="error-message"
-								th:each="error: ${#fields.errors('firstName')}" hidden="hidden"
-								th:text="${error}" id="t1"></span>
-						</div>
-						<br>
-
-						<div class="form-group"
-							th:classappend="${#fields.hasErrors('lastName')}? 'has-error':''">
-							<label for="lastName" class="control-label">Last name</label> <input
-								id="lastName" class="form-control" th:field="*{lastName}" /> <span
-								class="error-message"
-								th:each="error : ${#fields.errors('lastName')}" hidden="hidden"
-								th:text="${error}" id="t2"></span>
-						</div>
-						<div class="form-group">
-							<label class="col-3 col-form-label"><font size="4">Image:</font></label>
-							<div class="col-8">
-								<div style="padding: 5px 0px 10px 10px; text-align: center;">
-									<img id="myImg" src="#" alt="your image" class="form-control"
-										style="height: 150px; width: 150px;">
-								</div>
-								<input id="picture" name="picture" class="form-control"
-									type="file"
-									accept=".jpeg, .jpg, .png, .gif, .tif, .tiff, .psd, .pdf, .eps, .ai, .indd, .raw, .bmp, .cr2, .nef, .orf, .sr2, .xcf, .cdr"
-									th:field="${person.picture}">
+					<div class="form-group"
+						th:classappend="${#fields.hasErrors('lastName')}? 'has-error':''">
+						<label for="lastName" class="control-label">Last name</label> <input
+							id="lastName" class="form-control" th:field="*{lastName}" /> <span
+							class="error-message"
+							th:each="error : ${#fields.errors('lastName')}"
+							th:text="${error}" id="t2"></span>
+					</div>
+					<div class="form-group">
+						<label class="col-3 col-form-label"><font size="4">Image:</font></label>
+						<div class="col-8">
+							<div style="padding: 5px 0px 10px 10px; text-align: center;">
+								<img id="myImg" src="#" alt="your image" class="form-control"
+									style="height: 150px; width: 150px;">
 							</div>
+							<input id="picture" name="picture" class="form-control"
+								type="file"
+								accept=".jpeg, .jpg, .png, .gif, .tif, .tiff, .psd, .pdf, .eps, .ai, .indd, .raw, .bmp, .cr2, .nef, .orf, .sr2, .xcf, .cdr"
+								th:field="${person.picture}">
+						</div>
 
-							<script type="text/javascript">
-								window
-										.addEventListener(
-												'load',
-												function() {
-													document
-															.querySelector(
-																	'input[type="file"]')
-															.addEventListener(
-																	'change',
-																	function() {
-																		if (this.files
-																				&& this.files[0]) {
-																			var myImg = document
-																					.querySelector('#myImg'); // $('img')[0]
-																			myImg.src = URL
-																					.createObjectURL(this.files[0]); // set src to file url
-																			myImg.onload = imageIsLoaded; // optional onload event listener
-																		}
-																	});
-												});
-							</script>
-						</div>
-						<div class="form-group">
-							<label for="phone" class="control-label">Phone</label> <input
-								id="phone" class="form-control" th:field="*{phone}" />
-						</div>
-						<br>
+						<script type="text/javascript">
+							window
+									.addEventListener(
+											'load',
+											function() {
+												document
+														.querySelector(
+																'input[type="file"]')
+														.addEventListener(
+																'change',
+																function() {
+																	if (this.files
+																			&& this.files[0]) {
+																		var myImg = document
+																				.querySelector('#myImg'); // $('img')[0]
+																		myImg.src = URL
+																				.createObjectURL(this.files[0]); // set src to file url
+																		myImg.onload = imageIsLoaded; // optional onload event listener
+																	}
+																});
+											});
+						</script>
+					</div>
+					<div class="form-group">
+						<label for="phone" class="control-label">Phone</label> <input
+							id="phone" class="form-control" th:field="*{phone}" /> <span
+							class="error-message"
+							th:each="error : ${#fields.errors('phone')}" th:text="${error}"
+							id="t3"></span>
+					</div>
+					<br>
 
-						<div class="form-group">
-							<label for="address" class="control-label">Address</label> <input
-								id="address" class="form-control" th:field="*{address}" />
-						</div>
-						<br>
+					<div class="form-group">
+						<label for="address" class="control-label">Address</label> <input
+							id="address" class="form-control" th:field="*{address}" /> <span
+							class="error-message"
+							th:each="error : ${#fields.errors('phone')}" th:text="${error}"
+							id="t4"></span>
+					</div>
+					<br>
 
-						<div class="form-group">
-							<ul>
-								<li th:each="radioValue: ${singleSelectAllValues}"><input
-									type="radio" th:field="*{sex}" th:value="${radioValue}" /> <label
-									th:for="${#ids.prev('sex')}" th:text="${radioValue}"></label></li>
-							</ul>
-						</div>
-						<br>
+					<div class="form-group">
+						<ul>
+							<li th:each="radioValue: ${singleSelectAllValues}"><input
+								type="radio" th:field="*{sex}" th:value="${radioValue}" /> <label
+								th:for="${#ids.prev('sex')}" th:text="${radioValue}"></label></li>
+						</ul>
+					</div>
+					<br>
 
-						<div class="form-group">
-							<label>BirthDay</label> <input class="form-control" type="date"
-								name="birthday" id="birthday" value="1945-01-01">
-						</div>
-						<br>
+					<div class="form-group">
+						<label>BirthDay</label> <input class="form-control" type="date"
+							name="birthday" id="birthday" value="1945-01-01">
+					</div>
+					<br>
 
-						<div class="form-group"
-							th:classappend="${#fields.hasErrors('email')}? 'has-error':''">
-							<label for="email" class="control-label">E-mail</label> <input
-								id="email" class="form-control" th:field="*{email}" /> <span
-								class="error-message"
-								th:each="error : ${#fields.errors('email')}" hidden="hidden"
-								id="t3" th:text="${error}"></span>
-						</div>
-						<br>
+					<div class="form-group"
+						th:classappend="${#fields.hasErrors('email')}? 'has-error':''">
+						<label for="email" class="control-label">E-mail</label> <input
+							id="email" class="form-control" th:field="*{email}" /> <span
+							class="error-message"
+							th:each="error : ${#fields.errors('email')}" id="t5"
+							th:text="${error}"></span>
+					</div>
+					<br>
 
-						<div class="form-group"
-							th:classappend="${#fields.hasErrors('userName')}? 'has-error':''">
-							<label for="userName" class="control-label">UserName</label> <input
-								id="userName" class="form-control" th:field="*{userName}" /> <span
-								class="error-message"
-								th:each="error: ${#fields.errors('userName')}"
-								th:text="${error}" hidden="hidden" id="t4"></span>
-						</div>
-						<br>
+					<div class="form-group"
+						th:classappend="${#fields.hasErrors('userName')}? 'has-error':''">
+						<label for="userName" class="control-label">UserName</label> <input
+							id="userName" class="form-control" th:field="*{userName}" /> <span
+							class="error-message"
+							th:each="error: ${#fields.errors('userName')}" th:text="${error}"
+							id="t6"></span>
+					</div>
+					<br>
+					<p class="error-message" th:if="${#fields.hasGlobalErrors()}"
+						th:each="error : ${#fields.errors('global')}" th:text="${error}"
+						id="t7"></p>
+					<div class="form-group"
+						th:classappend="${#fields.hasErrors('password')}? 'has-error':''">
+						<label for="password" class="control-label">Password</label> <input
+							id="password" class="form-control" type="password"
+							th:field="*{password}" /> <span class="error-message"
+							th:each="error : ${#fields.errors('password')}"
+							th:text="${error}" id="t8"></span>
+					</div>
+					<br>
 
-						<div class="form-group"
-							th:classappend="${#fields.hasErrors('password')}? 'has-error':''">
-							<label for="password" class="control-label">Password</label> <input
-								id="password" class="form-control" type="password"
-								th:field="*{password}" /> <span class="error-message"
-								th:each="error : ${#fields.errors('password')}"
-								th:text="${error}" hidden="hidden" id="t5">Validation
-								error</span>
-						</div>
-						<br>
+					<div class="form-group"
+						th:classappend="${#fields.hasErrors('confirmPassword')}? 'has-error':''">
+						<label for="confirmPassword" class="control-label">Confirm
+							password</label> <input id="confirmPassword" class="form-control"
+							type="password" th:field="*{confirmPassword}" />
+					</div>
+					<br>
 
-						<div class="form-group"
-							th:classappend="${#fields.hasErrors('confirmPassword')}? 'has-error':''">
-							<label for="confirmPassword" class="control-label">Confirm
-								password</label> <input id="confirmPassword" class="form-control"
-								type="password" th:field="*{confirmPassword}" /> <span
-								class="error-message"
-								th:each="error : ${#fields.errors('confirmPassword')}"
-								th:text="${error}" hidden="hidden" id="t6">Validation
-								error</span>
-						</div>
-						<br>
+					<div class="form-group"
+						th:classappend="${#fields.hasErrors('terms')}? 'has-error':''">
+						<input id="terms" type="checkbox" th:field="*{terms}" /> <label
+							class="control-label" for="terms"> I agree with the <a
+							href="#">terms and conditions</a> for Registration.
+						</label>
+						<p class="error-message"
+							th:each="error : ${#fields.errors('terms')}" th:text="${error}"
+							id="t9"></p>
+					</div>
+					<br>
 
-						<div class="form-group"
-							th:classappend="${#fields.hasErrors('terms')}? 'has-error':''">
-							<input id="terms" type="checkbox" th:field="*{terms}" /> <label
-								class="control-label" for="terms"> I agree with the <a
-								href="#">terms and conditions</a> for Registration.
-							</label>
-							<p class="error-message"
-								th:each="error : ${#fields.errors('terms')}" th:text="${error}">Validation
-								error</p>
+					<div class="form-group">
+						<div id="gg" style="margin: 0px 0px 0px 100px";>
+							<button type="submit" class="btn btn-success">Register</button>
+							<span>Already registered? <a href="/" th:href="@{/login}"
+								style="font-size: 17px";>Login here</a></span>
 						</div>
-						<br>
+					</div>
+					<br>
+				</form>
+				<script>
+					var h1 = $("#templatemo_content_left").height();
+					var h2 = $("#templatemo_content_right").height();
+					if (h2 > h1)
+						h1 = h2
+					$("#templatemo_content_left").height(h1);
+					$("#hr_hr").height(h1);
+					$("#templatemo_content_right").height(h1);
+				</script>
+				<div th:unless="${param.success}">
+					<script type="text/javascript">
+						$(document)
+								.ready(
+										function() {
+											var er = '';
+											var gt = $('#t1').text();
+											if (gt != '') {
+												er += ' - Bạn cần nhập đúng FirstName.';
+												$('#t1').html(er);
+											}
 
-						<div class="form-group">
-							<div id="gg" style="margin: 0px 0px 0px 100px";>
-								<button type="submit" class="btn btn-success">Register</button>
-								<span>Already registered? <a href="/" th:href="@{/login}"
-									style="font-size: 17px";>Login here</a></span>
-							</div>
+											gt = $('#t2').text();
+											if (gt != ''){
+												gt = ' - Bạn cần nhập đúng LastName.';
+												$('#t2').html(gt);
+												if (er != '')
+													er += '<br>' + gt;
+												else
+													er += gt;
+											}
+
+											gt = $('#t3').text();
+											if (gt != ''){
+												gt = ' - Bạn cần nhập đúng Phone Number.';
+												$('#t3').html(gt);
+												if (er != '')
+													er += '<br>'+gt;
+												else
+													er += gt;
+											}
+											gt = $('#t4').text();
+											if (gt != ''){
+												gt = ' - Bạn cần nhập đúng Address.';
+												$('#t4').html(gt);
+												if (er != '')
+													er += '<br>' + gt;
+												else
+													er += gt;
+											}
+											gt = $('#t5').text();
+											if (gt != ''){
+												gt = ' - Bạn cần nhập đúng Email với dạng abc@mno.jkl';
+												$('#t5').html(gt);
+												if (er != '')
+													er += '<br>' + gt;
+												else
+													er += gt;
+											}
+											gt = $('#t6').text();
+											if (gt != ''){
+												gt = ' - Bạn cần nhập đúng UserName với các ký tự [a-Z] và không có khoảng trắng và không có ký tự đặc biệt';
+												$('#t6').html(gt);
+												if (er != '')
+													er += '<br>' + gt;
+												else
+													er += gt;
+											}
+											gt = $('#t7').text();
+											if (gt != ''){
+												gt = ' - Password và Comfirm Password phải giống nhau.';
+												$('#t7').html(gt);
+												if (er != '')
+													er += '<br>' + gt;
+												else
+													er += gt;
+											}
+											gt = $('#t8').text();
+											if (gt != ''){
+												gt = ' - Bạn cần nhập đúng Password có dạng : Chữ đầu tiên viết hoa, có ít nhất 1 kí tự đặc biệt và ít nhất 1 số và không có khoảng trắng .';
+												$('#t8').html(gt);
+												if (er != '')
+													er += '<br>' + gt;
+												else
+													er += gt;
+											}
+											gt = $('#t9').text();
+											if (gt != ''){
+												gt = ' - Bạn cần click box chấp nhận điều khoản trên.';
+												$('#t9').html(gt);
+												if (er != '')
+													er += '<br>' + gt;
+												else
+													er += gt;
+											}
+											if (er != '') {
+												console.log(er);
+												document.getElementById("a_e").innerHTML = "ERROR";
+												document
+														.getElementById("showError").innerHTML = er;
+												$('.alert').addClass('show');
+												$('.screen').addClass('show');
+											}
+											$('.btn-close')
+													.click(
+															function(event) {
+																$('.alert')
+																		.removeClass(
+																				'show');
+																$('.screen')
+																		.removeClass(
+																				'show');
+															});
+											$('.screen')
+													.click(
+															function(event) {
+																$('.alert')
+																		.removeClass(
+																				'show');
+																$('.screen')
+																		.removeClass(
+																				'show');
+															});
+										});
+					</script>
+					<div class="screen"></div>
+					<div class="alert">
+						<h3 id="a_e"></h3>
+						<div class="Info">
+							<p id="showError"></p>
+							<br>
+							<button class="btn-close" type="button">OK</button>
 						</div>
-						<br>
-					</form>
+					</div>
 				</div>
 			</div>
-			<br>
 		</div>
 	</div>
 	<div class="cleaner_with_height">&nbsp;</div>

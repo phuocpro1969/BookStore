@@ -14,7 +14,7 @@ public interface ModuleRunFirst {
 	boolean error(String a, String b);
 	String unAccent(String s);
 	void headerFooter(Authentication authentication, ModelMap map, List<String> roles);
-	void leftBar_cate_pub(Model model);
+	void leftBar_cate_pub(Model model, int num);
 	List<String> getRole(Authentication authentication);
 	void deleteFile(String linkImagestoFolder, String extensionOFile);
 	Timestamp getTimeNow();

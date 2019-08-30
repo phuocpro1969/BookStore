@@ -1,5 +1,6 @@
 package pq.jdev.b001.bookstore.users.constraint;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,20 +24,24 @@ public class NameConstraintValidator implements ConstraintValidator<ValidName, S
 	}
 
 	@Override
-	public boolean isValid(String password, ConstraintValidatorContext context) {
+	public boolean isValid(String contactField, ConstraintValidatorContext context) {
 		PasswordValidator validator = new PasswordValidator(Arrays.asList(new LengthRule(0, 70)));
 		PasswordValidator nonValidator = new PasswordValidator(Arrays.asList(new SpecialCharRuleEx(1)));
 
-		RuleResult result = validator.validate(new PasswordData(password));
-		RuleResult nonResult = nonValidator.validate(new PasswordData(password));
+		RuleResult result = validator.validate(new PasswordData(contactField));
+		RuleResult nonResult = nonValidator.validate(new PasswordData(contactField));
 		if (result.isValid() && !nonResult.isValid()) {
 			return true;
 		}
-		List<String> messages = validator.getMessages(result);
+		
+		List<String> messages = new ArrayList<String>();
+		if (!result.isValid())
+			messages.add("Name must be length [1-70]");
+		if (nonResult.isValid())
+			messages.add("Name must not have special character");
 		String messageTemplate = messages.stream().collect(Collectors.joining(","));
-		context.buildConstraintViolationWithTemplate(messageTemplate)
-        .addConstraintViolation()
-        .disableDefaultConstraintViolation();
+		context.buildConstraintViolationWithTemplate(messageTemplate).addConstraintViolation()
+				.disableDefaultConstraintViolation();
 		return false;
 	}
 }

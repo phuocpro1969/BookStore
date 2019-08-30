@@ -11,6 +11,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
 
 import pq.jdev.b001.bookstore.users.constraint.FieldMatch;
+import pq.jdev.b001.bookstore.users.constraint.ValidName;
+import pq.jdev.b001.bookstore.users.constraint.ValidPhone;
 import pq.jdev.b001.bookstore.users.constraint.ValidPassword;
 
 @FieldMatch.List({
@@ -18,12 +20,15 @@ import pq.jdev.b001.bookstore.users.constraint.ValidPassword;
 public class UserDto {
 
 	@NotEmpty
+	@ValidName
 	private String firstName;
 
 	@NotEmpty
+	@ValidName
 	private String lastName;
 
 	@NotEmpty
+	@ValidName
 	private String userName;
 
 	@Email
@@ -38,6 +43,7 @@ public class UserDto {
 	@ValidPassword
 	private String confirmPassword;
 
+	@ValidPhone
 	private String phone;
 
 	private String address;

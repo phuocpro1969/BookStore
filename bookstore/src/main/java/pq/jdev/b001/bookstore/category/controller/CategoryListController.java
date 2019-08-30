@@ -50,7 +50,7 @@ public class CategoryListController {
 	public String ListForm(HttpServletRequest request, @PathVariable int pageNumber, Model model, ModelMap map,
 			Authentication authentication) {
 		List<String> roles = moduleRunFirst.getRole(authentication);
-		moduleRunFirst.leftBar_cate_pub(model);
+		moduleRunFirst.leftBar_cate_pub(model,15);
 		moduleRunFirst.headerFooter(authentication, map, roles);
 
 		PagedListHolder<?> pageLs = (PagedListHolder<?>) request.getSession().getAttribute("listCategory");
@@ -98,7 +98,7 @@ public class CategoryListController {
 	public String edit(@PathVariable long id, RedirectAttributes redirect, ModelMap map, Model model,
 			HttpServletRequest request, Authentication authentication) {
 		List<String> roles = moduleRunFirst.getRole(authentication);
-		moduleRunFirst.leftBar_cate_pub(model);
+		moduleRunFirst.leftBar_cate_pub(model, 15);
 		moduleRunFirst.headerFooter(authentication, map, roles);
 
 		Long idP = userService.findByUsername(authentication.getName()).getId();
@@ -123,7 +123,7 @@ public class CategoryListController {
 	public String search(@RequestParam("s") String s, Model model, HttpServletRequest request,
 			@PathVariable int pageNumber, ModelMap map, Authentication authentication) {
 		List<String> roles = moduleRunFirst.getRole(authentication);
-		moduleRunFirst.leftBar_cate_pub(model);
+		moduleRunFirst.leftBar_cate_pub(model, 15);
 		moduleRunFirst.headerFooter(authentication, map, roles);
 		if (s.equals("")) {
 			return "redirect:/categoryList";

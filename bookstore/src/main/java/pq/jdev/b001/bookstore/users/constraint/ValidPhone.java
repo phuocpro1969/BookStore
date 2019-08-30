@@ -13,12 +13,12 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 
 @Documented
-@Constraint(validatedBy = NameConstraintValidator.class)
+@Constraint(validatedBy = PhoneConstraintValidator.class)
 @Target({ TYPE, FIELD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
-public @interface ValidName {
+public @interface ValidPhone {
 
-    String message() default "Invalid String";
+    String message() default "Invalid Phone";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 
