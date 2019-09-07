@@ -79,8 +79,8 @@ form {
 				var er = '';
 				var gt = $('#t1').text();
 				if (gt != '')
-					er += 'FirstName ' + gt;
-
+					er +='FirstName '+ gt;
+				
 				gt = $('#t2').text();
 				if (gt != '')
 					if (er != '')
@@ -124,8 +124,7 @@ form {
 		<div id="templatemo_content">
 			<div id="templatemo_content_left"
 				style="height: 1300px; max-height: 1600px !important;">
-				<nav
-					th:replace="user_admin/indexheader :: templatemo_content_left_sec"></nav>
+				<nav th:replace="user_admin/indexheader :: templatemo_content_left_sec"></nav>
 			</div>
 			<div id="templatemo_content_right"
 				style="height: 1300px; max-height: 1600px !important;">
@@ -183,11 +182,11 @@ form {
 																	function() {
 																		if (this.files
 																				&& this.files[0]) {
-																			var myImg = document
-																					.querySelector('#myImg'); // $('img')[0]
-																			myImg.src = URL
+																			var img = document
+																					.querySelector('img'); // $('img')[0]
+																			img.src = URL
 																					.createObjectURL(this.files[0]); // set src to file url
-																			myImg.onload = imageIsLoaded; // optional onload event listener
+																			img.onload = imageIsLoaded; // optional onload event listener
 																		}
 																	});
 												});
@@ -244,10 +243,10 @@ form {
 							th:classappend="${#fields.hasErrors('password')}? 'has-error':''">
 							<label for="password" class="control-label">Password</label> <input
 								id="password" class="form-control" type="password"
-								th:field="*{password}" /> <span class="error-message"
+								th:field="*{password}" />
+							<span class="error-message"
 								th:each="error : ${#fields.errors('password')}"
-								th:text="${error}" hidden="hidden" id="t5">Validation
-								error</span>
+								th:text="${error}" hidden="hidden" id="t5">Validation error</span>
 						</div>
 						<br>
 
@@ -255,11 +254,10 @@ form {
 							th:classappend="${#fields.hasErrors('confirmPassword')}? 'has-error':''">
 							<label for="confirmPassword" class="control-label">Confirm
 								password</label> <input id="confirmPassword" class="form-control"
-								type="password" th:field="*{confirmPassword}" /> <span
-								class="error-message"
+								type="password" th:field="*{confirmPassword}" />
+							<span class="error-message"
 								th:each="error : ${#fields.errors('confirmPassword')}"
-								th:text="${error}" hidden="hidden" id="t6">Validation
-								error</span>
+								th:text="${error}" hidden="hidden" id="t6">Validation error</span>
 						</div>
 						<br>
 
