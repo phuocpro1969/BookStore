@@ -163,7 +163,7 @@ public class BookController {
 			Authentication authentication) {
 		List<String> roles = moduleRunFirst.getRole(authentication);
 		try {
-			moduleRunFirst.leftBar_cate_pub(model,15);
+			moduleRunFirst.leftBar_cate_pub(model);
 			moduleRunFirst.headerFooter(authentication, map, roles);
 			model.addAttribute("book", new Book());
 

@@ -78,7 +78,7 @@ public class ListBookController {
 
 		PagedListHolder<?> pages = null;
 
-		int pagesize = 8;
+		int pagesize = 6;
 		List<Book> listH = null;
 		if (principal == null) {
 			listH = (List<Book>) listBookService.findAll();
@@ -130,10 +130,10 @@ public class ListBookController {
 		if (moduleRunFirst.isAdmin(roles))
 			map.addAttribute("ok", "TRUE");
 
-		moduleRunFirst.leftBar_cate_pub(model, 15);
+		moduleRunFirst.leftBar_cate_pub(model);
 
 		PagedListHolder<?> pages = null;
-		int pagesize = 8;
+		int pagesize = 6;
 		List<Book> list = null;
 		if (principal == null) {
 			list = (List<Book>) listBookService.findAll();
@@ -178,7 +178,7 @@ public class ListBookController {
 	public String create(Model model, ModelMap map, Authentication authentication) {
 		List<String> roles = moduleRunFirst.getRole(authentication);
 		moduleRunFirst.headerFooter(authentication, map, roles);
-		moduleRunFirst.leftBar_cate_pub(model, 15);
+		moduleRunFirst.leftBar_cate_pub(model);
 		model.addAttribute("book", new Book());
 		return "bookview/savebook";
 	}
@@ -197,7 +197,7 @@ public class ListBookController {
 			if (personIdInBook != personId)
 				return "redirect:/";
 		}
-		moduleRunFirst.leftBar_cate_pub(model, 15);
+		moduleRunFirst.leftBar_cate_pub(model);
 		model.addAttribute("book", listBookService.findOne(id));
 		return "bookview/savebook";
 	}
@@ -259,7 +259,7 @@ public class ListBookController {
 			HttpServletRequest request, @PathVariable int pageNumber, ModelMap map, Principal principal) {
 
 		List<String> roles = moduleRunFirst.getRole(authentication);
-		moduleRunFirst.leftBar_cate_pub(model, 15);
+		moduleRunFirst.leftBar_cate_pub(model);
 		moduleRunFirst.headerFooter(authentication, map, roles);
 		if (moduleRunFirst.isAdmin(roles))
 			map.addAttribute("ok", "TRUE");
@@ -276,7 +276,7 @@ public class ListBookController {
 //		}
 
 		PagedListHolder<?> pages = null;
-		int pagesize = 8;
+		int pagesize = 6;
 
 		List<Book> listBookGet = null;
 		if (principal == null) {
@@ -341,10 +341,10 @@ public class ListBookController {
 		if (moduleRunFirst.isAdmin(roles))
 			map.addAttribute("ok", "TRUE");
 
-		moduleRunFirst.leftBar_cate_pub(model, 15);
+		moduleRunFirst.leftBar_cate_pub(model);
 
 		PagedListHolder<?> pages = null;
-		int pagesize = 8;
+		int pagesize = 6;
 		List<Book> list = null;
 		if (pageNumber == 1) {
 			request.getSession().setAttribute("bookListBCC", null);

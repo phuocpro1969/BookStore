@@ -34,7 +34,7 @@ public class UploadController {
 	public String viewUpLoad(Authentication authentication, ModelMap map, Model model) {
 
 		List<String> roles = moduleRunFirst.getRole(authentication);
-		moduleRunFirst.leftBar_cate_pub(model, 15);
+		moduleRunFirst.leftBar_cate_pub(model);
 		moduleRunFirst.headerFooter(authentication, map, roles);
 
 //		zipFileService.unzipFileWithLink("src\\main\\resources\\static\\images\\noImage2.rar", "D:\\page");

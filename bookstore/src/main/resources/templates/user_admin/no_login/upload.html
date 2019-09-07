@@ -31,60 +31,18 @@
 		<div id="templatemo_content">
 
 			<div id="templatemo_content_left">
-				<nav
-					th:replace="user_admin/indexheader :: templatemo_content_left_sec"></nav>
+				<nav th:replace="user_admin/indexheader :: templatemo_content_left_sec"></nav>
 			</div>
-			<hr id="hr_hr" />
-
 			<!-- end of content left -->
 			<div id="templatemo_content_right">
 				<br>
-				<div class="col-md-6 col-md-offset-3">
-					<div class="form-group">
-						<div style="padding: 5px 0px 10px 200px; text-align: center;">
-							<img id="myImg" src="#" alt="your image" class="form-control"
-								style="height: 200px; width: 200px;">
-						</div>
-						<form method="POST" th:action="@{/upload}"
-							enctype="multipart/form-data">
-							<input type="file" name="file" class="form-control"
-								style="width: 600px;" /><br /> <br /> <input type="submit"
-								value="UPLOAD" class="btn btn-primary"
-								style="margin: 0px 0px 0px 240px;" ; />
-						</form>
-					</div>
-					<script type="text/javascript">
-						window
-								.addEventListener(
-										'load',
-										function() {
-											document
-													.querySelector(
-															'input[type="file"]')
-													.addEventListener(
-															'change',
-															function() {
-																if (this.files
-																		&& this.files[0]) {
-																	var myImg = document
-																			.querySelector('#myImg'); // $('img')[0]
-																	myImg.src = URL
-																			.createObjectURL(this.files[0]); // set src to file url
-																	myImg.onload = imageIsLoaded; // optional onload event listener
-																}
-															});
-										});
-					</script>
-					<script>
-						var h1 = $("#templatemo_content_left").height();
-						var h2 = $("#templatemo_content_right").height();
-						if (h2 > h1)
-							h1 = h2
-						$("#templatemo_content_left").height(h1);
-						$("#hr_hr").height(h1);
-						$("#templatemo_content_right").height(h1);
-					</script>
-				</div>
+				<form method="POST" th:action="@{/upload}"
+					enctype="multipart/form-data">
+					<input type="file" name="file" class="form-control"
+						style="width: 500px; margin: 30px 0px 0px 125px;" /><br /> <br />
+					<input type="submit" value="UPLOAD" class="btn btn-primary"
+						style="margin: 0px 0px 0px 340px" ; />
+				</form>
 			</div>
 		</div>
 	</div>

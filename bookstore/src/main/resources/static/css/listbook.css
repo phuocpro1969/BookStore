@@ -56,6 +56,7 @@
 }
 
 .searchbar {
+	padding: 10px 10px 20px 0px;
 	float: right;
 }
 
@@ -117,35 +118,33 @@
 }
 
 .menu ul {
-	margin: 3px 0px 0px 15px;
-	padding: 0;
-	border: unset;
-	box-sizing: unset;
-	line-height: 18px;
+	
 }
 
 .menu {
-	margin: 0 auto;
+	margin: 95px 0px 0px 0px;
 }
 
 .menu .product {
 	float: left;
-	border: 1px solid #abc51b;
-	width: 23.4%;
-	height: 200px;
-	margin: 0px 0px 10px 20px;
+	border: 1px solid #333;
+	width: 48%;
+	height: 50%;
+	margin: 0px 10px 10px 5px;
 	display: flex;
 }
 
 .menu .images {
-	width: 160px;
-	height: 160px;
+	height: 85%;
+	width: 45%;
+	margin: 10px 0px 0px 0px;
 }
 
 .menu .images img {
-	margin: 10px 0px 0px 5px;
 	width: 100% !important;
 	height: 100% !important;
+	max-width: 145px;
+	max-height: 135px;
 }
 
 .menu .content {
@@ -156,12 +155,12 @@
 .menu ul li {
 	font-weight: bold;
 	font-size: 11pt;
-	width: 70%;
+	width: 160px;
 	display: block;
 }
 
 .menu ul li span {
-	max-width: 120px;
+	max-width: 85px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -178,8 +177,4 @@
 
 .form-group input{
 
-}
-
-#listbook{
-	
 }

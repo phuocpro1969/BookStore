@@ -118,7 +118,7 @@ public class AdminController {
 
 		List<String> roles = moduleRunFirst.getRole(authentication);
 		moduleRunFirst.headerFooter(authentication, map, roles);
-		moduleRunFirst.leftBar_cate_pub(model, 15);
+		moduleRunFirst.leftBar_cate_pub(model);
 		List<Person> list = (List<Person>) getList(principal);
 
 		int pagesize = 7;
@@ -230,7 +230,7 @@ public class AdminController {
 
 		List<String> roles = moduleRunFirst.getRole(authentication);
 		moduleRunFirst.headerFooter(authentication, map, roles);
-		moduleRunFirst.leftBar_cate_pub(model, 15);
+		moduleRunFirst.leftBar_cate_pub(model);
 
 		if (kw.equals("")) {
 			return "redirect:/listUser";

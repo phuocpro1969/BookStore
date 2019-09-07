@@ -131,8 +131,8 @@ public class ModuleRunFirstImpl implements ModuleRunFirst {
 	}
 
 	@Override
-	public void leftBar_cate_pub(Model model, int num) {
-		int pagesizeCP = num;
+	public void leftBar_cate_pub(Model model) {
+		int pagesizeCP = 15;
 		PagedListHolder<?> pagePubs = null;
 		PagedListHolder<?> pageCates = null;
 		List<Publishers> listPub = (List<Publishers>) publisherService.findAll();
@@ -147,6 +147,7 @@ public class ModuleRunFirstImpl implements ModuleRunFirst {
 		}
 		model.addAttribute("publishers", pagePubs);
 		model.addAttribute("categories", pageCates);
+
 	}
 
 	@Override

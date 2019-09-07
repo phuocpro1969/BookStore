@@ -44,7 +44,7 @@ public class LoginController {
 	public String root(Authentication authentication, ModelMap map, Model model, HttpServletRequest request,
 			Principal principal) {
 		List<String> roles = moduleRunFirst.getRole(authentication);
-		moduleRunFirst.leftBar_cate_pub(model, 15);
+		moduleRunFirst.leftBar_cate_pub(model);
 		moduleRunFirst.headerFooter(authentication, map, roles);
 		map.addAttribute("ok", "FALSE");
 		if (moduleRunFirst.isAdmin(roles))
@@ -52,7 +52,7 @@ public class LoginController {
 
 		PagedListHolder<?> pages = null;
 
-		int pagesize = 8;
+		int pagesize = 6;
 		List<Book> listH = null;
 		if (principal == null) {
 			listH = (List<Book>) listBookService.findAll();
@@ -90,7 +90,7 @@ public class LoginController {
 	public String showBookPage(Authentication authentication, HttpServletRequest request, @PathVariable int pageNumber,
 			Model model, ModelMap map, Principal principal) {
 		List<String> roles = moduleRunFirst.getRole(authentication);
-		moduleRunFirst.leftBar_cate_pub(model, 15);
+		moduleRunFirst.leftBar_cate_pub(model);
 		moduleRunFirst.headerFooter(authentication, map, roles);
 		map.addAttribute("ok", "FALSE");
 		if (moduleRunFirst.isAdmin(roles))
@@ -158,7 +158,7 @@ public class LoginController {
 			return "redirect:/";
 		}
 		List<String> roles = moduleRunFirst.getRole(authentication);
-		moduleRunFirst.leftBar_cate_pub(model, 15);
+		moduleRunFirst.leftBar_cate_pub(model);
 		moduleRunFirst.headerFooter(authentication, map, roles);
 		map.addAttribute("ok", "FALSE");
 		if (moduleRunFirst.isAdmin(roles))
@@ -190,7 +190,7 @@ public class LoginController {
 					list.add(a);
 		}
 
-		int pagesize = 8;
+		int pagesize = 6;
 
 		pages = new PagedListHolder<>(list);
 		pages.setPageSize(pagesize);
@@ -228,7 +228,7 @@ public class LoginController {
 		if (!roles.contains(null))
 			return "redirect:/";
 		moduleRunFirst.headerFooter(authentication, map, roles);
-		moduleRunFirst.leftBar_cate_pub(model, 10);
+		moduleRunFirst.leftBar_cate_pub(model);
 		
 		String referrer = request.getHeader("Referer");
 		if (referrer != null) {
@@ -253,7 +253,7 @@ public class LoginController {
 	public String accessDeniedPage(Authentication authentication, ModelMap map, Model model) {
 		List<String> roles = moduleRunFirst.getRole(authentication);
 		moduleRunFirst.headerFooter(authentication, map, roles);
-		moduleRunFirst.leftBar_cate_pub(model, 15);
+		moduleRunFirst.leftBar_cate_pub(model);
 		return "error/403";
 	}
 

@@ -1,12 +1,9 @@
 package pq.jdev.b001.bookstore.users.web;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +19,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import pq.jdev.b001.bookstore.users.model.PasswordResetToken;
 import pq.jdev.b001.bookstore.users.model.Person;
-import pq.jdev.b001.bookstore.users.service.ModuleRunFirst;
 import pq.jdev.b001.bookstore.users.service.UserService;
 import pq.jdev.b001.bookstore.users.web.dto.PasswordResetDto;
 
@@ -36,9 +32,6 @@ public class PasswordResetController {
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
-	
-	@Autowired
-	private ModuleRunFirst moduleRunFirst;
 
 	@ModelAttribute("passwordResetForm")
 	public PasswordResetDto passwordReset() {
@@ -46,11 +39,10 @@ public class PasswordResetController {
 	}
 
 	@GetMapping
-	public String displayResetPasswordPage(@RequestParam(required = false) String token, Model model, ModelMap map, Authentication authentication) {
+	public String displayResetPasswordPage(@RequestParam(required = false) String token, Model model, ModelMap map) {
 		
-		List<String> roles = moduleRunFirst.getRole(authentication);
-		moduleRunFirst.leftBar_cate_pub(model, 15);
-		moduleRunFirst.headerFooter(authentication, map, roles);
+		map.addAttribute("header", "header_login");
+		map.addAttribute("footer", "footer_login");
 		
 		PasswordResetToken resetToken = userService.findByToken(token);
 		if (resetToken == null) {
@@ -67,12 +59,11 @@ public class PasswordResetController {
 	@PostMapping
 	@Transactional
 	public String handlePasswordReset(@ModelAttribute("passwordResetForm") @Valid PasswordResetDto form,
-			BindingResult result, RedirectAttributes redirectAttributes, ModelMap map, Authentication authentication, Model model) {
+			BindingResult result, RedirectAttributes redirectAttributes, ModelMap map) {
 
 		if (result.hasErrors()) {
-			List<String> roles = moduleRunFirst.getRole(authentication);
-			moduleRunFirst.leftBar_cate_pub(model, 15);
-			moduleRunFirst.headerFooter(authentication, map, roles);
+			map.addAttribute("header", "header_login");
+			map.addAttribute("footer", "footer_login");
 			redirectAttributes.addFlashAttribute(BindingResult.class.getName() + ".passwordResetForm", result);
 			redirectAttributes.addFlashAttribute("passwordResetForm", form);
 			return "redirect:/reset-password?token=" + form.getToken();

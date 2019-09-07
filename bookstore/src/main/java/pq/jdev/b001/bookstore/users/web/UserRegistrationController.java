@@ -43,7 +43,7 @@ public class UserRegistrationController {
 	public String showRegistrationForm(ModelMap map, Model model) {
 		map.addAttribute("header", "header_login");
 		map.addAttribute("footer", "footer_login");
-		moduleRunFirst.leftBar_cate_pub(model, 15);
+		moduleRunFirst.leftBar_cate_pub(model);
 		return "user_admin/no_login/registration";
 	}
 
@@ -60,7 +60,7 @@ public class UserRegistrationController {
 		if (result.hasErrors()) {
 			map.addAttribute("header", "header_login");
 			map.addAttribute("footer", "footer_login");
-			moduleRunFirst.leftBar_cate_pub(model, 15);
+			moduleRunFirst.leftBar_cate_pub(model);
 			return "user_admin/no_login/registration";
 		}
 

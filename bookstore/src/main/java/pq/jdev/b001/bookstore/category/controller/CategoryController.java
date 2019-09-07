@@ -37,7 +37,7 @@ public class CategoryController {
 	public String AddEditForm(Model model, ModelMap map, Authentication authentication, HttpServletRequest request) {
 		
 		List<String> roles = moduleRunFirst.getRole(authentication);
-		moduleRunFirst.leftBar_cate_pub(model, 15);
+		moduleRunFirst.leftBar_cate_pub(model);
 		moduleRunFirst.headerFooter(authentication, map, roles);
 
 		Long idP = userService.findByUsername(authentication.getName()).getId();
@@ -75,7 +75,7 @@ public class CategoryController {
 
 		if (result.hasErrors()) {
 			moduleRunFirst.headerFooter(authentication, map, roles);
-			moduleRunFirst.leftBar_cate_pub(model, 15);
+			moduleRunFirst.leftBar_cate_pub(model);
 			return "category/categoryadd";
 		}
 
